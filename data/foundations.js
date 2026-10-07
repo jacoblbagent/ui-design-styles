@@ -414,8 +414,8 @@
       <span class="tk-sw" style="--c:#bc4a15"><i></i><b>accent</b><em>#bc4a15</em></span>
       <span class="tk-sw" style="--c:#dcdfe4"><i></i><b>hair</b><em>#dcdfe4</em></span>
     </div>
-    <div class="tk-row"><span class="tk-label">space</span><span class="tk-bars"><i style="width:4px"></i><i style="width:8px"></i><i style="width:16px"></i><i style="width:32px"></i></span></div>
-    <div class="tk-row"><span class="tk-label">ramp</span><span class="tk-ramp"><i>12</i><i>16</i><i>25</i><i>31</i></span></div>
+    <div class="tk-row"><span class="tk-label">space</span><span class="tk-bars"><i style="width:4px"></i><i style="width:8px"></i><i style="width:16px"></i><i style="width:32px"></i></span><em class="tk-val">4 8 16 32 px</em></div>
+    <div class="tk-row"><span class="tk-label">ramp</span><span class="tk-ramp" style="font-size:12px"><i>12</i><i style="font-size:16px">16</i><i style="font-size:25px">25</i><i style="font-size:31px">31</i></span></div>
   </div>`,
   css: `.spec--token-system .tk-sheet {
   width: 100%; max-width: 320px; background: #fff; border: 1px solid #e2e4e8;
@@ -428,9 +428,10 @@
 .spec--token-system .tk-sw em { font: 400 11px/1 "IBM Plex Mono", monospace; font-style: normal; color: #6b7280; }
 .spec--token-system .tk-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
 .spec--token-system .tk-label { font-size: 11px; color: #6b7280; width: 40px; }
-.spec--token-system .tk-bars { display: flex; align-items: flex-end; gap: 5px; height: 22px; }
-.spec--token-system .tk-bars i { height: 100%; background: #1c1f23; border-radius: 2px; }
-.spec--token-system .tk-ramp { display: flex; align-items: baseline; gap: 10px; color: #1c1f23; }
+.spec--token-system .tk-bars { display: flex; align-items: center; gap: 6px; height: 18px; }
+.spec--token-system .tk-bars i { height: 16px; background: #1c1f23; border-radius: 2px; }
+.spec--token-system .tk-val { font: 400 11px/1 "IBM Plex Mono", monospace; font-style: normal; color: #6b7280; margin-left: 4px; }
+.spec--token-system .tk-ramp { display: flex; align-items: baseline; gap: 12px; color: #1c1f23; line-height: 1; }
 .spec--token-system .tk-ramp i { font-style: normal; }`,
   prompt: "Structure the UI as a three-tier token system: primitive, semantic and component tokens; a 4px-only space scale; named radii for control/input/card/pill; no literal hex or px inside component rules; one light and one dark block that swap primitives only; and render a token sheet on the page so the system is inspectable.",
   sources: ["https://m3.material.io/foundations/design-tokens/overview", "https://www.w3.org/TR/design-tokens/"]

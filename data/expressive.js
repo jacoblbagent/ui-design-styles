@@ -71,7 +71,7 @@
     "One accent only: the style is defined by three colours competing."
   ],
   html: `<div class="me-panel">
-    <svg class="me-squiggle" viewBox="0 0 120 26" aria-hidden="true"><path d="M2 20C14 2 26 2 38 20s24 18 36 0 24-18 36 0" fill="none" stroke="#111" stroke-width="3"/></svg>
+    <svg class="me-squiggle" viewBox="0 0 124 42" aria-hidden="true"><path d="M2 21 Q14 3 26 21 T50 21 T74 21 T98 21 T122 21" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round"/></svg>
     <span class="me-zig"></span><span class="me-dot d1"></span><span class="me-dot d2"></span><span class="me-dot d3"></span>
     <span class="me-semi"></span>
     <button class="me-btn" type="button">Play</button>
@@ -80,7 +80,7 @@
   position: relative; width: 100%; max-width: 320px; height: 190px; overflow: hidden;
   background: #faf7f0; border: 3px solid #111; border-radius: 2px;
 }
-.spec--memphis .me-squiggle { position: absolute; top: 14px; left: 16px; width: 118px; }
+.spec--memphis .me-squiggle { position: absolute; top: 14px; left: 16px; width: 118px; height: 40px; }
 .spec--memphis .me-zig {
   position: absolute; top: 22px; right: 16px; width: 74px; height: 26px;
   background:
