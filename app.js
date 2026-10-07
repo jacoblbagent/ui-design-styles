@@ -12,6 +12,9 @@
   var CATALOG = window.CATALOG || [];
   CATALOG.sort(function (a, b) { return a.name.localeCompare(b.name); });
 
+  var GALLERY = (window.GALLERY && window.GALLERY.sites) || [];
+  var CAPTURED = (window.GALLERY && window.GALLERY.capturedAt) || "";
+
   var state = { q: "", cat: "all", theme: "light" };
 
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
@@ -28,6 +31,7 @@
 
   /* ---------- building blocks ---------- */
   var ICON_COPY = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5V3.5a1.5 1.5 0 0 0-1.5-1.5H3.5A1.5 1.5 0 0 0 2 3.5V8a1.5 1.5 0 0 0 1.5 1.5h2"/></svg>';
+  var ICON_EMBED = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M2 6.5h12M5 9.5h3"/></svg>';
 
   function traitsText(e) {
     var lines = ["## " + e.name + " (" + e.era + ")", "", e.blurb, "", "Traits:"];
@@ -81,12 +85,71 @@
     "</article>";
   }
 
+  /* ---------- real-world examples ---------- */
+  function styleLink(tag) {
+    var e = null;
+    for (var i = 0; i < CATALOG.length; i++) if (CATALOG[i].id === tag || CATALOG[i].name.toLowerCase() === tag.toLowerCase()) e = CATALOG[i];
+    if (!e) return '<span class="site__tag">' + tag + "</span>";
+    return '<a href="#' + e.id + '">' + e.name + "</a>";
+  }
+
+  function siteHTML(s) {
+    var tags = (s.tags || []).map(styleLink).join("");
+    var embed = s.frameable
+      ? '<button class="ghost" type="button" data-embed="' + s.url + '" data-shot="images/examples/' + s.id + '.jpg">' + ICON_EMBED + "Load live view</button>"
+      : "";
+    var frameNote = s.frameable
+      ? "<b>Allows framing</b> — load live view above swaps the screenshot for the real page, running here."
+      : "<b>Refuses framing</b> — " + (s.frameReason || "sends X-Frame-Options or a frame-ancestors policy") + ", so it opens in a new tab.";
+
+    return '<article class="site" id="site-' + s.id + '">' +
+      '<figure class="site__shot">' +
+        '<a href="' + s.url + '" target="_blank" rel="noopener noreferrer" aria-label="Open ' + s.name + ' in a new tab">' +
+          '<img src="images/examples/' + s.id + '.jpg" alt="Homepage of ' + s.name + ' as captured on ' + CAPTURED + '" width="720" height="450" loading="lazy" decoding="async">' +
+          '<span class="site__open">Open live site</span>' +
+        "</a>" +
+      "</figure>" +
+      '<div class="site__body">' +
+        '<h3 class="site__title"><a href="' + s.url + '" target="_blank" rel="noopener noreferrer">' + s.name + "</a></h3>" +
+        '<p class="site__meta">' + s.domain + " &middot; captured " + CAPTURED + "</p>" +
+        '<p class="site__tags">' + tags + "</p>" +
+        '<div class="site__look"><h4>What to look at</h4><ul>' +
+          (s.look || []).map(function (t) { return "<li>" + t + "</li>"; }).join("") +
+        "</ul></div>" +
+        (embed ? '<div class="actions">' + embed + "</div>" : "") +
+        '<p class="site__note">' + frameNote + "</p>" +
+      "</div>" +
+    "</article>";
+  }
+
+  function siteMatches(s) {
+    if (state.cat !== "all" && state.cat !== "gallery") return false;
+    if (!state.q) return true;
+    var hay = [s.name, s.domain, s.url, (s.tags || []).join(" "), (s.look || []).join(" ")].join(" ").toLowerCase();
+    return state.q.split(/\s+/).every(function (t) { return hay.indexOf(t) !== -1; });
+  }
+
+  function renderSites() {
+    var visible = GALLERY.filter(siteMatches);
+    if (!visible.length && state.cat !== "gallery") return "";
+    var head = '<div class="section__head"><h2>Real-world examples</h2><span class="n">' + visible.length + "</span></div>" +
+      '<p class="section__note">Live sites, one per style family, captured from the real page by this repo\u2019s tooling on ' + CAPTURED +
+      ". The site is the source of truth — the screenshot is only a record of what it looked like. Where a site permits framing, " +
+      "you can load it right here; the rest send <code>X-Frame-Options</code> or a <code>frame-ancestors</code> policy and open in a new tab. " +
+      "Tags link to the matching style above.</p>";
+    var body = visible.length
+      ? '<div class="sites">' + visible.map(siteHTML).join("") + "</div>"
+      : '<p class="section__note">No saved site matches that search.</p>';
+    return '<section class="section" id="sec-gallery">' + head + body + "</section>";
+  }
+
   /* ---------- render ---------- */
   var main = $("#catalog");
   var chips = $("#chips");
   var countLine = $("#count-line");
 
   function matches(e) {
+    if (state.cat === "gallery") return false;
     if (state.cat !== "all" && e.cat !== state.cat) return false;
     if (!state.q) return true;
     var hay = [e.name, e.id, e.cat, e.era, stripTags(e.origin), stripTags(e.blurb), stripTags(e.traits.join(" ")), e.prompt].join(" ").toLowerCase();
@@ -95,6 +158,7 @@
 
   function render() {
     var visible = CATALOG.filter(matches);
+    var sites = GALLERY.filter(siteMatches);
     var html = "";
     SECTIONS.forEach(function (s) {
       var items = visible.filter(function (e) { return e.cat === s.id; });
@@ -105,16 +169,23 @@
         '<div class="grid">' + items.map(entryHTML).join("") + "</div>" +
       "</section>";
     });
-    if (!visible.length) {
+    if (!visible.length && state.cat !== "gallery") {
       html = '<section class="section"><p class="section__note">Nothing matches that search. ' +
-             'Try a material instead: glass, clay, brutal, terminal, bento.</p></section>';
+             "Try a material instead: glass, clay, brutal, terminal, bento.</p></section>";
     }
+    html += renderSites();
     main.innerHTML = html;
+    countLine.textContent = countText(visible.length, sites.length);
+  }
 
-    var showing = visible.length === CATALOG.length
-      ? CATALOG.length + " styles"
-      : "showing " + visible.length + " of " + CATALOG.length + " styles";
-    countLine.textContent = showing + (state.cat !== "all" ? " · " + sectionName(state.cat) : "") + (state.q ? ' · matching "' + state.q + '"' : "");
+  function countText(nStyles, nSites) {
+    var filtering = state.q || state.cat !== "all";
+    var bits = [];
+    bits.push(filtering ? "showing " + nStyles + " of " + CATALOG.length + " styles" : CATALOG.length + " styles");
+    if (GALLERY.length) bits.push(filtering ? nSites + " of " + GALLERY.length + " real sites" : GALLERY.length + " real sites");
+    var tail = state.cat !== "all" && state.cat !== "gallery" ? " · " + sectionName(state.cat) : "";
+    if (state.cat === "gallery") tail = " · Real-world examples";
+    return bits.join(" · ") + tail + (state.q ? ' · matching "' + state.q + '"' : "");
   }
 
   function sectionName(id) {
@@ -131,7 +202,11 @@
       return '<button class="chip" type="button" data-cat="' + s.id + '" aria-pressed="' + (state.cat === s.id) + '">' +
         s.name + '<span class="chip__n">' + n + "</span></button>";
     }).join("");
-    chips.innerHTML = all + rest;
+    var gallery = GALLERY.length
+      ? '<button class="chip" type="button" data-cat="gallery" aria-pressed="' + (state.cat === "gallery") + '">' +
+        "Real-world examples" + '<span class="chip__n">' + GALLERY.length + "</span></button>"
+      : "";
+    chips.innerHTML = all + rest + gallery;
   }
 
   chips.addEventListener("click", function (ev) {
@@ -204,6 +279,18 @@
   }
 
   main.addEventListener("click", function (ev) {
+    var emb = ev.target.closest("[data-embed]");
+    if (emb) {
+      var url = emb.getAttribute("data-embed");
+      var figure = emb.closest(".site").querySelector(".site__shot");
+      if (figure) {
+        figure.innerHTML = '<iframe src="' + url + '" title="Live view of ' + url + '" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>';
+        emb.disabled = true;
+        emb.textContent = "Live view loaded";
+        say("Loading " + url.replace(/^https?:\/\/(www\.)?/, "") + " in place");
+      }
+      return;
+    }
     var btn = ev.target.closest("[data-copy]");
     if (!btn) return;
     var id = btn.getAttribute("data-id");
