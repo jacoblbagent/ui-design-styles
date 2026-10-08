@@ -173,18 +173,23 @@ const OUT = path.join(__dirname, 'shots');
   });
   // hover a mark in the middle of the table and read what the crosshair says
   const midCell = page.locator('.matrix tbody tr:not(.matrix__repeat)').nth(19).locator('.matrix__cell').nth(14);
+  /* put the section at the top of the viewport, so the table still runs past the
+     fold and the sticky bar below it has to pin rather than sit in view */
+  await page.evaluate(() => document.getElementById('sec-matrix').scrollIntoView({ block: 'start' }));
+  await page.waitForTimeout(140);
   await midCell.scrollIntoViewIfNeeded();
   await midCell.hover();
+  report.crosshairBarPinned = await page.evaluate(() => {
+    const bar = document.querySelector('.matrix__bar').getBoundingClientRect();
+    return bar.top > 0 && Math.round(window.innerHeight - bar.bottom) <= 14;
+  });
   await page.waitForTimeout(220);
   report.crosshair = {
     readout: await page.locator('#matrix-readout').textContent(),
     hotRows: await page.locator('.matrix tbody tr.is-hotrow').count(),
     hotCells: await page.locator('.matrix__cell.is-hotcol').count(),
     hotHeader: await page.locator('.matrix__col.is-hotcol .matrix__collabel').first().textContent(),
-    readoutPinned: await page.evaluate(() => {
-      const r = document.getElementById('matrix-readout').getBoundingClientRect();
-      return r.top > 0 && Math.round(window.innerHeight - r.bottom) <= 14;
-    })
+    readoutInStickyBar: await page.evaluate(() => !!document.querySelector('.matrix__bar #matrix-readout'))
   };
   await page.screenshot({ path: path.join(OUT, 'matrix-crosshair.png') });
   await page.mouse.move(4, 4);
@@ -195,6 +200,45 @@ const OUT = path.join(__dirname, 'shots');
     btn.focus();
     return { hot: document.querySelectorAll('.matrix__cell.is-hotcol').length, readout: document.getElementById('matrix-readout').textContent };
   });
+  // the way out of a filter lives in the matrix section, beside the filters
+  report.matrixClear = { idle: await page.locator('[data-clear-filters]').count() };
+  /* unfiltered, the table runs past the fold, so the bar should be pinned to the
+     bottom of the viewport rather than scrolled out of sight */
+  report.matrixClear.barPinnedWhileUnfiltered = await page.evaluate(() => {
+    document.getElementById('sec-matrix').scrollIntoView({ block: 'start' });
+    const bar = document.querySelector('.matrix__bar').getBoundingClientRect();
+    return bar.top > 0 && Math.round(window.innerHeight - bar.bottom) <= 14;
+  });
+  await page.locator('.matrix__colbtn[data-facet="blur-glass"]').click();
+  await page.waitForTimeout(240);
+  report.matrixClear.afterOneTrait = {
+    buttons: await page.locator('[data-clear-filters]').count(),
+    mastheadClear: await page.locator('.chip[data-clear-facets]').count(),
+    entries: await page.locator('.entry').count(),
+    inStickyBar: await page.evaluate(() => !!document.querySelector('.matrix__bar [data-clear-filters]')),
+    barInViewport: await page.evaluate(() => {
+      const bar = document.querySelector('.matrix__bar').getBoundingClientRect();
+      return bar.top >= 0 && bar.bottom <= window.innerHeight + 1;
+    })
+  };
+  await page.screenshot({ path: path.join(OUT, 'matrix-clear.png') });
+  await page.locator('[data-clear-filters]').click();
+  await page.waitForTimeout(240);
+  report.matrixClear.afterClear = {
+    buttons: await page.locator('[data-clear-filters]').count(),
+    entries: await page.locator('.entry').count(),
+    pressedChips: await page.locator('.chip[aria-pressed="true"][data-facet], .chip[aria-pressed="true"][data-kind]:not([data-kind="all"])').count()
+  };
+  // it clears a kind and a trait together, in one click
+  await page.locator('.chip[data-kind="pattern"]').click();
+  await page.waitForTimeout(200);
+  await page.locator('.matrix__colbtn[data-facet="round"]').click();
+  await page.waitForTimeout(240);
+  report.matrixClear.beforeBothCleared = { entries: await page.locator('.entry').count(), line: await page.locator('#count-line').textContent() };
+  await page.locator('[data-clear-filters]').click();
+  await page.waitForTimeout(240);
+  report.matrixClear.afterBothCleared = { entries: await page.locator('.entry').count(), line: await page.locator('#count-line').textContent() };
+
   report.atlasStems = await page.evaluate(() => {
     const moved = [...document.querySelectorAll('.atlas__label')].filter((l) => Math.abs(parseFloat(l.style.getPropertyValue('--lnudge'))) >= 12);
     const stems = [...document.querySelectorAll('.atlas__pt.has-stem')];

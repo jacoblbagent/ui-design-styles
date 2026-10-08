@@ -394,13 +394,24 @@
         "Click any column header, or any mark, to filter the whole page to that trait.</p>" +
       '<div class="matrix__legend"><span><span class="dot dot--sig"></span>signature</span><span><span class="dot dot--sup"></span>supporting</span>' +
         "<span><span class=\"dot dot--off\"></span>not declared</span><span>last column: closest neighbour by trait overlap</span></div>" +
+      '<div class="matrix__body">' +
       '<div class="matrix__scroll"><table class="matrix">' +
         '<thead><tr><th scope="col" class="matrix__corner">Style</th>' + head + '<th scope="col" class="matrix__nearhead">Shares with</th></tr></thead>' +
         "<tbody>" + rows.join("") + "</tbody>" +
       "</table></div>" +
-      '<p class="matrix__readout" id="matrix-readout" role="status" aria-live="polite">' +
-        '<span class="matrix__ro-hint">Hover or focus a mark — its row and column light up, and the pair is named here.</span>' +
-      "</p>" +
+      /* the bar is sticky while the matrix is on screen: the readout names the
+         mark, and the clear control sits beside it, so the way out of a filter
+         is always where the filters were applied. It lives inside the body
+         wrapper so the narrow layout can lift it above the table. */
+      '<div class="matrix__bar">' +
+        '<p class="matrix__readout" id="matrix-readout" role="status" aria-live="polite">' +
+          '<span class="matrix__ro-hint">Hover or focus a mark — its row and column light up, and the pair is named here.</span>' +
+        "</p>" +
+        ((state.facets.length || state.kind !== "all")
+          ? '<button class="ghost ghost--tiny matrix__clear" type="button" data-clear-filters>Clear all filters</button>'
+          : "") +
+      "</div>" +
+      "</div>" +
     "</section>";
   }
 
@@ -764,7 +775,7 @@
   }
 
   main.addEventListener("click", function (ev) {
-    var clearBtn = ev.target.closest("#clear-facets, [data-clear-facets]");
+    var clearBtn = ev.target.closest("#clear-facets, [data-clear-facets], [data-clear-filters]");
     if (clearBtn) {
       /* the section line names the kind as well as the traits, so Clear clears
          everything it just listed */

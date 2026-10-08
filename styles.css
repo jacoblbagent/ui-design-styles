@@ -491,15 +491,22 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 .matrix__col--repeat .matrix__collabel { font-size: 10px; }
 
 /* pinned to the bottom of the viewport for as long as the matrix is on screen,
-   so the pair is named next to the mark you are actually pointing at */
-.matrix__readout {
+   so the pair is named next to the mark you are actually pointing at — and the
+   way out of a filter sits with the filters */
+.matrix__body { display: block; }
+
+.matrix__bar {
   position: sticky; bottom: 12px; z-index: 3;
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
-  margin: 12px 0 0; padding: 9px 12px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin: 12px 0 0; padding: 8px 12px;
   background: var(--panel); border: 1px solid var(--hair-strong);
   border-left: 2px solid var(--accent); border-radius: var(--r-chip);
-  color: var(--muted); font-size: var(--t-12);
 }
+.matrix__readout {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+  margin: 0; min-width: 0; color: var(--muted); font-size: var(--t-12);
+}
+.matrix__clear { flex: none; }
 .matrix__readout b { color: var(--ink); font-weight: 600; }
 .matrix__ro-sep { color: var(--hair-strong); }
 .matrix__ro-state { color: var(--ink-2); }
@@ -539,6 +546,8 @@ table.matrix tbody tr:last-child th, table.matrix tbody tr:last-child td { borde
 .matrix__nearhead { width: 1%; }
 
 .matrix__col { vertical-align: bottom; padding: 0; }
+/* a column header scrolled to must clear the sticky masthead, not hide under it */
+table.matrix thead th, .matrix__colbtn { scroll-margin-top: calc(var(--masthead-h, 190px) + 14px); }
 .matrix__colbtn {
   display: flex; flex-direction: column; align-items: center; gap: 3px; width: 100%;
   background: none; border: 0; margin: 0; padding: 8px 4px 6px; cursor: pointer;
@@ -690,8 +699,19 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
   .atlas__space { inset: 8px; }
   .atlas__legend ul { grid-template-columns: 1fr; }
   .matrix__scroll { margin-top: 10px; }
-  /* the readout stays one line on a phone: the click hint is the first thing to go */
-  .matrix__readout { bottom: 8px; padding: 7px 10px; font-size: 11px; }
+  /* On a phone a bottom-pinned bar sits over the column headers and eats the
+     taps meant for them, so it stops being sticky and moves above the table
+     instead — still inside the matrix section, still one tap from the columns. */
+  /* one row of chips on a phone, scrolling sideways, rather than two or three
+     stacked rows holding a third of the screen */
+  .chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: none; }
+  .chips .chip--kind + .chip:not(.chip--kind) { margin-left: 12px; }
+
+  .matrix__body { display: flex; flex-direction: column; }
+  .matrix__body > .matrix__bar { order: -1; position: static; margin: 0 0 12px; padding: 8px 10px; gap: 8px; }
+  .matrix__readout { font-size: 11px; }
   .matrix__ro-click { display: none; }
   .matrix__corner, .matrix__nearhead, .matrix__row { padding-left: 10px; }
   .matrix__colbtn { padding: 6px 3px 5px; }
