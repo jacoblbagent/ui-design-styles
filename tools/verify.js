@@ -73,6 +73,36 @@ const OUT = path.join(__dirname, 'shots');
   });
   report.hOverflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
 
+  /* the masthead is one line — name, search, filters, theme — and stays one
+     line when a filter is pressed, so the sticky bar cannot grow under the
+     pointer. The chip row scrolls sideways instead of wrapping. */
+  report.mastheadOneLine = await page.evaluate(async () => {
+    const parts = () => Array.from(document.querySelectorAll('.masthead__row > *, #chips'));
+    /* one line means every part's box overlaps every other's vertically */
+    const lines = () => {
+      const boxes = parts().map((e) => e.getBoundingClientRect());
+      return boxes.every((a) => boxes.every((b) => Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 0)) ? 1 : 2;
+    };
+    const row = document.getElementById('chips');
+    const idle = { height: document.querySelector('.masthead').offsetHeight, lines: lines() };
+    document.querySelector('.matrix__colbtn[data-facet="soft-shadow"]').click();
+    await new Promise((r) => setTimeout(r, 220));
+    const chip = document.querySelector('.chip[data-facet="soft-shadow"]');
+    const cr = row.getBoundingClientRect(), pr = chip.getBoundingClientRect();
+    const pressed = {
+      height: document.querySelector('.masthead').offsetHeight,
+      lines: lines(),
+      pressedChipInsideRow: pr.left >= cr.left - 1 && pr.right <= cr.right + 1
+    };
+    chip.click();
+    await new Promise((r) => setTimeout(r, 220));
+    return {
+      idle, pressed,
+      chipRowWrap: getComputedStyle(row).flexWrap,
+      chipRowScrolls: getComputedStyle(row).overflowX
+    };
+  });
+
   // --- classification layer: the atlas and the trait matrix ---
   // There are no categories any more. Every style is on the atlas, and the
   // matrix names the techniques. Both are generated from data/facets.js.

@@ -104,18 +104,22 @@ kbd {
   position: sticky; top: 0; z-index: 10;
   background: var(--bg);
   border-bottom: 1px solid var(--hair);
-  padding: 20px 0 14px;
+  padding: 16px 0;
 }
 
-.masthead__row { display: flex; gap: 20px; align-items: flex-start; justify-content: space-between; }
+/* one line: name, search, filters, theme — no second row, no extra margin.
+   Nothing here may wrap when a filter is pressed, or the sticky bar would
+   change height under the pointer: the chip row scrolls sideways instead. */
+.masthead__row { display: flex; flex-wrap: nowrap; align-items: center; gap: 16px; }
 
-.masthead__title { margin: 0; font-size: var(--t-31); font-weight: 600; letter-spacing: -0.02em; }
+.masthead__title { margin: 0; flex: none; font-size: var(--t-25); font-weight: 600; letter-spacing: -0.02em; }
 
-.masthead__sub { margin: 6px 0 0; max-width: 68ch; color: var(--muted); font-size: var(--t-14); }
+/* the theme toggle keeps its label on one line when the row is squeezed */
+.masthead .ghost { flex: none; white-space: nowrap; }
 
-.controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 16px; }
+.controls { display: flex; flex: 1 1 auto; flex-wrap: nowrap; gap: 10px; align-items: center; min-width: 0; }
 
-.search { position: relative; display: flex; align-items: center; gap: 8px; flex: 1 1 260px; max-width: 340px;
+.search { position: relative; display: flex; align-items: center; gap: 8px; flex: 0 1 260px; min-width: 140px;
   border: 1px solid var(--hair-strong); border-radius: 8px; background: var(--panel); padding: 0 10px; }
 .search .icon { color: var(--muted); flex: none; }
 .search input {
@@ -127,10 +131,13 @@ kbd {
 .search:focus-within { border-color: var(--ink-2); }
 .search input::-webkit-search-cancel-button { -webkit-appearance: none; }
 
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+/* the chips keep to one line whatever is pressed; the row scrolls rather than
+   growing the sticky bar a second line taller */
+.chips { display: flex; flex: 0 1 auto; flex-wrap: nowrap; gap: 6px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
 
 .chip {
-  display: inline-flex; align-items: center; gap: 7px;
+  display: inline-flex; align-items: center; gap: 7px; flex: none;
   border: 1px solid var(--hair-strong); border-radius: var(--r-chip);
   background: var(--panel); color: var(--ink-2);
   font: 500 var(--t-12)/1 var(--sans); padding: 7px 9px; cursor: pointer;
@@ -145,18 +152,17 @@ kbd {
 .chip[aria-pressed="true"] .chip__n { background: var(--panel); color: var(--ink); }
 
 
-/* scrolling past the top collapses the header to its controls, so the sticky
-   bar does not hold a third of a laptop viewport for the whole catalog */
-.masthead.is-tight { padding: 10px 0 10px; }
+/* scrolling past the top collapses the header, so the sticky bar does not hold
+   a third of a laptop viewport for the whole catalog */
+.masthead.is-tight { padding: 8px 0; }
 .masthead.is-tight .masthead__title { font-size: var(--t-20); }
-.masthead.is-tight .controls { margin-top: 10px; }
 .chip__x { margin-left: 1px; font-size: 13px; line-height: 1; opacity: .7; }
 
-/* the kind chips are the coarse filter, so they sit apart from the rest of the
-   row and read as a group of their own */
+/* the kind chips are the coarse filter, so they sit apart from the facet chips
+   that join them; the gallery chip is neither, and carries no extra margin */
 .chip--kind { background: var(--panel-2); }
 .chip--kind[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
-.chips .chip--kind + .chip:not(.chip--kind) { margin-left: 14px; }
+.chips .chip--kind + .chip[data-facet] { margin-left: 14px; }
 .chip[aria-pressed="true"] .chip__x { opacity: 1; }
 /* The count is not shown: each section head already carries the number that
    matters ("Every entry 4", "Trait matrix 4 x 22", "Atlas 4"), so a second tally
@@ -369,10 +375,13 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 @media (max-width: 640px) {
   .wrap { padding: 0 14px; }
   .grid { grid-template-columns: 1fr; gap: 14px; }
-  .masthead { padding-top: 14px; }
-  .masthead__title { font-size: var(--t-25); }
-  .masthead__row { flex-direction: column; }
-  .search { max-width: none; }
+  .masthead { padding-top: 12px; }
+  /* name and theme share the first line; search and chips take the second */
+  .masthead__row { flex-wrap: wrap; }
+  .masthead__title { font-size: var(--t-20); flex: 1 1 auto; }
+  .masthead .ghost { flex: none; order: 1; }
+  .controls { flex: 1 1 100%; order: 2; }
+  .search { max-width: none; flex: 1 1 200px; }
   .search input { font-size: 16px; }
   .entry { padding: 14px; }
   .modal { width: calc(100vw - 20px); padding: 16px; max-height: 90vh; }

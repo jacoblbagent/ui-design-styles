@@ -552,6 +552,14 @@
         "Real-world examples" + '<span class="chip__n">' + GALLERY.length + "</span></button>"
       : "";
     chips.innerHTML = kindChips + gallery + active + clear;
+    /* the chip row is one line and scrolls rather than wrapping, so a facet
+       pressed from the matrix must not land off the right edge unseen */
+    var pressed = chips.querySelector('.chip[aria-pressed="true"]');
+    if (pressed) {
+      var cr = chips.getBoundingClientRect(), pr = pressed.getBoundingClientRect();
+      if (pr.right > cr.right) chips.scrollLeft += pr.right - cr.right;
+      else if (pr.left < cr.left) chips.scrollLeft -= cr.left - pr.left;
+    }
   }
 
   function toggleFacet(id) {
@@ -874,22 +882,30 @@
     }, 900);
   });
 
-  /* the masthead is sticky and its height depends on how the facet chips wrap,
-     so publish it: anything scrolled to must clear the header, not hide under it */
+  /* the masthead is sticky, so its height is published: anything scrolled to
+     must clear the header, not hide under it. The header is one line now, so
+     its height is the same whatever is filtered — the published value is only
+     re-written when it actually changes. */
   var masthead = $(".masthead");
+  var mastheadH = 0;
   function setMastheadHeight() {
-    if (masthead) document.documentElement.style.setProperty("--masthead-h", masthead.offsetHeight + "px");
+    if (!masthead) return;
+    var h = masthead.offsetHeight;
+    if (h === mastheadH) return;
+    mastheadH = h;
+    document.documentElement.style.setProperty("--masthead-h", h + "px");
   }
   setMastheadHeight();
   window.addEventListener("load", setMastheadHeight);
-  /* past the first screen the header sheds its intro lines and title size; the
-     published height is refreshed so scroll targets still clear it */
+  /* past the first screen the header sheds its title size; the published height
+     is refreshed so scroll targets still clear it */
   var tight = false;
   window.addEventListener("scroll", function () {
     var should = window.scrollY > 80;
-    if (should === tight) return;
-    tight = should;
-    if (masthead) masthead.classList.toggle("is-tight", should);
+    if (should !== tight) {
+      tight = should;
+      if (masthead) masthead.classList.toggle("is-tight", should);
+    }
     setMastheadHeight();
   }, { passive: true });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(setMastheadHeight);
