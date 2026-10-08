@@ -541,12 +541,11 @@
      The vocabulary is the matrix: its columns carry the counts and are the
      filter controls. Repeating all 22 of them up here doubled the sticky
      header and said the same thing twice, so the chip row only carries what
-     the matrix cannot: All, the gallery, and whichever facets are switched on. */
+     the matrix cannot: the kinds, the gallery, and whichever facets are on. */
   function renderChips() {
     /* the coarse filter: what kind of thing is this, before which of its traits
-       it happens to declare */
-    var all = '<button class="chip chip--kind" type="button" data-kind="all" aria-pressed="' + (state.kind === "all") + '">' +
-      "Everything<span class=\"chip__n\">" + CATALOG.length + "</span></button>";
+       it happens to declare. There is no All chip — the kind chips toggle, so
+       clicking the pressed one is the way back to every kind at once. */
     var kindChips = KINDS.map(function (k) {
       var n = CATALOG.filter(function (e) { return kindOf(e.id) === k.id; }).length;
       return '<button class="chip chip--kind" type="button" data-kind="' + k.id + '" aria-pressed="' + (state.kind === k.id) + '" title="' + esc(k.note) + '">' +
@@ -566,7 +565,7 @@
       ? '<button class="chip" type="button" data-view="gallery" aria-pressed="' + (state.view === "gallery") + '">' +
         "Real-world examples" + '<span class="chip__n">' + GALLERY.length + "</span></button>"
       : "";
-    chips.innerHTML = all + kindChips + gallery + active + clear;
+    chips.innerHTML = kindChips + gallery + active + clear;
   }
 
   function toggleFacet(id) {
@@ -586,10 +585,13 @@
       toggleFacet(btn.getAttribute("data-facet"));
       state.view = "all";
     } else if (btn.hasAttribute("data-kind")) {
-      state.kind = btn.getAttribute("data-kind");
+      /* pressing the pressed kind is the way back to all of them */
+      var k = btn.getAttribute("data-kind");
+      state.kind = (state.kind === k) ? "all" : k;
       state.view = "all";
     } else {
-      state.view = btn.getAttribute("data-view");
+      var v = btn.getAttribute("data-view");
+      state.view = (state.view === v) ? "all" : v;
       if (state.view === "gallery") state.facets = [];
     }
     renderChips();

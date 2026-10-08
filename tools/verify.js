@@ -116,7 +116,12 @@ const OUT = path.join(__dirname, 'shots');
       badges: await page.$$eval('.entry .tag--kind', (bs) => [...new Set(bs.map((b) => b.textContent.trim()))]),
       line: await page.locator('#count-line').textContent()
     };
+    /* the chips toggle, so the probe unpresses before the next one */
+    await page.locator('.chip[data-kind="' + k + '"]').click();
+    await page.waitForTimeout(200);
   }
+  report.kindProbeResetsToAll = await page.locator('.chip[data-kind][aria-pressed="true"]').count();
+  report.kindProbeEntriesBack = await page.locator('.entry').count();
   report.kindFilter = kindProbe;
   // a kind composes with a trait, and one Clear control clears both
   await page.locator('.chip[data-kind="practice"]').click();
@@ -282,7 +287,7 @@ const OUT = path.join(__dirname, 'shots');
   report.matrixClear.afterClear = {
     buttons: await page.locator('[data-clear-filters]').count(),
     entries: await page.locator('.entry').count(),
-    pressedChips: await page.locator('.chip[aria-pressed="true"][data-facet], .chip[aria-pressed="true"][data-kind]:not([data-kind="all"])').count()
+    pressedChips: await page.locator('.chip[aria-pressed="true"][data-facet], .chip[aria-pressed="true"][data-kind]').count()
   };
   // it clears a kind and a trait together, in one click
   await page.locator('.chip[data-kind="pattern"]').click();
@@ -414,7 +419,8 @@ const OUT = path.join(__dirname, 'shots');
   report.galleryFilterStyles = await page.locator('.entry').count();
   report.galleryFilterSites = await page.locator('.site').count();
   report.galleryFilterLine = await page.locator('#count-line').textContent();
-  await page.locator('.chip[data-kind="all"]').click();
+  /* there is no All chip: pressing the gallery chip again is the way back */
+  await page.locator('.chip[data-view="gallery"]').click();
   await page.evaluate(() => window.scrollTo(0, 0));
 
   // --- theme toggle ---
@@ -437,7 +443,9 @@ const OUT = path.join(__dirname, 'shots');
   report.softShadowCleared = await page.locator('.entry').count();
   report.chipCleared = await page.locator('.chip[data-facet]').count();
   report.categoryChipsRetired = await page.locator('.chip[data-view="foundations"], .chip[data-view="surfaces"], .chip[data-view="expressive"], .chip[data-view="patterns"]').count();
-  await page.locator('.chip[data-kind="all"]').click();
+  /* the Everything chip is retired with them: nothing pressed means every kind */
+  report.everythingChipRetired = await page.locator('.chip[data-kind="all"]').count();
+  report.noKindPressed = await page.locator('.chip[data-kind][aria-pressed="true"]').count();
 
   // --- search ---
   await page.fill('#q', 'glass');
