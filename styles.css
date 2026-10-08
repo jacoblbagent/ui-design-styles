@@ -162,7 +162,15 @@ kbd {
 .chip--kind[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
 .chips .chip--kind + .chip:not(.chip--kind) { margin-left: 14px; }
 .chip[aria-pressed="true"] .chip__x { opacity: 1; }
+/* The count is not shown: each section head already carries the number that
+   matters ("Every entry 4", "Trait matrix 4 x 22", "Atlas 4"), so a second tally
+   in the masthead was chrome. It stays in the DOM as a live region so filtering
+   is still announced to assistive tech. */
 .count-line { margin: 0; color: var(--muted); font-size: var(--t-12); font-variant-numeric: tabular-nums; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
 
 /* ---------- sections ---------- */
 

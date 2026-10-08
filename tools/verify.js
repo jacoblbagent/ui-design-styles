@@ -34,6 +34,22 @@ const OUT = path.join(__dirname, 'shots');
     [...document.styleSheets].reduce((n, s) => { try { return n + s.cssRules.length; } catch (e) { return n; } }, 0));
   report.countLine = await page.locator('#count-line').textContent();
   report.pageHeight = await page.evaluate(() => document.body.scrollHeight);
+  // the masthead tally is not shown any more: the section heads carry the counts
+  report.mastheadCount = await page.evaluate(() => {
+    const el = document.getElementById('count-line');
+    const r = el.getBoundingClientRect();
+    return {
+      present: !!el,
+      text: el.textContent,
+      visuallyHidden: r.width <= 2 && r.height <= 2 && el.classList.contains('sr-only'),
+      stillALiveRegion: el.getAttribute('role') === 'status',
+      sectionCounts: {
+        atlas: document.querySelector('#sec-atlas .section__head .n').textContent,
+        matrix: document.querySelector('#sec-matrix .section__head .n').textContent,
+        entries: document.querySelector('#sec-all .section__head .n').textContent
+      }
+    };
+  });
   report.hOverflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
 
   // --- classification layer: the atlas and the trait matrix ---
