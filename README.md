@@ -4,6 +4,33 @@ Live: https://jacoblbagent.github.io/ui-design-styles/
 
 A single-page reference for UI/UX design styles. Every entry renders a **live specimen** built with the real technique the style is made of (no screenshots, no stock images), lists the **specific traits** that define it with the exact values (`backdrop-filter: blur(18px) saturate(160%)`, `box-shadow: 6px 6px 0 #000`, radii, type ramps), and carries a **copy button** for the traits, for the CSS and for a ready-to-paste **prompt**. It also notes what breaks the style, so the copy does not get misused.
 
+## What is a style, and what is not
+
+Not everything here is one. Reading the traits each entry declares answers it: an entry that specifies surfaces, type and colour is a look, an entry that specifies the shape of a screen is a pattern, and an entry that specifies how to work is a practice — and the practices mostly have no visual register at all. Accessibility-first declares three supporting traits and no signature trait, because it *is* a practice, not a look; Progressive disclosure's traits contain no CSS value at all.
+
+So every entry carries a **kind**, one per entry, and the chip row filters by it: **Everything 43 · Styles 30 · Patterns 7 · Practices 6**.
+
+- **Styles (30)** — a look: Skeuomorphism, Flat design, Material Design, Material 3, Swiss, Minimalism, Editorial, Brutalist web, Neumorphism, Claymorphism, Glassmorphism, Liquid glass, Aurora/mesh, Neo-brutalism, Maximalism, Memphis, Vaporwave, Cyberpunk HUD, Y2K/Frutiger Aero, Retro-futurism, Comic/pop art, Organic/hand-drawn, Kinetic typography, Luxury/premium, Playful chunky, Nordic, Terminal/CLI, Spatial/depth, Dark-first/OLED, Enterprise/B2B.
+- **Patterns (7)** — the shape of a screen or an interaction, which could be built in any register: Bento grid, Card-based UI, Data dashboard, Conversational UI, Gamified UI, Skeleton loading, Empty state.
+- **Practices (6)** — a discipline or policy that says how to work: Accessibility-first, Token-driven system UI, Progressive disclosure, Motion-led micro-interaction, Zero-UI/ambient, Agentic/adaptive UI.
+
+Kind and the trait columns do different jobs, which is why both exist. Kind answers *what kind of thing is this*, and it is exclusive because a thing is one kind of thing. The columns answer *what is it made of*, and they are non-exclusive because a thing is made of many things at once. Neither replaces the atlas: a pattern still has a placement, and a practice with an empty matrix row is telling you something true.
+
+Borderline calls, and why:
+
+| Entry | Kind | Reason |
+|---|---|---|
+| Terminal / CLI | style | A look built on the character grid; its traits are all visual values (monospace, reverse video, 16 colours). |
+| Dark-first / OLED | style | A surface policy, but it defines the look outright: true black, elevation by border, desaturated hue. |
+| Spatial / depth UI | style | A material and depth look, even though a platform drives it. |
+| Enterprise / B2B | style | A dense register for a use case; its traits are concrete values (28–36px rows, 4px radii, hairline dividers). |
+| Data dashboard | pattern | A screen type, despite carrying many visual values. |
+| Motion-led micro-interaction | practice | A craft discipline about how motion behaves; it fixes no look. |
+| Zero-UI / ambient | practice | An interaction policy that explicitly removes the screen. |
+| Progressive disclosure | practice | A usability principle, not a register. |
+| Token-driven system UI | practice | A design-system discipline. |
+| Agentic / adaptive UI | practice | A policy for how an assistant may act. |
+
 ## How it is organised
 
 There are no categories. Two styles sharing a trait almost never share a bucket, so a bucket hides exactly the relationship worth seeing — Glassmorphism, Liquid glass and Aurora mesh all work through blur while sitting in different families, and Neo-brutalism borrows from Brutalist web while being filed elsewhere. The page replaces the buckets with two views that make overlap visible:
@@ -33,7 +60,7 @@ data/foundations.js 9 style entries
 data/surfaces.js     6 style entries
 data/expressive.js   12 style entries
 data/patterns.js     16 style entries
-data/facets.js      the classification: 22 columns, and every style's two axis values + tags
+data/facets.js      the classification: the three kinds, the 22 columns, and every entry's kind + two axis values + tags
 data/gallery.js     46 real sites: name, link, style tags, observations, framing permission
 images/examples/     46 screenshots, captured from the live pages (720x450)
 tools/capture.js     headless capture of real sites -> tools/raw + capture-report.json
@@ -83,12 +110,12 @@ Append an object to one of the `data/*.js` files, then classify it in `data/face
 }
 
 // data/facets.js — the same pass that writes the traits
-"my-style": { v: 40, d: 60, t: { "soft-shadow": 2, round: 1, texture: 1 } },
+"my-style": { k: "style", v: 40, d: 60, t: { "soft-shadow": 2, round: 1, texture: 1 } },
 ```
 
-`v` is restraint (0) to loud (100), `d` is flat (0) to dimensional (100), and every tag in `t` must be a column id from the top of the same file — `2` for a trait the style is made of, `1` for one supporting it. The atlas, the matrix, the filters, the neighbours and the copyable summary all derive from that one line. The renderer injects `css` into one shared sheet and puts `html` inside `<div class="spec spec--my-style">`, so scoping the selectors under `.spec--<id>` keeps entries from leaking into each other. Entries are sorted by name at load.
+`k` is the kind — `style`, `pattern` or `practice`. `v` is restraint (0) to loud (100), `d` is flat (0) to dimensional (100), and every tag in `t` must be a column id from the top of the same file — `2` for a trait the style is made of, `1` for one supporting it. The atlas, the matrix, the filters, the neighbours and the copyable summary all derive from that one line. The renderer injects `css` into one shared sheet and puts `html` inside `<div class="spec spec--my-style">`, so scoping the selectors under `.spec--<id>` keeps entries from leaking into each other. Entries are sorted by name at load.
 
-The verify harness fails if a style has no facets, if a tag is not in the vocabulary, or if an axis value is out of range.
+The verify harness fails if an entry has no facets, no kind, a kind outside the vocabulary, a tag outside the vocabulary, or an axis value out of range.
 
 ## Design intent
 
@@ -102,7 +129,7 @@ NODE_PATH=$(dirname $(dirname $(readlink -f $(which npx))))/lib/node_modules nod
 NODE_PATH=… node tools/verify-modal.js
 ```
 
-The harness asserts: 43 entries and 43 non-empty specimens; 43 atlas points with no dot elements at all, every point within one percent of its authored values, no overlapping names, none outside the plot, and a leader line on every name that had to move; a 43 × 22 matrix whose mark counts match the declared data exactly, where every row has a neighbour, where the two repeated header rows are decorative (no buttons, hidden from assistive tech), and where the group boundaries are real 1px rules; the crosshair naming both its row and its column, clearing on pointer-leave and working from the keyboard, with the readout pinned inside the viewport while a deep mark is hovered; every style classified and every tag inside the vocabulary; facet filters narrowing the atlas, the matrix and the grid together, including a two-facet intersection and the clear path; the retired category chips being gone; the detail's placement, made-of traits, neighbour links and full facet list; 46 real-site cards with 46 loaded screenshots; zero dead style links from the gallery tags; 16 live-embed buttons against 30 framing refusals; an embed that actually loads a document; zero console/page errors; no horizontal overflow at 1440px or 390px; search result counts including the no-match state; clipboard contents for all three copy buttons; dark-mode toggle; and that reduced-motion still shows every entry.
+The harness asserts: 43 entries and 43 non-empty specimens; 43 atlas points with no dot elements at all, every point within one percent of its authored values, no overlapping names, none outside the plot, and a leader line on every name that had to move; a 43 × 22 matrix whose mark counts match the declared data exactly, where every row has a neighbour, where the two repeated header rows are decorative (no buttons, hidden from assistive tech), and where the group boundaries are real 1px rules; the crosshair naming both its row and its column, clearing on pointer-leave and working from the keyboard, with the readout pinned inside the viewport while a deep mark is hovered; every entry classified and every tag inside the vocabulary; every entry carrying exactly one kind, with the counts asserted (30 / 7 / 6) and all three kinds documented; the kind filter narrowing entries and matrix rows while only dimming atlas names, composing with a trait filter, and clearing together with it through one control; a practice's detail saying plainly that it holds no signature trait; facet filters narrowing the atlas, the matrix and the grid together, including a two-facet intersection and the clear path; the retired category chips being gone; the detail's placement, made-of traits, neighbour links and full facet list; 46 real-site cards with 46 loaded screenshots; zero dead style links from the gallery tags; 16 live-embed buttons against 30 framing refusals; an embed that actually loads a document; zero console/page errors; no horizontal overflow at 1440px or 390px; search result counts including the no-match state; clipboard contents for all three copy buttons; dark-mode toggle; and that reduced-motion still shows every entry.
 
 ## Deploy
 

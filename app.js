@@ -17,10 +17,14 @@
   var COL_OF = {};
   COLUMNS.forEach(function (c) { COL_OF[c.id] = c; });
 
+  var KINDS = FACETS.kinds || [];
+  var KIND_OF = {};
+  KINDS.forEach(function (k) { KIND_OF[k.id] = k; });
+
   var GALLERY = (window.GALLERY && window.GALLERY.sites) || [];
   var CAPTURED = (window.GALLERY && window.GALLERY.capturedAt) || "";
 
-  var state = { q: "", view: "all", facets: [], theme: "light" };
+  var state = { q: "", view: "all", kind: "all", facets: [], theme: "light" };
 
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
@@ -30,6 +34,9 @@
   var stripTags = function (s) { return String(s == null ? "" : s).replace(/<[^>]*>/g, ""); };
 
   function facetOf(id) { return FACETS.styles[id] || { v: 50, d: 50, t: {} }; }
+  function kindOf(id) { return facetOf(id).k || "style"; }
+  function kindLabel(id) { var k = KIND_OF[kindOf(id)]; return k ? k.one : kindOf(id); }
+  function kindNote(id) { var k = KIND_OF[kindOf(id)]; return k ? k.note : ""; }
   function levelOf(id, col) { var f = facetOf(id).t || {}; return f[col] || 0; }
   function signatureOf(id) {
     var t = facetOf(id).t || {}, out = [];
@@ -75,7 +82,8 @@
   var ICON_CLOSE = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
 
   function traitsText(e) {
-    var lines = ["## " + e.name + " (" + e.era + ")", "", e.blurb, "", "Traits:"];
+    var lines = ["## " + e.name + " (" + e.era + ")",
+      kindLabel(e.id) + " — " + kindNote(e.id), "", e.blurb, "", "Traits:"];
     e.traits.forEach(function (t) { lines.push("- " + stripTags(t)); });
     if (e.avoid && e.avoid.length) {
       lines.push("", "Watch out for:");
@@ -104,7 +112,7 @@
         '<p class="entry__meta">' + esc(e.era) + "</p>" +
       "</div>" +
       '<p class="entry__blurb">' + e.blurb + "</p>" +
-      (sig ? '<p class="entry__tags">' + sig + "</p>" : "") +
+      '<p class="entry__tags"><span class="tag tag--kind" title="' + esc(kindNote(e.id)) + '">' + esc(kindLabel(e.id)) + "</span>" + sig + "</p>" +
       '<div class="spec spec--' + e.id + '">' + e.html + "</div>" +
     "</article>";
   }
@@ -172,6 +180,8 @@
         '<button class="iconbtn" type="button" data-close aria-label="Close details">' + ICON_CLOSE + "</button>" +
       "</div>" +
       '<p class="modal__blurb">' + e.blurb + "</p>" +
+      '<p class="modal__kind"><span class="tag tag--kind">' + esc(kindLabel(e.id)) + "</span>" +
+        "<span>" + esc(kindNote(e.id)) + "</span></p>" +
       '<div class="spec spec--' + e.id + '">' + uniqueIds(e.html) + "</div>" +
       place + tags + related +
       '<div class="traits"><div class="blockhead"><h4>Traits</h4>' +
@@ -459,23 +469,28 @@
 
   function matches(e) {
     if (state.view === "gallery") return false;
+    if (state.kind !== "all" && kindOf(e.id) !== state.kind) return false;
     for (var i = 0; i < state.facets.length; i++) {
       if (!levelOf(e.id, state.facets[i])) return false;
     }
     if (!state.q) return true;
     var hay = [e.name, e.id, e.era, stripTags(e.origin), stripTags(e.blurb), stripTags(e.traits.join(" ")), e.prompt,
-      signatureOf(e.id).map(function (id) { return COL_OF[id] ? COL_OF[id].label + " " + COL_OF[id].note : id; }).join(" ")
+      signatureOf(e.id).map(function (id) { return COL_OF[id] ? COL_OF[id].label + " " + COL_OF[id].note : id; }).join(" "),
+      kindOf(e.id), kindLabel(e.id), kindNote(e.id)
     ].join(" ").toLowerCase();
     return state.q.split(/\s+/).every(function (term) { return hay.indexOf(term) !== -1; });
   }
 
   function filterNote(visible) {
-    if (!state.facets.length) return "";
-    var labels = state.facets.map(function (id) { return COL_OF[id] ? COL_OF[id].label : id; }).join(" + ");
+    if (!state.facets.length && state.kind === "all") return "";
+    var bits = [];
+    if (state.kind !== "all" && KIND_OF[state.kind]) bits.push(KIND_OF[state.kind].label);
+    if (state.facets.length) bits.push(state.facets.map(function (id) { return COL_OF[id] ? COL_OF[id].label : id; }).join(" + "));
+    var labels = bits.join(" + ");
     var listed = visible.slice(0, 8).map(function (e) { return esc(e.name); });
     var more = visible.length > listed.length ? " and " + (visible.length - listed.length) + " more" : "";
     return '<p class="filterline"><b>' + esc(labels) + "</b> — " +
-      (visible.length ? listed.join(", ") + more : "no style declares all of those at once") +
+      (visible.length ? listed.join(", ") + more : "nothing in the catalog is all of those at once") +
       ' <button class="ghost ghost--tiny" type="button" id="clear-facets">Clear</button></p>';
   }
 
@@ -506,8 +521,13 @@
       declutterAtlas();
       /* a facet filter dims the styles that fall outside it, so the
          neighbourhood of a filtered style stays visible */
-      if (state.facets.length || state.q) {
+      if (state.facets.length || state.q || state.kind !== "all") {
         $$(".atlas__pt", main).forEach(function (b) {
+          if (!isVisible(b.getAttribute("data-id"))) b.classList.add("is-dim");
+        });
+        /* the narrow layout lists the names instead of plotting them, so the
+           same dimming rule applies to that list */
+        $$(".atlas__legend button", main).forEach(function (b) {
           if (!isVisible(b.getAttribute("data-id"))) b.classList.add("is-dim");
         });
       }
@@ -526,10 +546,11 @@
   }
 
   function countText(nStyles, nSites) {
-    var filtering = state.q || state.view !== "all" || state.facets.length;
+    var filtering = state.q || state.view !== "all" || state.facets.length || state.kind !== "all";
     var bits = [];
-    bits.push(filtering ? "showing " + nStyles + " of " + CATALOG.length + " styles" : CATALOG.length + " styles");
+    bits.push(filtering ? "showing " + nStyles + " of " + CATALOG.length + " entries" : CATALOG.length + " entries");
     if (GALLERY.length) bits.push(filtering ? nSites + " of " + GALLERY.length + " real sites" : GALLERY.length + " real sites");
+    if (state.kind !== "all") bits.push(KIND_OF[state.kind] ? KIND_OF[state.kind].label : state.kind);
     if (state.facets.length) bits.push(state.facets.map(function (id) { return COL_OF[id] ? COL_OF[id].label : id; }).join(" + "));
     if (state.view === "gallery") bits.push("Real-world examples");
     return bits.join(" · ") + (state.q ? ' · matching "' + state.q + '"' : "");
@@ -541,8 +562,15 @@
      header and said the same thing twice, so the chip row only carries what
      the matrix cannot: All, the gallery, and whichever facets are switched on. */
   function renderChips() {
-    var all = '<button class="chip" type="button" data-view="all" aria-pressed="' + (state.view === "all") + '">' +
-      "All<span class=\"chip__n\">" + CATALOG.length + "</span></button>";
+    /* the coarse filter: what kind of thing is this, before which of its traits
+       it happens to declare */
+    var all = '<button class="chip chip--kind" type="button" data-kind="all" aria-pressed="' + (state.kind === "all") + '">' +
+      "Everything<span class=\"chip__n\">" + CATALOG.length + "</span></button>";
+    var kindChips = KINDS.map(function (k) {
+      var n = CATALOG.filter(function (e) { return kindOf(e.id) === k.id; }).length;
+      return '<button class="chip chip--kind" type="button" data-kind="' + k.id + '" aria-pressed="' + (state.kind === k.id) + '" title="' + esc(k.note) + '">' +
+        esc(k.label) + '<span class="chip__n">' + n + "</span></button>";
+    }).join("");
     var active = state.facets.map(function (id) {
       var c = COL_OF[id];
       var n = CATALOG.filter(function (e) { return levelOf(e.id, id); }).length;
@@ -550,14 +578,14 @@
         esc(c ? c.label : id) + '<span class="chip__n">' + n + "</span>" +
         '<span class="chip__x" aria-hidden="true">&times;</span></button>';
     }).join("");
-    var clear = state.facets.length > 1
+    var clear = (state.facets.length > 1 || (state.kind !== "all" && state.facets.length))
       ? '<button class="chip chip--clear" type="button" data-clear-facets>Clear all</button>'
       : "";
     var gallery = GALLERY.length
       ? '<button class="chip" type="button" data-view="gallery" aria-pressed="' + (state.view === "gallery") + '">' +
         "Real-world examples" + '<span class="chip__n">' + GALLERY.length + "</span></button>"
       : "";
-    chips.innerHTML = all + gallery + active + clear;
+    chips.innerHTML = all + kindChips + gallery + active + clear;
     var hint = $("#filter-hint");
     if (hint) hint.hidden = state.facets.length > 0 || state.view === "gallery";
   }
@@ -572,9 +600,14 @@
     var btn = ev.target.closest(".chip");
     if (!btn) return;
     if (btn.hasAttribute("data-clear-facets")) {
+      /* one control, and it clears both halves of the filter */
       state.facets = [];
+      state.kind = "all";
     } else if (btn.hasAttribute("data-facet")) {
       toggleFacet(btn.getAttribute("data-facet"));
+      state.view = "all";
+    } else if (btn.hasAttribute("data-kind")) {
+      state.kind = btn.getAttribute("data-kind");
       state.view = "all";
     } else {
       state.view = btn.getAttribute("data-view");
@@ -732,7 +765,15 @@
 
   main.addEventListener("click", function (ev) {
     var clearBtn = ev.target.closest("#clear-facets, [data-clear-facets]");
-    if (clearBtn) { state.facets = []; renderChips(); render(); return; }
+    if (clearBtn) {
+      /* the section line names the kind as well as the traits, so Clear clears
+         everything it just listed */
+      state.facets = [];
+      state.kind = "all";
+      renderChips();
+      render();
+      return;
+    }
 
     var emb = ev.target.closest("[data-embed]");
     if (emb) {

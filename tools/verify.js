@@ -53,6 +53,54 @@ const OUT = path.join(__dirname, 'shots');
         f.v >= 0 && f.v <= 100 && f.d >= 0 && f.d <= 100)
     };
   });
+  // --- kind: not everything here is a style ---
+  report.kinds = await page.evaluate(() => {
+    const F = window.FACETS, declared = F.styles, ids = F.kinds.map((k) => k.id);
+    const counts = {};
+    Object.values(declared).forEach((f) => { counts[f.k] = (counts[f.k] || 0) + 1; });
+    return {
+      vocabulary: ids,
+      counts,
+      everyEntryHasOneKind: Object.values(declared).every((f) => ids.indexOf(f.k) !== -1),
+      everyKindDocumented: F.kinds.every((k) => !!k.note && !!k.one && !!k.label),
+      total: Object.keys(declared).length
+    };
+  });
+  report.kindChips = await page.$$eval('.chip[data-kind]', (bs) => bs.map((b) => b.textContent.trim()));
+  report.kindBadgesOnCards = await page.locator('.entry .tag--kind').count();
+  const kindProbe = {};
+  for (const k of ['style', 'pattern', 'practice']) {
+    await page.locator('.chip[data-kind="' + k + '"]').click();
+    await page.waitForTimeout(220);
+    kindProbe[k] = {
+      entries: await page.locator('.entry').count(),
+      matrixRows: await page.locator('.matrix tbody tr:not(.matrix__repeat)').count(),
+      pointsKept: await page.locator('.atlas__pt').count(),
+      pointsDimmed: await page.locator('.atlas__pt.is-dim').count(),
+      badges: await page.$$eval('.entry .tag--kind', (bs) => [...new Set(bs.map((b) => b.textContent.trim()))]),
+      line: await page.locator('#count-line').textContent()
+    };
+  }
+  report.kindFilter = kindProbe;
+  // a kind composes with a trait, and one Clear control clears both
+  await page.locator('.chip[data-kind="practice"]').click();
+  await page.waitForTimeout(200);
+  await page.locator('.matrix__colbtn[data-facet="flat"]').click();
+  await page.waitForTimeout(220);
+  report.kindPlusTrait = { entries: await page.locator('.entry').count(), line: await page.locator('#count-line').textContent() };
+  await page.locator('.chip[data-clear-facets]').click();
+  await page.waitForTimeout(220);
+  report.clearResetsBoth = { entries: await page.locator('.entry').count(), pressedKind: await page.locator('.chip[data-kind="practice"][aria-pressed="true"]').count() };
+  // the detail states the kind, and a practice says plainly that it is not a look
+  await page.locator('.entry#accessibility-first').click();
+  await page.waitForTimeout(260);
+  report.practiceDetail = {
+    kind: await page.locator('#detail .modal__kind').textContent(),
+    madeOf: await page.locator('#detail .traitlist:not(.traitlist--all)').textContent()
+  };
+  await page.locator('#detail [data-close]').click();
+  await page.waitForTimeout(200);
+
   report.atlasPoints = await page.locator('.atlas__pt').count();
   report.atlasNamesOnly = await page.evaluate(() => ({
     labels: document.querySelectorAll('.atlas__label').length,
@@ -268,7 +316,7 @@ const OUT = path.join(__dirname, 'shots');
   report.galleryFilterStyles = await page.locator('.entry').count();
   report.galleryFilterSites = await page.locator('.site').count();
   report.galleryFilterLine = await page.locator('#count-line').textContent();
-  await page.locator('.chip[data-view="all"]').click();
+  await page.locator('.chip[data-kind="all"]').click();
   await page.evaluate(() => window.scrollTo(0, 0));
 
   // --- theme toggle ---
@@ -291,7 +339,7 @@ const OUT = path.join(__dirname, 'shots');
   report.softShadowCleared = await page.locator('.entry').count();
   report.chipCleared = await page.locator('.chip[data-facet]').count();
   report.categoryChipsRetired = await page.locator('.chip[data-view="foundations"], .chip[data-view="surfaces"], .chip[data-view="expressive"], .chip[data-view="patterns"]').count();
-  await page.locator('.chip[data-view="all"]').click();
+  await page.locator('.chip[data-kind="all"]').click();
 
   // --- search ---
   await page.fill('#q', 'glass');

@@ -155,6 +155,12 @@ kbd {
 .masthead.is-tight .controls { margin-top: 10px; }
 .masthead.is-tight .statusline { margin-top: 8px; }
 .chip__x { margin-left: 1px; font-size: 13px; line-height: 1; opacity: .7; }
+
+/* the kind chips are the coarse filter, so they sit apart from the rest of the
+   row and read as a group of their own */
+.chip--kind { background: var(--panel-2); }
+.chip--kind[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+.chips .chip--kind + .chip:not(.chip--kind) { margin-left: 14px; }
 .chip[aria-pressed="true"] .chip__x { opacity: 1; }
 .count-line { margin: 0; color: var(--muted); font-size: var(--t-12); font-variant-numeric: tabular-nums; }
 
@@ -592,6 +598,10 @@ table.matrix tbody tr:last-child th, table.matrix tbody tr:last-child td { borde
 .tag--sig { border-color: var(--hair-strong); color: var(--ink-2); }
 button.tag { cursor: pointer; touch-action: manipulation; }
 button.tag:hover { color: var(--accent); border-color: var(--accent); }
+/* what kind of thing this is, versus what it is made of */
+.tag--kind { border-color: var(--accent); color: var(--accent); background: transparent; }
+
+.modal__kind { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin: 0; color: var(--muted); font-size: 11.5px; }
 
 .ghost--tiny { padding: 5px 8px; font-size: 11px; }
 
@@ -652,6 +662,7 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
   font: 400 var(--t-12)/1.35 var(--sans); color: var(--ink-2);
 }
 .atlas__legend button:hover { color: var(--accent); }
+.atlas__legend button.is-dim { opacity: .32; }
 .atlas__legend button:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
 .atlas__lgval { flex: none; color: var(--muted); font-variant-numeric: tabular-nums; }
 
