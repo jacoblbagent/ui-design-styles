@@ -658,6 +658,17 @@
     try { history.replaceState(null, "", "#" + e.id); } catch (err) { location.hash = e.id; }
   }
 
+  /* The hash is only there so an open entry can be linked to. Once the dialog
+     is dismissed the address should go back to being the page, not a style you
+     are no longer looking at. replaceState keeps it out of the history, and it
+     does not fire hashchange, so nothing reopens. */
+  function clearHash() {
+    var id = (location.hash || "").replace(/^#/, "");
+    if (!id || !getEntry(id)) return;
+    try { history.replaceState(null, "", location.pathname + location.search); }
+    catch (err) { location.hash = ""; }
+  }
+
   function openDetail(id) {
     var e = getEntry(id);
     if (!e || !modal) return;
@@ -706,6 +717,7 @@
     });
     modal.addEventListener("close", function () {
       modal.innerHTML = "";
+      clearHash();
       if (lastFocus && lastFocus.focus) lastFocus.focus();
       lastFocus = null;
     });

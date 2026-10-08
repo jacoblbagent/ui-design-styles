@@ -23,10 +23,13 @@ const BASE = process.env.BASE_URL || 'http://localhost:8791/';
   out.darkModalBg = await p1.evaluate(() => getComputedStyle(document.querySelector('#detail')).backgroundColor);
   out.bodyLocked = await p1.evaluate(() => getComputedStyle(document.body).overflow + '/' + (document.body.scrollHeight > window.innerHeight));
 
+  out.hashWhileOpen = await p1.evaluate(() => location.hash);
   // backdrop click closes
   await p1.mouse.click(40, 40);
   await p1.waitForTimeout(250);
   out.closedByBackdropClick = await p1.evaluate(() => !document.querySelector('#detail[open]'));
+  out.hashAfterBackdrop = await p1.evaluate(() => location.hash);
+  out.urlAfterBackdrop = await p1.evaluate(() => location.pathname + location.search + location.hash);
   out.focusRestored = await p1.evaluate(() => {
     const a = document.activeElement;
     return a ? a.tagName + (a.id ? '#' + a.id : '') : null;
@@ -38,6 +41,7 @@ const BASE = process.env.BASE_URL || 'http://localhost:8791/';
   await p1.keyboard.press('Escape');
   await p1.waitForTimeout(250);
   out.closedByEsc = await p1.evaluate(() => !document.querySelector('#detail[open]'));
+  out.hashAfterEsc = await p1.evaluate(() => location.hash);
 
   // click anywhere on the card body opens it
   await p1.locator('.entry#flat-design .entry__blurb').click();
@@ -58,6 +62,30 @@ const BASE = process.env.BASE_URL || 'http://localhost:8791/';
   await p1.keyboard.press('Escape');
   await p1.waitForTimeout(200);
   out.hashDoesNotReopen = await p1.evaluate(() => !document.querySelector('#detail[open]'));
+  out.hashAfterDeepLinkClose = await p1.evaluate(() => location.hash);
+  out.pathKeptAfterDeepLinkClose = await p1.evaluate(() => location.pathname);
+
+  // the close button clears it too, and the asset path survives
+  await p1.locator('.entry#neo-brutalism').click();
+  await p1.waitForTimeout(250);
+  out.hashOnReopen = await p1.evaluate(() => location.hash);
+  await p1.locator('#detail [data-close]').click();
+  await p1.waitForTimeout(250);
+  out.hashAfterCloseButton = await p1.evaluate(() => location.hash);
+
+  // a gallery tag link opens an entry, and its own atlas link closes and jumps
+  await p1.goto(BASE + '#material-2', { waitUntil: 'networkidle' });
+  await p1.waitForTimeout(300);
+  await p1.locator('#detail [data-scroll]').click();
+  await p1.waitForTimeout(400);
+  out.scrollLinkClosed = await p1.evaluate(() => !document.querySelector('#detail[open]'));
+  out.scrollLinkHash = await p1.evaluate(() => location.hash);
+  out.scrollLinkAtAtlas = await p1.evaluate(() => {
+    const s = document.getElementById('sec-atlas').getBoundingClientRect();
+    const mh = document.querySelector('.masthead').offsetHeight;
+    /* the section lands just under the sticky header, not under the top edge */
+    return { top: Math.round(s.top), masthead: mh, landedClearOfHeader: s.top >= -4 && s.top <= mh + 60 };
+  });
 
   // mobile
   const c2 = await b.newContext({ viewport: { width: 390, height: 780 } });
