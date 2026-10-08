@@ -433,55 +433,41 @@ body { scrollbar-color: var(--hair-strong) transparent; }
   writing-mode: vertical-rl; transform: rotate(180deg); padding: 0 0 0 2px;
 }
 
-.atlas__pt {
-  position: absolute; width: 11px; height: 11px;
-  /* an invisible 11px hit target sitting exactly on the style's two values:
-     the name is the mark you read, this is what you click */
-  margin: 0 0 -5.5px -5.5px; overflow: visible;
-  background: none; border: 0; padding: 0; cursor: pointer;
-  font: 400 11px/1 var(--sans); color: var(--ink-2);
-  touch-action: manipulation; transition: opacity 140ms var(--ease);
+/* The name is the only mark on the plot: no dot, no wrapper, no invisible hit
+   target. It is positioned so its own box lands on the style's two values, and
+   where it cannot sit exactly there a hairline runs back to the spot. */
+.atlas__name {
+  position: absolute; margin: 0; padding: 2px 4px;
+  border: 1px solid transparent; border-radius: 3px;
+  background: var(--stage); color: var(--ink-2);
+  font: 400 11px/1 var(--sans); white-space: nowrap;
+  cursor: pointer; touch-action: manipulation;
+  transition: opacity 140ms var(--ease);
 }
-/* the name carries the position. It starts centred on its own values and is
-   only moved to stop two names touching. */
-.atlas__label {
-  position: absolute; top: 50%;
-  transform: translateY(calc(-50% + var(--lnudge, 0px)));
-  white-space: nowrap; background: var(--stage); border-radius: 3px; padding: 2px 4px;
-  border: 1px solid transparent;
-}
-.atlas__pt[data-side="center"] .atlas__label {
-  left: 50%; transform: translateX(-50%) translateY(calc(-50% + var(--lnudge, 0px)));
-}
-.atlas__pt[data-side="right"] .atlas__label { left: 10px; }
-.atlas__pt[data-side="left"] .atlas__label { left: auto; right: 10px; }
+/* centred on its values, or standing 8px off them to one side */
+.atlas__name[data-side="center"] { transform: translate(-50%, calc(50% + var(--lnudge, 0px))); }
+.atlas__name[data-side="right"] { transform: translate(8px, calc(50% + var(--lnudge, 0px))); }
+.atlas__name[data-side="left"] { transform: translate(calc(-100% - 8px), calc(50% + var(--lnudge, 0px))); }
 
-/* where a name sits beside its value rather than on it, a short hairline
-   bridges the gap */
-.atlas__label::before {
-  content: ""; position: absolute; top: 50%; width: 10px; height: 1px;
-  background: var(--hair-strong); opacity: .4; pointer-events: none;
-}
-.atlas__pt[data-side="right"] .atlas__label::before { left: -10px; }
-.atlas__pt[data-side="left"] .atlas__label::before { right: -10px; }
-.atlas__pt[data-side="center"] .atlas__label::before { display: none; }
+/* the hairline back to the values: a run along the depth axis, plus the stub
+   across where the name stands to one side */
+.atlas__lead { position: absolute; pointer-events: none; opacity: .45; height: 0; }
+.atlas__name:not(.has-lead) .atlas__lead { display: none; }
+.atlas__name[data-side="center"] .atlas__lead { left: 50%; width: 0; border-left: 1px solid var(--hair-strong); }
+.atlas__name[data-side="center"][data-dir="up"] .atlas__lead { top: 100%; height: var(--lead, 0px); }
+.atlas__name[data-side="center"][data-dir="down"] .atlas__lead { bottom: 100%; height: var(--lead, 0px); }
+.atlas__name[data-side="right"] .atlas__lead { left: -8px; width: 8px; border-left: 1px solid var(--hair-strong); }
+.atlas__name[data-side="right"][data-dir="up"] .atlas__lead { top: 50%; height: var(--lead, 0px); border-top: 1px solid var(--hair-strong); }
+.atlas__name[data-side="right"][data-dir="down"] .atlas__lead { bottom: 50%; height: var(--lead, 0px); border-bottom: 1px solid var(--hair-strong); }
+.atlas__name[data-side="left"] .atlas__lead { right: -8px; width: 8px; border-right: 1px solid var(--hair-strong); }
+.atlas__name[data-side="left"][data-dir="up"] .atlas__lead { top: 50%; height: var(--lead, 0px); border-top: 1px solid var(--hair-strong); }
+.atlas__name[data-side="left"][data-dir="down"] .atlas__lead { bottom: 50%; height: var(--lead, 0px); border-bottom: 1px solid var(--hair-strong); }
 
-/* and where a name had to travel along the depth axis, a hairline runs from the
-   exact value up or down to the name's own row */
-.atlas__stem { position: absolute; width: 0; height: 0; pointer-events: none; opacity: .4; }
-.atlas__pt:not(.has-stem) .atlas__stem { display: none; }
-.atlas__pt[data-side="left"] .atlas__stem { right: 5.5px; border-right: 1px solid var(--hair-strong); }
-.atlas__pt:not([data-side="left"]) .atlas__stem { left: 5.5px; border-left: 1px solid var(--hair-strong); }
-.atlas__pt[data-dir="down"] .atlas__stem { top: 5.5px; height: var(--labs, 0px); }
-.atlas__pt[data-dir="up"] .atlas__stem { bottom: 5.5px; height: var(--labs, 0px); }
-
-.atlas__pt:hover { z-index: 2; }
-.atlas__pt:hover .atlas__label, .atlas__pt:focus-visible .atlas__label { border-color: var(--accent); color: var(--ink); }
-.atlas__pt:hover .atlas__stem, .atlas__pt:focus-visible .atlas__stem { opacity: 1; }
-.atlas__pt:focus-visible { outline: none; }
-.atlas__pt:focus-visible .atlas__label { outline: 2px solid var(--focus); outline-offset: 1px; }
-.atlas__pt.is-dim { opacity: .24; }
-.atlas__pt.is-dim:hover { opacity: 1; }
+.atlas__name:hover { z-index: 2; border-color: var(--accent); color: var(--ink); }
+.atlas__name:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.atlas__name:hover .atlas__lead, .atlas__name:focus-visible .atlas__lead { opacity: 1; }
+.atlas__name.is-dim { opacity: .24; }
+.atlas__name.is-dim:hover { opacity: 1; }
 
 /* the five technique groups are the coarse landmarks: a mark sits in one of
    them, and the boundary is where a group starts */
@@ -670,6 +656,7 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
 
 /* The legend under the plot carries the names when the plane cannot. */
 .atlas__legend { grid-column: 1 / -1; margin-top: 12px; border-top: 1px solid var(--hair); padding-top: 10px; }
+.only-narrow { display: none; }
 .atlas__lghead { display: flex; justify-content: space-between; gap: 10px; margin: 0 0 4px; font: 500 10px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .atlas__legend ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0 18px; }
 .atlas__legend button {
@@ -690,22 +677,14 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
 @media (max-width: 640px) {
   .atlas { grid-template-columns: 1fr; padding: 14px 14px 12px; }
   .atlas__axis--y { display: none; }
-  /* 43 labels cannot sit side by side in one narrow column: the labels come
-     off the plane and the legend below carries the names and values instead */
-  .atlas__plot { grid-column: 1; height: 620px; }
-  /* a label that had to move gets a leader line back to its dot: vertical to the
-   label's own row, then a stub across to the text */
-.atlas__stem { position: absolute; width: 6px; height: 0; pointer-events: none; opacity: .5; }
-.atlas__pt:not(.has-stem) .atlas__stem { display: none; }
-.atlas__pt[data-side="right"] .atlas__stem { left: 5.5px; border-left: 1px solid var(--hair-strong); }
-.atlas__pt[data-side="left"] .atlas__stem { right: 5.5px; border-right: 1px solid var(--hair-strong); }
-.atlas__pt[data-dir="down"] .atlas__stem { top: 5.5px; height: var(--labs, 0px); border-bottom: 1px solid var(--hair-strong); }
-.atlas__pt[data-dir="up"] .atlas__stem { bottom: 5.5px; height: var(--labs, 0px); border-top: 1px solid var(--hair-strong); }
-.atlas__pt:hover .atlas__stem, .atlas__pt:focus-visible .atlas__stem { opacity: 1; }
-
-.atlas__label { display: none; }
+  /* One narrow column cannot carry 43 names on the plane, and there are no dots
+     to fall back on any more, so the plane goes and the list below IS the atlas
+     on a phone: the same names, both values, in axis order. */
+  .atlas__plot, .atlas__axis--x, .atlas__axis--y { display: none; }
+  .atlas__space { inset: 8px; }
   .atlas__space { inset: 8px; }
   .atlas__legend ul { grid-template-columns: 1fr; }
+  .only-narrow { display: inline; }
   .matrix__scroll { margin-top: 10px; }
   /* On a phone a bottom-pinned bar sits over the column headers and eats the
      taps meant for them, so it stops being sticky and moves above the table
@@ -727,5 +706,5 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .atlas__pt { transition: none; }
+  .atlas__name { transition: none; }
 }

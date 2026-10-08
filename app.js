@@ -221,11 +221,11 @@
     var dots = CATALOG.map(function (e, i) {
       var f = facetOf(e.id);
       var p = axisPos(i, f.v, f.d);
-      return '<button class="atlas__pt" type="button" data-id="' + e.id + '" data-side="' + p.side + '"' +
+      return '<button class="atlas__name" type="button" data-id="' + e.id + '" data-side="' + p.side + '"' +
+          ' data-x="' + p.x.toFixed(2) + '" data-y="' + p.y.toFixed(2) + '"' +
           ' style="left:' + p.x.toFixed(2) + '%;bottom:' + p.y.toFixed(2) + '%"' +
           ' title="' + esc(e.name) + " — " + esc(e.era) + " · loud " + f.v + "/100 · dimensional " + f.d + '/100">' +
-          '<span class="atlas__stem" aria-hidden="true"></span>' +
-          '<span class="atlas__label">' + esc(e.name) + "</span>" +
+          '<span class="atlas__lead" aria-hidden="true"></span>' + esc(e.name) +
         "</button>";
     }).join("");
 
@@ -233,7 +233,8 @@
       '<div class="section__head"><h2>Atlas</h2><span class="n">' + items.length + '</span></div>' +
       '<p class="section__note">Names are the marks: each style sits at its own two values — left to right is restraint to loud, bottom to top is flat to dimensional. ' +
         "A name is only moved to stop two of them touching, and anything that moves keeps a hairline back to the exact spot. Values are authored per entry in <code>data/facets.js</code>, read from the traits each entry declares. " +
-        "A filter dims the styles that fall outside it rather than removing them, so you can see what a trait sits next to. Click a name for its full entry.</p>" +
+        "A filter dims the styles that fall outside it rather than removing them, so you can see what a trait sits next to. Click a name for its full entry. " +
+        '<span class="only-narrow">On a screen this narrow the plane gives way to the list below: the same names with both values, in axis order.</span></p>' +
       '<div class="atlas">' +
         '<div class="atlas__axis atlas__axis--y" aria-hidden="true"><span>Dimensional</span><span>Flat</span></div>' +
         '<div class="atlas__plot">' +
@@ -300,15 +301,13 @@
              Math.max(0, pr.left - box.left) + Math.max(0, box.right - pr.right);
     }
 
-    $$(".atlas__pt", space).forEach(function (pt) {
-      var label = $(".atlas__label", pt);
-      if (!label) return;
-      var best = { cost: Infinity, side: pt.getAttribute("data-side"), off: 0 };
+    $$(".atlas__name", space).forEach(function (name) {
+      var best = { cost: Infinity, side: name.getAttribute("data-side"), off: 0 };
       ["center", "right", "left"].forEach(function (side) {
-        pt.setAttribute("data-side", side);
+        name.setAttribute("data-side", side);
         for (var i = 0; i < offsets.length; i++) {
-          label.style.setProperty("--lnudge", offsets[i] + "px");
-          var box = label.getBoundingClientRect();
+          name.style.setProperty("--lnudge", offsets[i] + "px");
+          var box = name.getBoundingClientRect();
           var out = overflow(box);
           /* Two names touching is the failure this pass exists to prevent, so a
              collision costs far more than travelling further to avoid one: a
@@ -319,15 +318,18 @@
           if (cost < 24) return; /* clear, and within a label's own height: take it */
         }
       });
-      pt.setAttribute("data-side", best.side);
-      label.style.setProperty("--lnudge", best.off + "px");
-      /* a label that had to move gets a leader line, so the dot it belongs to
-         is never in doubt */
-      var lab = Math.abs(best.off);
-      pt.setAttribute("data-dir", best.off < 0 ? "up" : "down");
-      pt.style.setProperty("--labs", lab + "px");
-      pt.classList.toggle("has-stem", lab >= 12);
-      placed.push(label.getBoundingClientRect());
+      name.setAttribute("data-side", best.side);
+      name.style.setProperty("--lnudge", best.off + "px");
+      /* The name is the only thing drawn, so wherever it is not sitting on its
+         own values a hairline runs back to the exact spot. A name centred on
+         its values needs no line; one placed beside its values always needs the
+         short stub across, even when it did not move vertically. */
+      name.setAttribute("data-dir", best.off < 0 ? "up" : "down");
+      var half = name.getBoundingClientRect().height / 2;
+      var run = best.side === "center" ? Math.abs(best.off) - half - 1 : Math.abs(best.off);
+      name.style.setProperty("--lead", Math.max(0, run) + "px");
+      name.classList.toggle("has-lead", best.side !== "center" || run >= 2);
+      placed.push(name.getBoundingClientRect());
     });
   }
 
@@ -533,7 +535,7 @@
       /* a facet filter dims the styles that fall outside it, so the
          neighbourhood of a filtered style stays visible */
       if (state.facets.length || state.q || state.kind !== "all") {
-        $$(".atlas__pt", main).forEach(function (b) {
+        $$(".atlas__name", main).forEach(function (b) {
           if (!isVisible(b.getAttribute("data-id"))) b.classList.add("is-dim");
         });
         /* the narrow layout lists the names instead of plotting them, so the
@@ -814,15 +816,15 @@
     if (btn) { runCopy(btn); return; }
 
     /* a point on the atlas, or a card in the grid, opens the full detail */
-    var target = ev.target.closest(".atlas__pt, .entry, .atlas__legend button");
+    var target = ev.target.closest(".atlas__name, .entry, .atlas__legend button");
     if (target && !ev.target.closest("a")) openDetail(target.getAttribute("data-id"));
   });
 
   /* keyboard parity for the atlas points and the cards */
   main.addEventListener("keydown", function (ev) {
     if (ev.key !== "Enter" && ev.key !== " ") return;
-    var el = ev.target.closest(".atlas__pt, .entry, .atlas__legend button");
-    if (!el || ev.target.closest("a, button:not(.atlas__pt), input, select, textarea")) return;
+    var el = ev.target.closest(".atlas__name, .entry, .atlas__legend button");
+    if (!el || ev.target.closest("a, button:not(.atlas__name), input, select, textarea")) return;
     ev.preventDefault();
     openDetail(el.getAttribute("data-id"));
   });

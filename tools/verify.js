@@ -91,8 +91,8 @@ const OUT = path.join(__dirname, 'shots');
     kindProbe[k] = {
       entries: await page.locator('.entry').count(),
       matrixRows: await page.locator('.matrix tbody tr:not(.matrix__repeat)').count(),
-      pointsKept: await page.locator('.atlas__pt').count(),
-      pointsDimmed: await page.locator('.atlas__pt.is-dim').count(),
+      pointsKept: await page.locator('.atlas__name').count(),
+      pointsDimmed: await page.locator('.atlas__name.is-dim').count(),
       badges: await page.$$eval('.entry .tag--kind', (bs) => [...new Set(bs.map((b) => b.textContent.trim()))]),
       line: await page.locator('#count-line').textContent()
     };
@@ -117,30 +117,47 @@ const OUT = path.join(__dirname, 'shots');
   await page.locator('#detail [data-close]').click();
   await page.waitForTimeout(200);
 
-  report.atlasPoints = await page.locator('.atlas__pt').count();
+  report.atlasPoints = await page.locator('.atlas__name').count();
   report.atlasNamesOnly = await page.evaluate(() => ({
-    labels: document.querySelectorAll('.atlas__label').length,
-    dotElements: document.querySelectorAll('.atlas__dot').length
+    names: document.querySelectorAll('.atlas__name').length,
+    /* every wrapper the atlas used to have is gone: the name is the mark and
+       the name is the control */
+    wrapperElements: ['.atlas__pt', '.atlas__label', '.atlas__dot', '.atlas__stem']
+      .map((sel) => document.querySelectorAll(sel).length).reduce((a, b) => a + b, 0),
+    everyNameIsAButton: [...document.querySelectorAll('.atlas__name')].every((n) => n.tagName === 'BUTTON')
   }));
   // the point (an invisible hit target under the name) must sit where its two
   // authored values put it; where a name had to travel, it needs its leader line
   report.atlasNamePlacement = await page.evaluate(() => {
     const space = document.querySelector('.atlas__space').getBoundingClientRect();
-    const away = [], unled = [];
-    [...document.querySelectorAll('.atlas__pt')].forEach((p) => {
-      const box = p.getBoundingClientRect();
-      const label = p.querySelector('.atlas__label').getBoundingClientRect();
-      const f = window.FACETS.styles[p.getAttribute('data-id')] || {};
-      const x = ((box.left + box.right) / 2 - space.left) / space.width * 100;
-      const y = (space.bottom - (box.top + box.bottom) / 2) / space.height * 100;
-      if (Math.abs(x - f.v) > 1.05 || Math.abs(y - f.d) > 1.05) away.push({ id: p.getAttribute('data-id'), dx: +(x - f.v).toFixed(2), dy: +(y - f.d).toFixed(2) });
-      const travel = Math.abs((label.top + label.bottom) / 2 - (box.top + box.bottom) / 2);
-      if (travel > 12 && p.querySelector('.atlas__stem').getBoundingClientRect().height < 10) unled.push(p.getAttribute('data-id'));
+    const anchorMisses = [], unled = [];
+    [...document.querySelectorAll('.atlas__name')].forEach((n) => {
+      const x = space.left + (parseFloat(n.dataset.x) / 100) * space.width;
+      const y = space.bottom - (parseFloat(n.dataset.y) / 100) * space.height;
+      const box = n.getBoundingClientRect();
+      const cx = (box.left + box.right) / 2, cy = (box.top + box.bottom) / 2;
+      let ax, ay;
+      if (n.classList.contains('has-lead')) {
+        const l = n.querySelector('.atlas__lead').getBoundingClientRect();
+        const corners = [[l.left, l.top], [l.right, l.top], [l.left, l.bottom], [l.right, l.bottom]];
+        corners.sort((m, o) => Math.hypot(o[0] - cx, o[1] - cy) - Math.hypot(m[0] - cx, m[1] - cy));
+        ax = corners[0][0]; ay = corners[0][1];
+      } else if (n.dataset.side === 'center') {
+        ax = cx; ay = cy;
+      } else {
+        ax = n.dataset.side === 'right' ? box.left - 8 : box.right + 8;
+        ay = cy;
+      }
+      const dx = Math.abs(ax - x), dy = Math.abs(ay - y);
+      if (dx > 3 || dy > 3) anchorMisses.push({ id: n.dataset.id, side: n.dataset.side, dx: +dx.toFixed(1), dy: +dy.toFixed(1) });
+      /* a name that does not sit on its own values must carry the line back */
+      if (!n.classList.contains('has-lead') && (Math.abs(dx) > 1.5 || Math.abs(dy) > 1.5)) unled.push(n.dataset.id);
     });
-    return { misplacedPoints: away, movedNamesWithoutLeader: unled };
+    return { anchorMisses, movedNamesWithoutLeader: unled };
   });
+
   report.atlasLabelOverlaps = await page.evaluate(() => {
-    const L = [...document.querySelectorAll('.atlas__label')].map((l) => ({ id: l.parentElement.getAttribute('data-id'), r: l.getBoundingClientRect() }));
+    const L = [...document.querySelectorAll('.atlas__name')].map((l) => ({ id: l.getAttribute('data-id'), r: l.getBoundingClientRect() }));
     const out = [];
     for (let i = 0; i < L.length; i++) for (let j = i + 1; j < L.length; j++) {
       const a = L[i].r, c = L[j].r;
@@ -150,9 +167,9 @@ const OUT = path.join(__dirname, 'shots');
   });
   report.atlasLabelsOutside = await page.evaluate(() => {
     const space = document.querySelector('.atlas__space').getBoundingClientRect();
-    return [...document.querySelectorAll('.atlas__label')]
+    return [...document.querySelectorAll('.atlas__name')]
       .filter((l) => { const q = l.getBoundingClientRect(); return q.left < space.left - 1 || q.right > space.right + 1 || q.top < space.top - 1 || q.bottom > space.bottom + 1; })
-      .map((l) => l.parentElement.getAttribute('data-id'));
+      .map((l) => l.getAttribute('data-id'));
   });
   report.matrixRows = await page.locator('.matrix tbody tr').count();
   report.matrixStyleRows = await page.locator('.matrix tbody tr:not(.matrix__repeat)').count();
@@ -255,18 +272,19 @@ const OUT = path.join(__dirname, 'shots');
   await page.waitForTimeout(240);
   report.matrixClear.afterBothCleared = { entries: await page.locator('.entry').count(), line: await page.locator('#count-line').textContent() };
 
-  report.atlasStems = await page.evaluate(() => {
-    const moved = [...document.querySelectorAll('.atlas__label')].filter((l) => Math.abs(parseFloat(l.style.getPropertyValue('--lnudge'))) >= 12);
-    const stems = [...document.querySelectorAll('.atlas__pt.has-stem')];
-    const nudges = [...document.querySelectorAll('.atlas__label')].map((l) => Math.abs(parseFloat(l.style.getPropertyValue('--lnudge')) || 0)).sort((a, b) => a - b);
+  report.atlasLeads = await page.evaluate(() => {
+    const names = [...document.querySelectorAll('.atlas__name')];
+    const leads = names.filter((n) => n.classList.contains('has-lead'));
+    const nudges = names.map((n) => Math.abs(parseFloat(n.style.getPropertyValue('--lnudge')) || 0)).sort((a, b) => a - b);
     return {
-      movedNames: moved.length,
-      stems: stems.length,
-      namesOnTheirValue: nudges.filter((n) => n < 12).length,
+      namesOnTheirValue: nudges.filter((v) => v < 12).length,
       medianNudge: nudges[Math.floor(nudges.length / 2)],
-      sides: [...document.querySelectorAll('.atlas__pt')].reduce((a, p) => (a[p.getAttribute('data-side')] = (a[p.getAttribute('data-side')] || 0) + 1, a), {}),
-      everyMovedNameHasLeader: moved.every((l) => l.parentElement.classList.contains('has-stem')),
-      everyLeaderHasLength: stems.every((pt) => pt.querySelector('.atlas__stem').getBoundingClientRect().height >= 12)
+      sides: names.reduce((a, n) => (a[n.dataset.side] = (a[n.dataset.side] || 0) + 1, a), {}),
+      withLead: leads.length,
+      /* a name standing to one side of its values always needs the stub across */
+      everySideNameHasLead: names.filter((n) => n.dataset.side !== 'center').every((n) => n.classList.contains('has-lead')),
+      everyLongLeadHasLength: names.filter((n) => Math.abs(parseFloat(n.style.getPropertyValue('--lnudge')) || 0) > 16 && n.dataset.side === 'center')
+        .every((n) => parseFloat(n.style.getPropertyValue('--lead')) >= 2)
     };
   });
 
@@ -274,8 +292,8 @@ const OUT = path.join(__dirname, 'shots');
   await page.waitForTimeout(220);
   report.facetFilter = {
     entries: await page.locator('.entry').count(),
-    points: await page.locator('.atlas__pt').count(),
-    dimmed: await page.locator('.atlas__pt.is-dim').count(),
+    points: await page.locator('.atlas__name').count(),
+    dimmed: await page.locator('.atlas__name.is-dim').count(),
     line: await page.locator('#count-line').textContent(),
     listed: await page.locator('.filterline').textContent()
   };
@@ -289,7 +307,7 @@ const OUT = path.join(__dirname, 'shots');
   await page.locator('#clear-facets').click();
   await page.waitForTimeout(220);
   report.facetCleared = await page.locator('.entry').count();
-  await page.locator('.atlas__pt[data-id="neumorphism"]').click();
+  await page.locator('.atlas__name[data-id="neumorphism"]').click();
   await page.waitForTimeout(220);
   report.atlasOpensDetail = await page.locator('#detail .modal__title').textContent();
   report.detailPlacement = await page.locator('#detail .placement__axes').textContent();
