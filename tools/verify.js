@@ -131,15 +131,15 @@ const OUT = path.join(__dirname, 'shots');
   await page.locator('.entry#accessibility-first').click();
   await page.waitForTimeout(260);
   report.practiceDetail = {
-    kind: await page.locator('#detail .modal__kind').textContent(),
+    /* the kind is not restated in the detail head: the badge lives on the card only */
+    kindInHead: await page.locator('#detail .modal__kind, #detail .tag--kind').count(),
     madeOf: await page.locator('#detail .traitlist:not(.traitlist--all)').textContent()
   };
-  // the detail head is kept to essentials: title, era, one blurb line, kind badge
+  // the detail head is kept to essentials: title, era, one blurb line — no kind badge
   report.detailHead = await page.evaluate(() => ({
     meta: document.querySelector('#detail .modal__meta').textContent,
     blurbWords: document.querySelector('#detail .modal__blurb').textContent.split(/\s+/).filter(Boolean).length,
-    kindNoteVisible: document.querySelector('#detail .modal__kind > span:not(.tag)') ? true : false,
-    kindNoteTooltip: !!document.querySelector('#detail .modal__kind .tag--kind').getAttribute('title'),
+    kindBadge: document.querySelectorAll('#detail .modal__kind, #detail .tag--kind').length,
     blockheadHints: document.querySelectorAll('#detail .blockhead__hint').length
   }));
   await page.locator('#detail [data-close]').click();

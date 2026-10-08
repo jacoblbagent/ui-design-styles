@@ -178,7 +178,6 @@
         '<button class="iconbtn" type="button" data-close aria-label="Close details">' + ICON_CLOSE + "</button>" +
       "</div>" +
       '<p class="modal__blurb">' + e.blurb + "</p>" +
-      '<p class="modal__kind"><span class="tag tag--kind" title="' + esc(kindNote(e.id)) + '">' + esc(kindLabel(e.id)) + "</span></p>" +
       '<div class="spec spec--' + e.id + '">' + uniqueIds(e.html) + "</div>" +
       place + tags + related +
       '<div class="traits"><div class="blockhead"><h4>Traits</h4>' +

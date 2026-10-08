@@ -576,8 +576,6 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
 /* what kind of thing this is, versus what it is made of */
 .tag--kind { border-color: var(--accent); color: var(--accent); background: transparent; }
 
-.modal__kind { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin: 0; color: var(--muted); font-size: 11.5px; }
-
 .ghost--tiny { padding: 5px 8px; font-size: 11px; }
 
 .chip--clear { border-color: var(--accent); color: var(--accent); }
