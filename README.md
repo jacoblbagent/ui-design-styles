@@ -15,6 +15,8 @@ The modal closes on Escape, on the close button, and on a backdrop click; a `#<s
 
 ## Files
 
+The stylesheet and every script are requested with a `?v=` build stamp in `index.html` — GitHub Pages caches assets for ten minutes, so bump that stamp on each deploy or returning visitors keep the old CSS/JS.
+
 ```
 index.html          page shell, fonts, controls
 styles.css          catalog chrome (tokens, light + dark, responsive)
