@@ -111,7 +111,7 @@ const OUT = path.join(__dirname, 'shots');
     await page.waitForTimeout(220);
     kindProbe[k] = {
       entries: await page.locator('.entry').count(),
-      matrixRows: await page.locator('.matrix tbody tr:not(.matrix__repeat)').count(),
+      matrixRows: await page.locator('.matrix tbody tr').count(),
       pointsKept: await page.locator('.atlas__name').count(),
       pointsDimmed: await page.locator('.atlas__name.is-dim').count(),
       badges: await page.$$eval('.entry .tag--kind', (bs) => [...new Set(bs.map((b) => b.textContent.trim()))]),
@@ -200,15 +200,32 @@ const OUT = path.join(__dirname, 'shots');
       .map((l) => l.getAttribute('data-id'));
   });
   report.matrixRows = await page.locator('.matrix tbody tr').count();
-  report.matrixStyleRows = await page.locator('.matrix tbody tr:not(.matrix__repeat)').count();
-  report.matrixRepeatRows = await page.locator('.matrix__repeat').count();
-  report.matrixRepeatIsDecorative = await page.evaluate(() => ({
-    buttons: document.querySelectorAll('.matrix__repeat button').length,
-    hidden: [...document.querySelectorAll('.matrix__repeat')].every((r) => r.getAttribute('aria-hidden') === 'true'),
-    labels: [...document.querySelectorAll('.matrix__repeat .matrix__collabel')].length
-  }));
+  report.matrixStyleRows = await page.locator('.matrix tbody tr').count();
+  report.matrixRepeatRows = await page.locator('.matrix__repeat, .matrix__col--repeat').count();
+  /* the column header row is pinned below the masthead while the table scrolls,
+     so no mark is ever far from the name of its column */
+  report.matrixHeaderPinned = await page.evaluate(async () => {
+    document.getElementById('sec-matrix').scrollIntoView({ block: 'start' });
+    window.scrollBy(0, 620);
+    await new Promise((r) => setTimeout(r, 240));
+    const th = document.querySelector('table.matrix thead th.matrix__col');
+    const corner = document.querySelector('table.matrix thead .matrix__corner');
+    const mastheadH = document.querySelector('.masthead').offsetHeight;
+    const r = th.getBoundingClientRect();
+    const label = th.querySelector('.matrix__collabel').getBoundingClientRect();
+    const cornerTop = Math.round(corner.getBoundingClientRect().top);
+    window.scrollTo(0, 0);
+    return {
+      position: getComputedStyle(th).position,
+      top: Math.round(r.top), mastheadH,
+      pinned: Math.abs(r.top - mastheadH) <= 1,
+      cornerPinned: Math.abs(cornerTop - mastheadH) <= 1,
+      labelsInsideStickyRow: label.top >= r.top - 1 && label.bottom <= r.bottom + 1,
+      opaque: getComputedStyle(th).backgroundColor,
+      wrapperOverflowY: getComputedStyle(document.querySelector('.matrix__scroll')).overflowY
+    };
+  });
   report.matrixCols = await page.locator('thead .matrix__col').count();
-  report.matrixRepeatCols = await page.locator('tbody .matrix__col--repeat').count();
   report.matrixCells = await page.locator('.matrix__cell').count();
   report.matrixSignature = await page.locator('.matrix__cell[data-level="2"]').count();
   report.matrixSupporting = await page.locator('.matrix__cell[data-level="1"]').count();
@@ -217,7 +234,7 @@ const OUT = path.join(__dirname, 'shots');
     let sig = 0, sup = 0, want = 0;
     Object.keys(declared).forEach((id) => Object.values(declared[id].t).forEach((lv) => { if (lv === 2) sig++; if (lv === 1) sup++; }));
     document.querySelectorAll('.matrix__cell').forEach((c) => { want++; });
-    const styleRows = document.querySelectorAll('.matrix tbody tr:not(.matrix__repeat)').length;
+    const styleRows = document.querySelectorAll('.matrix tbody tr').length;
     return { sig, sup, cells: want, rowsTimesCols: styleRows * window.FACETS.columns.length,
       everyRowHasNeighbour: [...document.querySelectorAll('.matrix__near')].every((td) => td.textContent.trim().length > 0) };
   });
@@ -233,7 +250,7 @@ const OUT = path.join(__dirname, 'shots');
     };
   });
   // hover a mark in the middle of the table and read what the crosshair says
-  const midCell = page.locator('.matrix tbody tr:not(.matrix__repeat)').nth(19).locator('.matrix__cell').nth(14);
+  const midCell = page.locator('.matrix tbody tr').nth(19).locator('.matrix__cell').nth(14);
   /* put the section at the top of the viewport, so the table still runs past the
      fold and the sticky bar below it has to pin rather than sit in view */
   await page.evaluate(() => document.getElementById('sec-matrix').scrollIntoView({ block: 'start' }));
@@ -257,7 +274,7 @@ const OUT = path.join(__dirname, 'shots');
   await page.waitForTimeout(200);
   report.crosshairCleared = await page.locator('.is-hotcol, .is-hotrow').count();
   report.crosshairKeyboard = await page.evaluate(() => {
-    const btn = document.querySelectorAll('.matrix tbody tr:not(.matrix__repeat) .matrix__cell button')[100];
+    const btn = document.querySelectorAll('.matrix tbody tr .matrix__cell button')[100];
     btn.focus();
     return { hot: document.querySelectorAll('.matrix__cell.is-hotcol').length, readout: document.getElementById('matrix-readout').textContent };
   });

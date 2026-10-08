@@ -313,32 +313,22 @@
   /* ---------- the trait matrix: techniques as columns ----------
      Reading a mark means knowing both its row and its column, and with 22
      rotated headers over 43 rows that trace is long. So the matrix carries
-     three aids: hairline boundaries between the five groups, a repeat of the
-     header every fifteen rows, and a crosshair that lights the hovered row and
-     column and names the pair in a readout above the table. */
-  var REPEAT_EVERY = 15;
+     three aids: hairline boundaries between the five groups, a header row that
+     stays pinned below the masthead for as long as the table is on screen, and
+     a crosshair that lights the hovered row and column and names the pair in a
+     readout below the table. */
 
   function matrixHTML(items) {
-    function colHead(c, live) {
+    function colHead(c) {
       var on = state.facets.indexOf(c.id) !== -1;
       var n = items.filter(function (e) { return levelOf(e.id, c.id); }).length;
-      if (!live) {
-        /* the repeated rows are a reading aid, not a second header: plain text,
-           out of the tab order, hidden from assistive tech */
-        return '<td class="matrix__col matrix__col--repeat" data-group="' + c.group + '" aria-hidden="true">' +
-          '<span class="matrix__collabel">' + esc(c.label) + '</span><span class="matrix__coln">' + n + "</span></td>";
-      }
       return '<th scope="col" class="matrix__col" data-group="' + c.group + '">' +
         '<button class="matrix__colbtn" type="button" data-facet="' + c.id + '" aria-pressed="' + on + '" title="' + esc(c.note) + '">' +
           '<span class="matrix__collabel">' + esc(c.label) + '</span><span class="matrix__coln">' + n + "</span>" +
         "</button></th>";
     }
 
-    var head = COLUMNS.map(function (c) { return colHead(c, true); }).join("");
-    var repeatHead = '<tr class="matrix__repeat" aria-hidden="true">' +
-      '<td class="matrix__row matrix__row--repeat">Style</td>' +
-      COLUMNS.map(function (c) { return colHead(c, false); }).join("") +
-      '<td class="matrix__near matrix__near--repeat">Shares with</td></tr>';
+    var head = COLUMNS.map(colHead).join("");
 
     var rows = [];
     items.forEach(function (e) {
@@ -360,9 +350,6 @@
           ? '<button type="button" data-goto="' + rel.id + '">' + esc(rel.name) + " <span>" + Math.round(rel.score * 100) + "%</span></button>"
           : "<span class=\"muted\">—</span>") + "</td>" +
       "</tr>");
-      /* a repeat of the column labels, so no mark is ever more than a few rows
-         from the text that names its column */
-      if ((rows.length % REPEAT_EVERY) === 0 && rows.length < items.length) rows.push(repeatHead);
     });
 
     return '<section class="section" id="sec-matrix">' +
@@ -822,7 +809,6 @@
     if (body) {
       for (var i = 0; i < body.rows.length; i++) {
         var row = body.rows[i];
-        if (row.classList.contains("matrix__repeat")) continue;
         var peer = row.cells[idx];
         if (peer) { peer.classList.add("is-hotcol"); hotNodes.push(peer); }
       }

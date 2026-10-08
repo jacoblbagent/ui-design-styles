@@ -447,13 +447,15 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 .matrix__col[data-group="Colour"], .matrix__cell[data-group="Colour"],
 .matrix__col[data-group="Behaviour"], .matrix__cell[data-group="Behaviour"] { border-left: 1px solid var(--hair-strong); }
 
-/* the column labels repeat down the table, so no mark is far from its column name */
-.matrix__repeat .matrix__col, .matrix__repeat .matrix__row, .matrix__repeat .matrix__near { border-bottom: 1px solid var(--hair-strong); }
-.matrix__row--repeat, .matrix__near--repeat {
-  font: 500 10px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+/* the header row is pinned below the masthead for as long as the table is on
+   screen, so a mark is never far from the name of its column. The wrapper keeps
+   clipping the horizontal overflow without becoming a scroll container in the
+   other axis — `overflow-y: clip` is what lets the sticky header ride the page
+   scrollport instead of a wrapper that moves with the page. */
+table.matrix thead th {
+  position: sticky; top: var(--masthead-h, 190px); z-index: 5;
+  background: var(--panel); border-bottom: 1px solid var(--hair-strong);
 }
-.matrix__col--repeat { color: var(--muted); }
-.matrix__col--repeat .matrix__collabel { font-size: 10px; }
 
 /* pinned to the bottom of the viewport for as long as the matrix is on screen,
    so the pair is named next to the mark you are actually pointing at — and the
@@ -497,7 +499,7 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 
 .matrix__scroll {
   margin-top: 10px; border: 1px solid var(--hair); border-radius: var(--r-card);
-  background: var(--panel); overflow-x: auto;
+  background: var(--panel); overflow-x: auto; overflow-y: clip;
 }
 table.matrix { border-collapse: separate; border-spacing: 0; width: 100%; }
 table.matrix th, table.matrix td { border-bottom: 1px solid var(--hair); }
@@ -507,7 +509,9 @@ table.matrix tbody tr:last-child th, table.matrix tbody tr:last-child td { borde
   font: 600 var(--t-12)/1 var(--sans); color: var(--ink); text-align: left;
   padding: 8px 8px 8px 12px; white-space: nowrap;
 }
-.matrix__corner { position: sticky; left: 0; z-index: 4; background: var(--panel); border-right: 1px solid var(--hair); }
+/* the corner is pinned in both axes: left while the table scrolls sideways,
+   above the column heads while the header row rides the page */
+table.matrix .matrix__corner { position: sticky; left: 0; z-index: 6; background: var(--panel); border-right: 1px solid var(--hair); }
 .matrix__nearhead { width: 1%; }
 
 .matrix__col { vertical-align: bottom; padding: 0; }
