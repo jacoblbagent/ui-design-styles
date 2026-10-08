@@ -200,7 +200,9 @@
     var jy = ((i * 53) % 7 - 3) * 0.3;
     var x = Math.min(100, Math.max(0, v + jx));
     var y = Math.min(100, Math.max(0, d + jy));
-    return { x: x, y: y, side: x > 62 ? "left" : "right" };
+    /* the name is the mark now, so it starts centred on its own two values and
+       only moves if it has to */
+    return { x: x, y: y, side: "center" };
   }
 
   function atlasHTML(items) {
@@ -209,21 +211,19 @@
     var dots = CATALOG.map(function (e, i) {
       var f = facetOf(e.id);
       var p = axisPos(i, f.v, f.d);
-      var sig = signatureOf(e.id)[0];
       return '<button class="atlas__pt" type="button" data-id="' + e.id + '" data-side="' + p.side + '"' +
           ' style="left:' + p.x.toFixed(2) + '%;bottom:' + p.y.toFixed(2) + '%"' +
           ' title="' + esc(e.name) + " — " + esc(e.era) + " · loud " + f.v + "/100 · dimensional " + f.d + '/100">' +
           '<span class="atlas__stem" aria-hidden="true"></span>' +
-          '<span class="atlas__dot" data-sig="' + (sig || "") + '"></span>' +
           '<span class="atlas__label">' + esc(e.name) + "</span>" +
         "</button>";
     }).join("");
 
     return '<section class="section" id="sec-atlas">' +
       '<div class="section__head"><h2>Atlas</h2><span class="n">' + items.length + '</span></div>' +
-      '<p class="section__note">Every style placed by two independent values: left to right is restraint to loud, bottom to top is flat to dimensional. ' +
-        "Points that sit close share traits, and the matrix below names which. Values are authored per entry in <code>data/facets.js</code>, read from the traits each entry declares. " +
-        "A filter dims the styles that fall outside it rather than removing them, so you can see what a trait sits next to. Click a point for its full entry.</p>" +
+      '<p class="section__note">Names are the marks: each style sits at its own two values — left to right is restraint to loud, bottom to top is flat to dimensional. ' +
+        "A name is only moved to stop two of them touching, and anything that moves keeps a hairline back to the exact spot. Values are authored per entry in <code>data/facets.js</code>, read from the traits each entry declares. " +
+        "A filter dims the styles that fall outside it rather than removing them, so you can see what a trait sits next to. Click a name for its full entry.</p>" +
       '<div class="atlas">' +
         '<div class="atlas__axis atlas__axis--y" aria-hidden="true"><span>Dimensional</span><span>Flat</span></div>' +
         '<div class="atlas__plot">' +
@@ -274,10 +274,7 @@
     if (!pr.width || !pr.height) return;
     var placed = [];
     var offsets = [0];
-    for (var k = 1; k <= 12; k++) offsets.push(-13 * k, 13 * k);
-
-    /* dots are fixed, so reserve them first and let every label avoid them */
-    $$(".atlas__dot", space).forEach(function (d) { placed.push(d.getBoundingClientRect()); });
+    for (var k = 1; k <= 24; k++) offsets.push(-12 * k, 12 * k);
 
     function hits(box, pad) {
       var n = 0;
@@ -297,17 +294,19 @@
       var label = $(".atlas__label", pt);
       if (!label) return;
       var best = { cost: Infinity, side: pt.getAttribute("data-side"), off: 0 };
-      ["right", "left"].forEach(function (side) {
+      ["center", "right", "left"].forEach(function (side) {
         pt.setAttribute("data-side", side);
         for (var i = 0; i < offsets.length; i++) {
           label.style.setProperty("--lnudge", offsets[i] + "px");
           var box = label.getBoundingClientRect();
           var out = overflow(box);
-          /* a label never leaves the plot: being outside costs far more than
-             sharing space with another label does */
-          var cost = hits(box, 2) * 100 + Math.abs(offsets[i]) + out * 40;
+          /* Two names touching is the failure this pass exists to prevent, so a
+             collision costs far more than travelling further to avoid one: a
+             name is moved as far as it takes, and only as little as it can.
+             Leaving the plot is worse still, because it breaks the axis. */
+          var cost = hits(box, 2) * 1000 + Math.abs(offsets[i]) + out * 60;
           if (cost < best.cost) best = { cost: cost, side: side, off: offsets[i] };
-          if (cost < 100) return; /* clear of everything: keep it and stop */
+          if (cost < 24) return; /* clear, and within a label's own height: take it */
         }
       });
       pt.setAttribute("data-side", best.side);
@@ -317,7 +316,7 @@
       var lab = Math.abs(best.off);
       pt.setAttribute("data-dir", best.off < 0 ? "up" : "down");
       pt.style.setProperty("--labs", lab + "px");
-      pt.classList.toggle("has-stem", lab >= 13);
+      pt.classList.toggle("has-stem", lab >= 12);
       placed.push(label.getBoundingClientRect());
     });
   }

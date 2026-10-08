@@ -54,17 +54,26 @@ const OUT = path.join(__dirname, 'shots');
     };
   });
   report.atlasPoints = await page.locator('.atlas__pt').count();
-  report.atlasDots = await page.locator('.atlas__dot').count();
-  // a dot must sit where its two authored values put it (allow the sub-1% spread)
-  report.atlasDotError = await page.evaluate(() => {
+  report.atlasNamesOnly = await page.evaluate(() => ({
+    labels: document.querySelectorAll('.atlas__label').length,
+    dotElements: document.querySelectorAll('.atlas__dot').length
+  }));
+  // the point (an invisible hit target under the name) must sit where its two
+  // authored values put it; where a name had to travel, it needs its leader line
+  report.atlasNamePlacement = await page.evaluate(() => {
     const space = document.querySelector('.atlas__space').getBoundingClientRect();
-    return [...document.querySelectorAll('.atlas__pt')].map((p) => {
-      const d = p.querySelector('.atlas__dot').getBoundingClientRect();
+    const away = [], unled = [];
+    [...document.querySelectorAll('.atlas__pt')].forEach((p) => {
+      const box = p.getBoundingClientRect();
+      const label = p.querySelector('.atlas__label').getBoundingClientRect();
       const f = window.FACETS.styles[p.getAttribute('data-id')] || {};
-      const x = ((d.left + d.right) / 2 - space.left) / space.width * 100;
-      const y = (space.bottom - (d.top + d.bottom) / 2) / space.height * 100;
-      return { id: p.getAttribute('data-id'), dx: +(x - f.v).toFixed(2), dy: +(y - f.d).toFixed(2) };
-    }).filter((o) => Math.abs(o.dx) > 1.05 || Math.abs(o.dy) > 1.05);
+      const x = ((box.left + box.right) / 2 - space.left) / space.width * 100;
+      const y = (space.bottom - (box.top + box.bottom) / 2) / space.height * 100;
+      if (Math.abs(x - f.v) > 1.05 || Math.abs(y - f.d) > 1.05) away.push({ id: p.getAttribute('data-id'), dx: +(x - f.v).toFixed(2), dy: +(y - f.d).toFixed(2) });
+      const travel = Math.abs((label.top + label.bottom) / 2 - (box.top + box.bottom) / 2);
+      if (travel > 12 && p.querySelector('.atlas__stem').getBoundingClientRect().height < 10) unled.push(p.getAttribute('data-id'));
+    });
+    return { misplacedPoints: away, movedNamesWithoutLeader: unled };
   });
   report.atlasLabelOverlaps = await page.evaluate(() => {
     const L = [...document.querySelectorAll('.atlas__label')].map((l) => ({ id: l.parentElement.getAttribute('data-id'), r: l.getBoundingClientRect() }));
@@ -139,13 +148,17 @@ const OUT = path.join(__dirname, 'shots');
     return { hot: document.querySelectorAll('.matrix__cell.is-hotcol').length, readout: document.getElementById('matrix-readout').textContent };
   });
   report.atlasStems = await page.evaluate(() => {
-    const moved = [...document.querySelectorAll('.atlas__label')].filter((l) => Math.abs(parseFloat(l.style.getPropertyValue('--lnudge'))) >= 13);
+    const moved = [...document.querySelectorAll('.atlas__label')].filter((l) => Math.abs(parseFloat(l.style.getPropertyValue('--lnudge'))) >= 12);
     const stems = [...document.querySelectorAll('.atlas__pt.has-stem')];
+    const nudges = [...document.querySelectorAll('.atlas__label')].map((l) => Math.abs(parseFloat(l.style.getPropertyValue('--lnudge')) || 0)).sort((a, b) => a - b);
     return {
-      movedLabels: moved.length,
+      movedNames: moved.length,
       stems: stems.length,
-      everyMovedLabelHasStem: moved.every((l) => l.parentElement.classList.contains('has-stem')),
-      everyStemHasLength: stems.every((pt) => pt.querySelector('.atlas__stem').getBoundingClientRect().height >= 12)
+      namesOnTheirValue: nudges.filter((n) => n < 12).length,
+      medianNudge: nudges[Math.floor(nudges.length / 2)],
+      sides: [...document.querySelectorAll('.atlas__pt')].reduce((a, p) => (a[p.getAttribute('data-side')] = (a[p.getAttribute('data-side')] || 0) + 1, a), {}),
+      everyMovedNameHasLeader: moved.every((l) => l.parentElement.classList.contains('has-stem')),
+      everyLeaderHasLength: stems.every((pt) => pt.querySelector('.atlas__stem').getBoundingClientRect().height >= 12)
     };
   });
 

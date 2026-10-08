@@ -421,39 +421,51 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 
 .atlas__pt {
   position: absolute; width: 11px; height: 11px;
-  /* the box is exactly the dot, centred on the point's two values, so the
-     button is a real 11px target rather than a zero-size one */
+  /* an invisible 11px hit target sitting exactly on the style's two values:
+     the name is the mark you read, this is what you click */
   margin: 0 0 -5.5px -5.5px; overflow: visible;
   background: none; border: 0; padding: 0; cursor: pointer;
   font: 400 11px/1 var(--sans); color: var(--ink-2);
   touch-action: manipulation; transition: opacity 140ms var(--ease);
 }
-/* the dot is pinned dead-centre on the point's two values; only the label
-   is allowed to move (--lnudge), and only along the depth axis */
-.atlas__dot {
-  position: absolute; inset: 0; box-sizing: border-box;
-  border-radius: 50%; background: var(--ink); border: 1px solid var(--stage);
-}
-/* a label that had to move gets a leader line back to its dot: a run down or up
-   to the label's own row, then a stub across to the text */
-.atlas__stem { position: absolute; width: 6px; height: 0; pointer-events: none; opacity: .5; }
-.atlas__pt:not(.has-stem) .atlas__stem { display: none; }
-.atlas__pt[data-side="right"] .atlas__stem { left: 5.5px; border-left: 1px solid var(--hair-strong); }
-.atlas__pt[data-side="left"] .atlas__stem { right: 5.5px; border-right: 1px solid var(--hair-strong); }
-.atlas__pt[data-dir="down"] .atlas__stem { top: 5.5px; height: var(--labs, 0px); border-bottom: 1px solid var(--hair-strong); }
-.atlas__pt[data-dir="up"] .atlas__stem { bottom: 5.5px; height: var(--labs, 0px); border-top: 1px solid var(--hair-strong); }
-.atlas__pt:hover .atlas__stem, .atlas__pt:focus-visible .atlas__stem { opacity: 1; }
-
+/* the name carries the position. It starts centred on its own values and is
+   only moved to stop two names touching. */
 .atlas__label {
-  position: absolute; top: 50%; left: 12px;
+  position: absolute; top: 50%;
   transform: translateY(calc(-50% + var(--lnudge, 0px)));
   white-space: nowrap; background: var(--stage); border-radius: 3px; padding: 2px 4px;
   border: 1px solid transparent;
 }
-.atlas__pt[data-side="left"] .atlas__label { left: auto; right: 12px; }
-.atlas__pt:hover, .atlas__pt:focus-visible { z-index: 2; }
-.atlas__pt:hover .atlas__label, .atlas__pt:focus-visible .atlas__label { border-color: var(--hair-strong); color: var(--ink); }
-.atlas__pt:hover .atlas__dot, .atlas__pt:focus-visible .atlas__dot { background: var(--accent); }
+.atlas__pt[data-side="center"] .atlas__label {
+  left: 50%; transform: translateX(-50%) translateY(calc(-50% + var(--lnudge, 0px)));
+}
+.atlas__pt[data-side="right"] .atlas__label { left: 10px; }
+.atlas__pt[data-side="left"] .atlas__label { left: auto; right: 10px; }
+
+/* where a name sits beside its value rather than on it, a short hairline
+   bridges the gap */
+.atlas__label::before {
+  content: ""; position: absolute; top: 50%; width: 10px; height: 1px;
+  background: var(--hair-strong); opacity: .4; pointer-events: none;
+}
+.atlas__pt[data-side="right"] .atlas__label::before { left: -10px; }
+.atlas__pt[data-side="left"] .atlas__label::before { right: -10px; }
+.atlas__pt[data-side="center"] .atlas__label::before { display: none; }
+
+/* and where a name had to travel along the depth axis, a hairline runs from the
+   exact value up or down to the name's own row */
+.atlas__stem { position: absolute; width: 0; height: 0; pointer-events: none; opacity: .4; }
+.atlas__pt:not(.has-stem) .atlas__stem { display: none; }
+.atlas__pt[data-side="left"] .atlas__stem { right: 5.5px; border-right: 1px solid var(--hair-strong); }
+.atlas__pt:not([data-side="left"]) .atlas__stem { left: 5.5px; border-left: 1px solid var(--hair-strong); }
+.atlas__pt[data-dir="down"] .atlas__stem { top: 5.5px; height: var(--labs, 0px); }
+.atlas__pt[data-dir="up"] .atlas__stem { bottom: 5.5px; height: var(--labs, 0px); }
+
+.atlas__pt:hover { z-index: 2; }
+.atlas__pt:hover .atlas__label, .atlas__pt:focus-visible .atlas__label { border-color: var(--accent); color: var(--ink); }
+.atlas__pt:hover .atlas__stem, .atlas__pt:focus-visible .atlas__stem { opacity: 1; }
+.atlas__pt:focus-visible { outline: none; }
+.atlas__pt:focus-visible .atlas__label { outline: 2px solid var(--focus); outline-offset: 1px; }
 .atlas__pt.is-dim { opacity: .24; }
 .atlas__pt.is-dim:hover { opacity: 1; }
 
