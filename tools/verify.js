@@ -89,7 +89,8 @@ const OUT = path.join(__dirname, 'shots');
     hidden: [...document.querySelectorAll('.matrix__repeat')].every((r) => r.getAttribute('aria-hidden') === 'true'),
     labels: [...document.querySelectorAll('.matrix__repeat .matrix__collabel')].length
   }));
-  report.matrixCols = await page.locator('.matrix__col').count();
+  report.matrixCols = await page.locator('thead .matrix__col').count();
+  report.matrixRepeatCols = await page.locator('tbody .matrix__col--repeat').count();
   report.matrixCells = await page.locator('.matrix__cell').count();
   report.matrixSignature = await page.locator('.matrix__cell[data-level="2"]').count();
   report.matrixSupporting = await page.locator('.matrix__cell[data-level="1"]').count();
