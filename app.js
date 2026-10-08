@@ -32,7 +32,6 @@
   /* ---------- building blocks ---------- */
   var ICON_COPY = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5V3.5a1.5 1.5 0 0 0-1.5-1.5H3.5A1.5 1.5 0 0 0 2 3.5V8a1.5 1.5 0 0 0 1.5 1.5h2"/></svg>';
   var ICON_EMBED = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M2 6.5h12M5 9.5h3"/></svg>';
-  var ICON_EXPAND = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4M10 14h4v-4M14 6V2h-4M2 10v4h4"/></svg>';
   var ICON_CLOSE = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
 
   function traitsText(e) {
@@ -54,17 +53,13 @@
 
   /* ---------- grid card: summary only, detail lives in the modal ---------- */
   function entryHTML(e) {
-    return '<article class="entry entry--summary" id="' + e.id + '" data-id="' + e.id + '">' +
+    return '<article class="entry entry--summary" id="' + e.id + '" data-id="' + e.id + '" tabindex="0" role="group" aria-label="' + e.name + ' — open details">' +
       '<div class="entry__top">' +
         '<h3 class="entry__title">' + e.name + "</h3>" +
         '<p class="entry__meta">' + e.era + "</p>" +
       "</div>" +
       '<p class="entry__blurb">' + e.blurb + "</p>" +
       '<div class="spec spec--' + e.id + '">' + e.html + "</div>" +
-      '<div class="entry__foot">' +
-        '<button class="ghost" type="button" data-detail="' + e.id + '">' + ICON_EXPAND + "View details</button>" +
-        '<span class="entry__hint">Traits, tokens &amp; CSS</span>' +
-      "</div>" +
     "</article>";
   }
 
@@ -372,6 +367,15 @@
     /* the card is a summary: clicking it anywhere opens the full detail */
     var card = ev.target.closest(".entry");
     if (card && !ev.target.closest("a")) openDetail(card.getAttribute("data-id"));
+  });
+
+  /* keyboard parity for the card, which is the only way in now */
+  main.addEventListener("keydown", function (ev) {
+    if (ev.key !== "Enter" && ev.key !== " ") return;
+    var card = ev.target.closest(".entry");
+    if (!card || ev.target.closest("a, button, input, select, textarea")) return;
+    ev.preventDefault();
+    openDetail(card.getAttribute("data-id"));
   });
 
   /* ---------- theme ---------- */

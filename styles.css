@@ -182,11 +182,6 @@ kbd {
 .entry__top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .entry__top .entry__meta { margin: 0; flex: none; }
 
-.entry__foot {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  border-top: 1px solid var(--hair); padding-top: 12px; margin-top: auto;
-}
-.entry__hint { color: var(--muted); font-size: var(--t-12); }
 
 /* ---------- detail modal ---------- */
 
@@ -360,7 +355,6 @@ body { scrollbar-color: var(--hair-strong) transparent; }
   .modal { width: calc(100vw - 20px); padding: 16px; max-height: 90vh; }
   .modal__title { font-size: var(--t-20); }
   .modal .spec { min-height: 190px; padding: 14px; }
-  .entry__foot { flex-wrap: wrap; }
   .spec { padding: 14px; }
   .section { padding: 28px 0 4px; }
   .foot { padding: 32px 14px 48px; }

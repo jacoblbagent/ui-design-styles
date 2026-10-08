@@ -13,10 +13,9 @@ const URL_LIVE = 'https://jacoblbagent.github.io/ui-design-styles/';
     entries: document.querySelectorAll('.entry').length,
     cardsWithTraits: document.querySelectorAll('.entry .traits').length,
     cardsWithCopyBtn: document.querySelectorAll('.entry [data-copy]').length,
-    viewDetailBtns: document.querySelectorAll('.entry [data-detail]').length,
     firstCardText: (document.querySelector('.entry') || {}).innerText,
   }));
-  await page.locator('.entry [data-detail]').first().click();
+  await page.locator('.entry').first().click();
   await page.waitForTimeout(400);
   out.modalOpened = await page.evaluate(() => !!document.querySelector('#detail[open]'));
   await page.screenshot({ path: 'tools/shots/live-modal.png' });

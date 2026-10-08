@@ -143,7 +143,7 @@ const OUT = path.join(__dirname, 'shots');
   report.afterClear = await page.locator('.entry').count();
 
   // --- copy buttons actually write to the clipboard (they live in the detail modal) ---
-  await page.locator('.entry#glassmorphism [data-detail]').click();
+  await page.locator('.entry#glassmorphism').click();
   await page.waitForTimeout(200);
   report.modalOpen = await page.evaluate(() => !!document.querySelector('#detail[open]'));
   report.modalTitle = await page.locator('#detail .modal__title').textContent();

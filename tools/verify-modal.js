@@ -16,7 +16,7 @@ const BASE = process.env.BASE_URL || 'http://localhost:8791/';
   p1.on('console', (m) => { if (m.type() === 'error') errs.push('console: ' + m.text()); });
   await p1.goto(BASE, { waitUntil: 'networkidle' });
   await p1.locator('#theme-toggle').click();
-  await p1.locator('.entry#neo-brutalism [data-detail]').click();
+  await p1.locator('.entry#neo-brutalism').click();
   await p1.waitForTimeout(250);
   await p1.screenshot({ path: path.join(OUT, 'dark-modal.png') });
   out.darkModalTheme = await p1.evaluate(() => document.documentElement.getAttribute('data-theme'));
@@ -27,10 +27,13 @@ const BASE = process.env.BASE_URL || 'http://localhost:8791/';
   await p1.mouse.click(40, 40);
   await p1.waitForTimeout(250);
   out.closedByBackdropClick = await p1.evaluate(() => !document.querySelector('#detail[open]'));
-  out.focusRestored = await p1.evaluate(() => document.activeElement && document.activeElement.getAttribute('data-detail'));
+  out.focusRestored = await p1.evaluate(() => {
+    const a = document.activeElement;
+    return a ? a.tagName + (a.id ? '#' + a.id : '') : null;
+  });
 
   // Escape closes
-  await p1.locator('.entry#flat-design [data-detail]').click();
+  await p1.locator('.entry#flat-design').click();
   await p1.waitForTimeout(200);
   await p1.keyboard.press('Escape');
   await p1.waitForTimeout(250);
@@ -60,7 +63,7 @@ const BASE = process.env.BASE_URL || 'http://localhost:8791/';
   const c2 = await b.newContext({ viewport: { width: 390, height: 780 } });
   const p2 = await c2.newPage();
   await p2.goto(BASE, { waitUntil: 'networkidle' });
-  await p2.locator('.entry#skeuomorphism [data-detail]').click();
+  await p2.locator('.entry#skeuomorphism').click();
   await p2.waitForTimeout(300);
   await p2.screenshot({ path: path.join(OUT, 'mobile-modal.png') });
   out.mobileHOverflow = await p2.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);

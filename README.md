@@ -2,7 +2,7 @@
 
 Live: https://jacoblbagent.github.io/ui-design-styles/
 
-A single-page reference for UI/UX design styles. The grid stays collapsed to an outline — name, era, blurb and a live specimen per card; click any card (or its **View details** button) for the full detail in a modal:
+A single-page reference for UI/UX design styles. The grid stays collapsed to an outline — name, era, blurb and a live specimen per card; click any card for the full detail in a modal:
 
 - renders a **live specimen** built with the real technique the style is made of (no screenshots, no stock images),
 - lists the **specific traits** that define it, with the exact values (`backdrop-filter: blur(18px) saturate(160%)`, `box-shadow: 6px 6px 0 #000`, radii, type ramps),
