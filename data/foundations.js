@@ -4,7 +4,6 @@
 {
   id: "skeuomorphism",
   name: "Skeuomorphism",
-  cat: "foundations",
   era: "2007–2013",
   origin: "iOS 1–6 and early macOS: interfaces copied real materials so touch seemed less abstract.",
   blurb: "Controls pretend to be physical objects. Materials carry texture, bevels and specular highlights, and every affordance copies a real-world counterpart so the eye knows how it moves before touching it.",
@@ -65,7 +64,6 @@
 {
   id: "flat-design",
   name: "Flat design",
-  cat: "foundations",
   era: "2013–2016",
   origin: "Metro and iOS 7 reacted against skeuomorphism by removing every material cue at once.",
   blurb: "Zero depth: no gradients, no shadows, no bevels. Meaning moves into solid colour blocks, oversized geometric shapes and type weight, with a small, saturated palette doing all the work.",
@@ -115,7 +113,6 @@
 {
   id: "material-2",
   name: "Material Design",
-  cat: "foundations",
   era: "2014–2021",
   origin: "Google's Material Design: paper sheets of a fixed thickness resting on a lit surface.",
   blurb: "Flat colour on real paper. Sheets cast elevation shadows, ink ripples outward from the point of touch, and motion follows the sheet metaphor: things slide in from where they came from.",
@@ -161,7 +158,6 @@
 {
   id: "material-you",
   name: "Material 3 (dynamic colour)",
-  cat: "foundations",
   era: "2021–",
   origin: "Material You: the palette is generated from one seed colour and applied by role.",
   blurb: "One seed colour expands into five tonal palettes, and every surface is named by role (surface, surface-container-high, primary-container) rather than by hex. Large radii and tonal fills replace shadows as the depth cue.",
@@ -215,7 +211,6 @@
 {
   id: "swiss",
   name: "Swiss / International Typographic Style",
-  cat: "foundations",
   era: "1950s–",
   origin: "Zurich and Basel: grid, one neutral grotesque, objective photography, saturated flat colour.",
   blurb: "The grid is visible and obeyed. Type is flush left, ragged right, in one neutral grotesque at a small number of sizes, and a single saturated hue supplies all emphasis.",
@@ -258,7 +253,6 @@
 {
   id: "minimalism",
   name: "Minimalism",
-  cat: "foundations",
   era: "2000s–",
   origin: "Editorial web design at its quietest: one column, a lot of air, almost no chrome.",
   blurb: "Nearly everything is removed and the remaining space becomes the design. Contrast comes from air and type weight, not from colour, borders or motion.",
@@ -299,7 +293,6 @@
 {
   id: "editorial",
   name: "Editorial / magazine",
-  cat: "foundations",
   era: "1990s–",
   origin: "Print magazine layout carried to screen: serif display, drop caps, bylines, column rules.",
   blurb: "Long-form reading treated like a printed feature: a serif display face, a drop cap, a stated deck, a byline in small caps and rules that behave like column dividers.",
@@ -349,7 +342,6 @@
 {
   id: "brutalist-web",
   name: "Brutalist web",
-  cat: "foundations",
   era: "2014–",
   origin: "A reaction to styled templates: unstyled HTML markers kept deliberately visible.",
   blurb: "The browser's own defaults are treated as the design. System serif, unstyled links, visible table borders and default buttons, arranged with raw hierarchy and nothing concealed.",
@@ -391,7 +383,6 @@
 {
   id: "token-system",
   name: "Token-driven system UI",
-  cat: "foundations",
   era: "2018–",
   origin: "Design systems made the token layer the interface: components only ever reference named values.",
   blurb: "No component owns a literal value. Colour, space, radius and type are declared once as tokens and every rule references a token, so a theme change is a change to ten lines.",

@@ -4,7 +4,6 @@
 {
   id: "neumorphism",
   name: "Neumorphism",
-  cat: "surfaces",
   era: "2019–2021",
   origin: "Soft UI: elements extruded from one surface with a paired light and dark shadow.",
   blurb: "Everything sits on one flat colour and is pushed out of it, or pressed into it, by a light shadow on one side and a dark shadow on the other. No borders, no outlines, no second colour.",
@@ -67,7 +66,6 @@
 {
   id: "claymorphism",
   name: "Claymorphism",
-  cat: "surfaces",
   era: "2021–",
   origin: "Soft UI plus material: elements look like moulded clay with real thickness.",
   blurb: "Puffy, rounded, toy-like objects. Each one carries an inner dark ring at the bottom, an inner white highlight at the top and a soft outer drop, which reads as volume rather than a flat sticker.",
@@ -114,7 +112,6 @@
 {
   id: "glassmorphism",
   name: "Glassmorphism",
-  cat: "surfaces",
   era: "2020–",
   origin: "Frosted panes floating over saturated backgrounds, popularised through Big Sur-era desktop UI.",
   blurb: "Panels are translucent and blurred so the background keeps moving underneath them. A pale 1px edge catches the light and a soft drop separates the pane from the scene.",
@@ -170,7 +167,6 @@
 {
   id: "liquid-glass",
   name: "Liquid glass",
-  cat: "surfaces",
   era: "2025–",
   origin: "Apple's 2025 material: glass that refracts and reacts instead of merely blurring.",
   blurb: "A step past frosted blur: the pane bends and tints what is behind it, carries a specular highlight that moves with the light source, and thickens or thins its own opacity based on what it sits over.",
@@ -229,7 +225,6 @@
 {
   id: "aurora-mesh",
   name: "Aurora / mesh gradient",
-  cat: "surfaces",
   era: "2020–",
   origin: "Soft multi-point colour fields behind a plain surface, the backdrop for otherwise minimal SaaS layout.",
   blurb: "Large blurred colour points blend into a continuous field, and the interface on top stays deliberately plain so the field reads as depth rather than decoration.",
@@ -274,7 +269,6 @@
 {
   id: "neo-brutalism",
   name: "Neo-brutalism",
-  cat: "surfaces",
   era: "2021–",
   origin: "A web-native reaction to soft UI: hard shadows, thick outlines, deliberately clashing colour.",
   blurb: "Absolutely no blur. Thick black outlines, an unblurred offset shadow that reads as a printed sticker, and a bright clash of hues on a raw, close-set grid.",

@@ -4,7 +4,6 @@
 {
   id: "maximalism",
   name: "Maximalism",
-  cat: "expressive",
   era: "2018–",
   origin: "A deliberate rejection of whitespace: every surface carries type, colour and image at once.",
   blurb: "Nothing is held back. Many hues, many type sizes, overlapping layers and no quiet regions, with hierarchy created by stacking order and scale instead of by empty space.",
@@ -54,7 +53,6 @@
 {
   id: "memphis",
   name: "Memphis",
-  cat: "expressive",
   era: "1981–1988, revived 2010s",
   origin: "The Memphis Group in Milan: cheap materials, primary colour, geometry used for play.",
   blurb: "Confetti geometry on a light ground: squiggles, zigzags, terrazzo dots and hard black outlines, in primary brights, applied as an all-over pattern rather than as layout structure.",
@@ -110,7 +108,6 @@
 {
   id: "vaporwave",
   name: "Vaporwave / synthwave",
-  cat: "expressive",
   era: "2011–",
   origin: "Internet revival of 80s mall culture and early computer graphics, polished into a neon palette.",
   blurb: "A neon dusk: magenta and cyan on near-black, chrome or outlined display type, a perspective grid running to a horizon and a banded sun behind it.",
@@ -173,7 +170,6 @@
 {
   id: "cyberpunk-hud",
   name: "Cyberpunk HUD",
-  cat: "expressive",
   era: "1982–",
   origin: "Console-fiction interface design: dense readouts, angular frames, hostile-looking neon.",
   blurb: "Interface as instrumentation. Panels are clipped at the corners, readouts are monospaced and tabular, every frame has bracket marks and a status line, and the only light is emission.",
@@ -231,7 +227,6 @@
 {
   id: "y2k-frutiger",
   name: "Y2K / Frutiger Aero",
-  cat: "expressive",
   era: "2004–2013",
   origin: "Techno-optimism: glossy aqua, bubbles, lens flares and sky gradients signalling a clean digital future.",
   blurb: "Wet gloss on everything. Aqua orbs with a hard specular highlight, glass-bevelled buttons, a bright sky gradient and translucent bubbles drifting behind the content.",
@@ -285,7 +280,6 @@
 {
   id: "retro-futurism",
   name: "Retro-futurism",
-  cat: "expressive",
   era: "1968–1982, revived 2020s",
   origin: "Apollo-era control panels and 70s sci-fi print: warm amber readouts, rivets and engraved labels.",
   blurb: "The future as drawn in 1974. Warm metal and amber light, rounded rectangles, engraved uppercase labels, chunky toggle switches and gauge arcs instead of progress bars.",
@@ -352,7 +346,6 @@
 {
   id: "comic-popart",
   name: "Comic / pop art",
-  cat: "expressive",
   era: "1960s print, revived 2010s",
   origin: "Halftone comic printing and Warhol-era pop art: flat primaries behind heavy black outlines.",
   blurb: "Printed-page energy: heavy black outlines, flat primaries, halftone dot fields for shading and speech bubbles as the primary container for content.",
@@ -409,7 +402,6 @@
 {
   id: "organic-handdrawn",
   name: "Organic / hand-drawn",
-  cat: "expressive",
   era: "2019–",
   origin: "A soft reaction to vector precision: hand-wobbled borders, muted earth tones, drawn marks.",
   blurb: "Nothing is perfectly straight. Borders wobble, arrows are drawn by hand, corners are lumpy, and the palette is pulled from clay, sage and paper rather than from a UI kit.",
@@ -456,7 +448,6 @@
 {
   id: "kinetic-typography",
   name: "Kinetic typography",
-  cat: "expressive",
   era: "2016–",
   origin: "Scroll-linked motion design: type becomes the interface, sized past the grid and set moving.",
   blurb: "Words are the layout. Type is set far larger than the grid, stacked and overlapped, and revealed by masked motion as the page moves — with weight and tracking doing the job of imagery.",
@@ -506,7 +497,6 @@
 {
   id: "luxury-premium",
   name: "Luxury / premium",
-  cat: "expressive",
   era: "2010–",
   origin: "High-end retail and hospitality: near-black, thin gold rules and very restrained type.",
   blurb: "Restraint as a price signal. Near-black surfaces, a thin metallic accent, a high-contrast serif in wide letter-spaced caps, and margins large enough to imply that nothing is in a hurry.",
@@ -554,7 +544,6 @@
 {
   id: "playful-chunky",
   name: "Playful chunky",
-  cat: "expressive",
   era: "2018–",
   origin: "Consumer learning and fitness apps: toy-like controls that forgive imprecision and reward taps.",
   blurb: "Controls look pressable and physical in a friendly way. Buttons carry a thick solid bottom edge that compresses on tap, shapes are extreme pills and blobs, and one mascot-flavoured element keeps the tone warm.",
@@ -602,7 +591,6 @@
 {
   id: "nordic",
   name: "Nordic / functional",
-  cat: "expressive",
   era: "2014–",
   origin: "Scandinavian design tradition applied to services: muted warm neutrals, functional over decorative.",
   blurb: "Calm and unadorned. A muted warm-neutral palette, soft photography tones, quiet type and honest structure — the styling never competes with the content it is carrying.",

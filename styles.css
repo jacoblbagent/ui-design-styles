@@ -144,11 +144,23 @@ kbd {
 }
 .chip[aria-pressed="true"] .chip__n { background: var(--panel); color: var(--ink); }
 
-.count-line { margin: 12px 0 0; color: var(--muted); font-size: var(--t-12); font-variant-numeric: tabular-nums; }
+.statusline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px; margin-top: 12px; }
+.filterhint { margin: 0; color: var(--muted); font-size: var(--t-12); }
+
+/* scrolling past the top collapses the header to its controls, so the sticky
+   bar does not hold a third of a laptop viewport for the whole catalog */
+.masthead.is-tight { padding: 10px 0 10px; }
+.masthead.is-tight .masthead__title { font-size: var(--t-20); }
+.masthead.is-tight .masthead__sub, .masthead.is-tight .filterhint { display: none; }
+.masthead.is-tight .controls { margin-top: 10px; }
+.masthead.is-tight .statusline { margin-top: 8px; }
+.chip__x { margin-left: 1px; font-size: 13px; line-height: 1; opacity: .7; }
+.chip[aria-pressed="true"] .chip__x { opacity: 1; }
+.count-line { margin: 0; color: var(--muted); font-size: var(--t-12); font-variant-numeric: tabular-nums; }
 
 /* ---------- sections ---------- */
 
-.section { padding: 40px 0 4px; }
+.section { padding: 40px 0 4px; scroll-margin-top: calc(var(--masthead-h, 190px) + 8px); }
 .section__head { display: flex; align-items: baseline; gap: 10px; border-top: 1px solid var(--hair); padding-top: 18px; }
 .section__head h2 { margin: 0; font-size: var(--t-20); font-weight: 600; letter-spacing: -0.01em; }
 .section__head .n {
@@ -176,6 +188,7 @@ kbd {
 .entry__blurb { margin: 0; color: var(--ink-2); font-size: var(--t-14); max-width: 70ch; }
 
 /* the grid shows the outline only — traits, tokens and CSS live in the dialog */
+.entry, table.matrix tbody tr { scroll-margin-top: calc(var(--masthead-h, 190px) + 14px); }
 .entry--summary { cursor: pointer; }
 .entry--summary:hover { border-color: var(--hair-strong); }
 
@@ -277,7 +290,8 @@ details.code pre::-webkit-scrollbar-thumb { background: #4a5261; border-radius: 
 
 .site {
   border: 1px solid var(--hair); border-radius: var(--r-card); background: var(--panel);
-  overflow: hidden; display: flex; flex-direction: column; scroll-margin-top: 190px;
+  overflow: hidden; display: flex; flex-direction: column;
+  scroll-margin-top: calc(var(--masthead-h, 190px) + 14px);
 }
 
 .site__shot { margin: 0; position: relative; background: var(--stage); border-bottom: 1px solid var(--hair); }
@@ -362,4 +376,240 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* ---------- classification layer: atlas + trait matrix ----------
+
+   The catalog chrome rule still holds here: hairlines only, one accent, no
+   shadows. The atlas is a coordinate space and the matrix is a table — both
+   are chrome, so neither is allowed to look like a style specimen. */
+
+.atlas {
+  display: grid; grid-template-columns: auto 1fr; grid-template-rows: 1fr auto;
+  gap: 8px 6px; margin-top: 18px;
+  border: 1px solid var(--hair); border-radius: var(--r-card);
+  background: var(--stage); padding: 18px 20px 12px 8px;
+}
+
+.atlas__plot { position: relative; grid-column: 2; grid-row: 1; height: clamp(360px, 46vw, 580px); margin: 4px 18px 0 22px; }
+
+.atlas__grid { position: absolute; inset: 0; pointer-events: none; }
+/* the coordinate space is inset so a value of 0 or 100 still renders as a whole
+   mark; the inset is symmetric, so the midlines stay on the true centre */
+.atlas__space { position: absolute; inset: 14px; }
+.atlas__mid { position: absolute; }
+.atlas__mid--v { left: 50%; top: 0; bottom: 0; border-left: 1px dashed var(--hair-strong); }
+.atlas__mid--h { top: 50%; left: 0; right: 0; border-top: 1px dashed var(--hair-strong); }
+.atlas__quad {
+  position: absolute; font: 500 10px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); opacity: .85;
+}
+.atlas__quad--tl { left: 6px; top: 4px; }
+.atlas__quad--tr { right: 6px; top: 4px; }
+.atlas__quad--bl { left: 6px; bottom: 4px; }
+.atlas__quad--br { right: 6px; bottom: 4px; }
+
+.atlas__axis {
+  display: flex; justify-content: space-between; gap: 10px;
+  font: 500 10px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
+.atlas__axis--x { grid-column: 2; grid-row: 2; padding: 2px 2px 0; }
+.atlas__axis--y {
+  grid-column: 1; grid-row: 1; flex-direction: column; align-items: center;
+  writing-mode: vertical-rl; transform: rotate(180deg); padding: 0 0 0 2px;
+}
+
+.atlas__pt {
+  position: absolute; width: 11px; height: 11px;
+  /* the box is exactly the dot, centred on the point's two values, so the
+     button is a real 11px target rather than a zero-size one */
+  margin: 0 0 -5.5px -5.5px; overflow: visible;
+  background: none; border: 0; padding: 0; cursor: pointer;
+  font: 400 11px/1 var(--sans); color: var(--ink-2);
+  touch-action: manipulation; transition: opacity 140ms var(--ease);
+}
+/* the dot is pinned dead-centre on the point's two values; only the label
+   is allowed to move (--lnudge), and only along the depth axis */
+.atlas__dot {
+  position: absolute; inset: 0; box-sizing: border-box;
+  border-radius: 50%; background: var(--ink); border: 1px solid var(--stage);
+}
+.atlas__label {
+  position: absolute; top: 50%; left: 12px;
+  transform: translateY(calc(-50% + var(--lnudge, 0px)));
+  white-space: nowrap; background: var(--stage); border-radius: 3px; padding: 2px 4px;
+  border: 1px solid transparent;
+}
+.atlas__pt[data-side="left"] .atlas__label { left: auto; right: 12px; }
+.atlas__pt:hover, .atlas__pt:focus-visible { z-index: 2; }
+.atlas__pt:hover .atlas__label, .atlas__pt:focus-visible .atlas__label { border-color: var(--hair-strong); color: var(--ink); }
+.atlas__pt:hover .atlas__dot, .atlas__pt:focus-visible .atlas__dot { background: var(--accent); }
+.atlas__pt.is-dim { opacity: .24; }
+.atlas__pt.is-dim:hover { opacity: 1; }
+
+.matrix__legend {
+  display: flex; flex-wrap: wrap; gap: 16px; margin: 14px 0 0;
+  color: var(--muted); font-size: var(--t-12);
+}
+.matrix__legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+.matrix__scroll {
+  margin-top: 10px; border: 1px solid var(--hair); border-radius: var(--r-card);
+  background: var(--panel); overflow-x: auto;
+}
+table.matrix { border-collapse: separate; border-spacing: 0; width: 100%; }
+table.matrix th, table.matrix td { border-bottom: 1px solid var(--hair); }
+table.matrix tbody tr:last-child th, table.matrix tbody tr:last-child td { border-bottom: 0; }
+
+.matrix__corner, .matrix__nearhead {
+  font: 600 var(--t-12)/1 var(--sans); color: var(--ink); text-align: left;
+  padding: 8px 8px 8px 12px; white-space: nowrap;
+}
+.matrix__corner { position: sticky; left: 0; z-index: 4; background: var(--panel); border-right: 1px solid var(--hair); }
+.matrix__nearhead { width: 1%; }
+
+.matrix__col { vertical-align: bottom; padding: 0; }
+.matrix__colbtn {
+  display: flex; flex-direction: column; align-items: center; gap: 3px; width: 100%;
+  background: none; border: 0; margin: 0; padding: 8px 4px 6px; cursor: pointer;
+  touch-action: manipulation;
+}
+.matrix__collabel {
+  writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;
+  font: 500 10.5px/1 var(--sans); letter-spacing: .02em; color: var(--ink-2);
+}
+.matrix__coln { font: 400 9.5px/1 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums; }
+.matrix__colbtn:hover .matrix__collabel { color: var(--accent); }
+.matrix__colbtn[aria-pressed="true"] { background: var(--accent-soft); }
+.matrix__colbtn[aria-pressed="true"] .matrix__collabel { color: var(--accent); }
+.matrix__colbtn:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+
+.matrix__row { position: sticky; left: 0; z-index: 2; background: var(--panel); padding: 0 12px; border-right: 1px solid var(--hair); text-align: left; width: 1%; }
+.matrix__row button {
+  background: none; border: 0; margin: 0; padding: 4px 0; cursor: pointer; text-align: left;
+  font: 500 var(--t-12)/1.35 var(--sans); color: var(--ink); white-space: nowrap; touch-action: manipulation;
+}
+.matrix__row button:hover { color: var(--accent); }
+.matrix__row button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.matrix__cell { padding: 0; text-align: center; }
+.matrix__cell button {
+  display: block; width: 100%; background: none; border: 0; margin: 0; padding: 7px 6px;
+  cursor: pointer; touch-action: manipulation;
+}
+.matrix__cell button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.matrix__cell[data-level="0"] .dot { opacity: .55; }
+.matrix__cell[data-on="true"] { background: var(--accent-soft); }
+.matrix tbody tr:hover .matrix__row, .matrix tbody tr:hover .matrix__cell { background: var(--panel-2); }
+.matrix tbody tr:hover .matrix__cell[data-on="true"] { background: var(--accent-soft); }
+
+.matrix__near {
+  padding: 0 12px 0 10px; border-left: 1px solid var(--hair);
+  font: 400 10.5px/1 var(--sans); color: var(--muted); white-space: nowrap; width: 1%;
+}
+.matrix__near button { background: none; border: 0; margin: 0; padding: 4px 0; cursor: pointer; font: inherit; color: var(--ink-2); touch-action: manipulation; }
+.matrix__near button:hover { color: var(--accent); }
+.matrix__near span { color: var(--muted); font-variant-numeric: tabular-nums; }
+.matrix__near .muted { color: var(--muted); }
+
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; vertical-align: middle; }
+.dot--sig { background: var(--ink); }
+.dot--sup { background: var(--hair-strong); }
+.dot--off { background: transparent; border: 1px solid var(--hair-strong); box-sizing: border-box; }
+
+/* ---------- tags on the entry cards and in the detail ---------- */
+
+.entry__tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; }
+.tag {
+  display: inline-flex; align-items: center; border: 1px solid var(--hair); border-radius: var(--r-chip);
+  background: var(--panel-2); color: var(--muted);
+  font: 500 10.5px/1 var(--sans); letter-spacing: .05em; text-transform: uppercase; padding: 4px 6px;
+}
+.tag--sig { border-color: var(--hair-strong); color: var(--ink-2); }
+button.tag { cursor: pointer; touch-action: manipulation; }
+button.tag:hover { color: var(--accent); border-color: var(--accent); }
+
+.ghost--tiny { padding: 5px 8px; font-size: 11px; }
+
+.chip--clear { border-color: var(--accent); color: var(--accent); }
+.filterline {
+  margin: 14px 0 0; padding: 10px 12px; border: 1px solid var(--hair); border-left: 2px solid var(--accent);
+  border-radius: var(--r-inner); background: var(--panel-2);
+  color: var(--ink-2); font-size: var(--t-12); display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+}
+.filterline b { font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: 10.5px; }
+
+/* ---------- detail: placement, made-of, neighbours ---------- */
+
+.placement { border: 1px solid var(--hair); border-radius: var(--r-inner); background: var(--panel-2); padding: 10px 12px; }
+.placement__axes { display: flex; flex-wrap: wrap; gap: 18px; margin: 0; font-size: var(--t-12); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.placement__axes b { font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: 10.5px; color: var(--muted); }
+.placement__note { margin: 6px 0 0; color: var(--muted); font-size: 11.5px; }
+
+.blockhead__hint { color: var(--muted); font-size: 11.5px; }
+.traitlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.traitlist li { display: flex; align-items: baseline; gap: 8px; }
+.traitlist__note { color: var(--muted); font-size: 11.5px; }
+.related { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+
+.alltraits { border-top: 1px solid var(--hair); padding-top: 12px; }
+.alltraits > summary {
+  cursor: pointer; list-style: none; color: var(--ink-2);
+  font: 500 var(--t-12)/1 var(--sans); display: flex; align-items: center; gap: 7px; touch-action: manipulation;
+}
+.alltraits > summary::-webkit-details-marker { display: none; }
+.alltraits > summary::before {
+  content: ""; width: 0; height: 0; border-left: 5px solid currentColor;
+  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+  transition: transform 160ms var(--ease); transform-origin: 30% 50%;
+}
+.alltraits[open] > summary::before { transform: rotate(90deg); }
+.traitlist--all { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 5px 14px; margin-top: 12px; }
+.traitlist--all li { font-size: 11.5px; color: var(--ink-2); align-items: center; }
+.traitlist--all li[data-level="0"] { color: var(--muted); }
+.traitlist--all .traitlist__note { margin-left: auto; font-size: 10.5px; }
+
+/* ---------- narrow screens: the matrix scrolls, the atlas flatten ---------- */
+
+@media (max-width: 900px) {
+  .atlas { grid-template-columns: auto 1fr; padding: 14px 14px 10px 6px; }
+  .atlas__plot { height: clamp(420px, 96vw, 620px); }
+  .atlas__quad { font-size: 9px; letter-spacing: .06em; }
+}
+
+/* The legend under the plot carries the names when the plane cannot. */
+.atlas__legend { grid-column: 1 / -1; margin-top: 12px; border-top: 1px solid var(--hair); padding-top: 10px; }
+.atlas__lghead { display: flex; justify-content: space-between; gap: 10px; margin: 0 0 4px; font: 500 10px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.atlas__legend ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0 18px; }
+.atlas__legend button {
+  display: flex; justify-content: space-between; gap: 10px; width: 100%;
+  background: none; border: 0; border-bottom: 1px solid var(--hair); margin: 0;
+  padding: 5px 0; cursor: pointer; text-align: left; touch-action: manipulation;
+  font: 400 var(--t-12)/1.35 var(--sans); color: var(--ink-2);
+}
+.atlas__legend button:hover { color: var(--accent); }
+.atlas__legend button:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.atlas__lgval { flex: none; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+@media (min-width: 641px) {
+  .atlas__legend { display: none; }
+}
+
+@media (max-width: 640px) {
+  .atlas { grid-template-columns: 1fr; padding: 14px 14px 12px; }
+  .atlas__axis--y { display: none; }
+  /* 43 labels cannot sit side by side in one narrow column: the labels come
+     off the plane and the legend below carries the names and values instead */
+  .atlas__plot { grid-column: 1; height: 620px; }
+  .atlas__label { display: none; }
+  .atlas__space { inset: 8px; }
+  .atlas__legend ul { grid-template-columns: 1fr; }
+  .matrix__scroll { margin-top: 10px; }
+  .matrix__corner, .matrix__nearhead, .matrix__row { padding-left: 10px; }
+  .matrix__colbtn { padding: 6px 3px 5px; }
+  .filterline { align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas__pt { transition: none; }
 }

@@ -4,7 +4,6 @@
 {
   id: "bento-grid",
   name: "Bento grid",
-  cat: "patterns",
   era: "2022–",
   origin: "Apple marketing pages and dashboards: one grid of tiles at mixed spans, each tile one idea.",
   blurb: "A modular tray of tiles where each cell states one thing. Span variation replaces hierarchy-by-size, and the tight, uniform gutter is what makes the odd sizes read as one object.",
@@ -58,7 +57,6 @@
 {
   id: "card-ui",
   name: "Card-based UI",
-  cat: "patterns",
   era: "2013–",
   origin: "The default collection pattern: one object, one card, repeated in a responsive grid.",
   blurb: "Each thing in the collection gets its own bordered or elevated container so it can be scanned, compared and acted on as a unit. Consistency across cards is the whole mechanism.",
@@ -101,7 +99,6 @@
 {
   id: "data-dashboard",
   name: "Data dashboard",
-  cat: "patterns",
   era: "2015–",
   origin: "Operations tooling: maximum signal per pixel, read at speed, often at night.",
   blurb: "Built for scanning, not for reading. Dense rows, right-aligned tabular numerals, one colour per status, and every chart sized to the space its data actually needs.",
@@ -147,7 +144,6 @@
 {
   id: "terminal-cli",
   name: "Terminal / CLI",
-  cat: "patterns",
   era: "1970s–",
   origin: "The character grid, kept as a deliberate interface aesthetic on the web.",
   blurb: "Everything on a monospace character grid. Alignment is achieved with spaces and columns, hierarchy with weight and reverse-video blocks, and the prompt is the only ornament.",
@@ -198,7 +194,6 @@
 {
   id: "spatial-vision",
   name: "Spatial / depth UI",
-  cat: "patterns",
   era: "2023–",
   origin: "Headset interfaces: windows arranged in space, sized in degrees, lit by the room.",
   blurb: "Windows sit at depths rather than on a canvas. Every surface is translucent, edges catch the ambient light, and size and position are chosen for the field of view rather than for a grid.",
@@ -260,7 +255,6 @@
 {
   id: "conversational",
   name: "Conversational UI",
-  cat: "patterns",
   era: "2016–",
   origin: "Messaging as an interface grammar: turns, bubbles and a persistent composer.",
   blurb: "The transcript is the screen. State lives in the sequence of turns, the composer stays pinned, and structured answers arrive as cards inside a bubble rather than as a separate page.",
@@ -308,7 +302,6 @@
 {
   id: "skeleton-loading",
   name: "Skeleton loading",
-  cat: "patterns",
   era: "2013–",
   origin: "Progressive content apps: placeholder geometry that matches the layout about to arrive.",
   blurb: "The layout appears before its data. Placeholder blocks trace the exact shape and position of the incoming content, so nothing shifts when the real values land.",
@@ -365,7 +358,6 @@
 {
   id: "progressive-disclosure",
   name: "Progressive disclosure",
-  cat: "patterns",
   era: "1990s–",
   origin: "The usability principle of showing only what the current task needs, then revealing depth on demand.",
   blurb: "The common case is visible; the rest is one deliberate step away. A summary row states the current setting so nothing is hidden, and advanced options open in place without leaving the page.",
@@ -415,7 +407,6 @@
 {
   id: "empty-state",
   name: "Empty state",
-  cat: "patterns",
   era: "2012–",
   origin: "Apps learned that the first-run screen decides whether the product is understood.",
   blurb: "The screen with nothing in it is a designed state, not a missing one. It states what belongs here, why it is empty, and offers exactly one way to fill it.",
@@ -459,7 +450,6 @@
 {
   id: "gamified",
   name: "Gamified UI",
-  cat: "patterns",
   era: "2010–",
   origin: "Progress mechanics borrowed from games: levels, streaks, badges and a visible next step.",
   blurb: "Progress is always on screen and always one action away from moving. Bars fill, streaks count, and each reward is tied to something the user actually did.",
@@ -512,7 +502,6 @@
 {
   id: "accessibility-first",
   name: "Accessibility-first",
-  cat: "patterns",
   era: "2018–",
   origin: "WCAG and inclusive design practice: contrast, targets, focus and preference respected as defaults.",
   blurb: "The constraints come first and the styling is fitted around them: every text pair measured, every target 44px, focus always visible, and every animation obeying the reduced-motion preference.",
@@ -565,7 +554,6 @@
 {
   id: "motion-micro",
   name: "Motion-led micro-interaction",
-  cat: "patterns",
   era: "2016–",
   origin: "The school of one authored moment: a control that responds in a way you can feel.",
   blurb: "A single control carries the whole design in how it responds. The press compresses, the state morphs in place, and the timing curve is what makes it feel physical rather than switched.",
@@ -617,7 +605,6 @@
 {
   id: "agentic-adaptive",
   name: "Agentic / adaptive UI",
-  cat: "patterns",
   era: "2024–",
   origin: "Assistants that act on your behalf: the interface proposes, states its reason, and stays undoable.",
   blurb: "The interface proposes actions instead of waiting for commands. Suggestions arrive as ordinary controls, each one states why it was offered and what it will touch, and every result keeps a visible undo.",
@@ -663,7 +650,6 @@
 {
   id: "zero-ui",
   name: "Zero-UI / ambient",
-  cat: "patterns",
   era: "2017–",
   origin: "Voice assistants and sensors: interaction without a screen in the loop.",
   blurb: "The primary interaction needs no screen at all. State is announced in words or shown as one ambient signal, and the app's job is to make the invisible state legible at a glance.",
@@ -714,7 +700,6 @@
 {
   id: "enterprise-b2b",
   name: "Enterprise / B2B",
-  cat: "patterns",
   era: "2010–",
   origin: "Operational software for trained daily users: density, keyboard paths and auditability over delight.",
   blurb: "Dense, keyboard-driven and predictable. Rows and fields are compact, every destructive action is confirmed once, and the same table pattern is reused everywhere so training transfers.",
@@ -776,7 +761,6 @@
 {
   id: "dark-oled",
   name: "Dark-first / OLED",
-  cat: "patterns",
   era: "2018–",
   origin: "Dark interfaces made deliberate rather than inverted — built dark, then adapted to light.",
   blurb: "Designed dark from the start. True black where it saves power, elevation shown by lighter borders and surfaces rather than shadows, and colour desaturated so nothing vibrates against the ground.",

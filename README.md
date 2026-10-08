@@ -2,16 +2,22 @@
 
 Live: https://jacoblbagent.github.io/ui-design-styles/
 
-A single-page reference for UI/UX design styles. The grid stays collapsed to an outline — name, era, blurb and a live specimen per card; click any card for the full detail in a modal:
+A single-page reference for UI/UX design styles. Every entry renders a **live specimen** built with the real technique the style is made of (no screenshots, no stock images), lists the **specific traits** that define it with the exact values (`backdrop-filter: blur(18px) saturate(160%)`, `box-shadow: 6px 6px 0 #000`, radii, type ramps), and carries a **copy button** for the traits, for the CSS and for a ready-to-paste **prompt**. It also notes what breaks the style, so the copy does not get misused.
 
-- renders a **live specimen** built with the real technique the style is made of (no screenshots, no stock images),
-- lists the **specific traits** that define it, with the exact values (`backdrop-filter: blur(18px) saturate(160%)`, `box-shadow: 6px 6px 0 #000`, radii, type ramps),
-- carries a **copy button** for the traits, for the CSS, and for a ready-to-paste **prompt** describing the style,
-- notes what breaks the style, so the copy does not get misused.
+## How it is organised
 
-The modal closes on Escape, on the close button, and on a backdrop click; a `#<style-id>` link (including the tags on the real-world example cards) opens the matching entry's modal directly.
+There are no categories. Two styles sharing a trait almost never share a bucket, so a bucket hides exactly the relationship worth seeing — Glassmorphism, Liquid glass and Aurora mesh all work through blur while sitting in different families, and Neo-brutalism borrows from Brutalist web while being filed elsewhere. The page replaces the buckets with two views that make overlap visible:
 
-43 style entries across four sections: Foundations, Surfaces & depth, Expressive & era-bound, Structure & interaction — plus a fifth section of 46 real-world sites showing those styles in the wild, each captured from the live page and tagged back to the style entries it demonstrates.
+- **Atlas** — every style plotted on two independent values: restrained → loud (x) and flat → dimensional (y). Points that sit close share traits. Dots are pinned to their authored values; only the labels move, and a placement pass moves them until no two labels collide and none leaves the plot. A filter dims the styles outside it rather than deleting them, so you can see what a trait sits next to.
+- **Trait matrix** — 43 entries × 22 recurring techniques, grouped material, form, type, colour, behaviour. A solid mark is the trait the style is *made of*, a faint mark is one supporting it. Rows read as fingerprints: two styles with the same pattern are the same idea twice. **The matrix columns are the filters** — click a header or any mark to filter the atlas, the matrix and the grid together. The last column names each entry's closest neighbour by trait overlap.
+
+The vocabulary and the coordinates live in `data/facets.js`, authored the same way the traits are, and read from what each entry already declares. One new technique is one new column, not a reshuffle of the catalog.
+
+Every entry then appears once in full, alphabetically, and clicking any card opens the detail: the specimen, the two axis values, the signature traits it is *made of*, the styles it shares traits with (as links), every declared trait with the ones it does not have, the traits list, the tokens and CSS, and the prompt. The modal closes on Escape, on the close button and on a backdrop click; a `#<style-id>` link (including the tags on the real-world example cards) opens the matching entry directly, and the entry's own links move between it and the styles it is closest to.
+
+The masthead collapses as you scroll past the first screen, so the sticky bar keeps the controls without holding a third of the viewport.
+
+Under about 640px the plane cannot hold 43 labels side by side, so the labels come off and the same styles are listed under the plot in axis order with their two values. Nothing is dropped, and the matrix scrolls with the style column pinned.
 
 ## Files
 
@@ -19,19 +25,20 @@ The stylesheet and every script are requested with a `?v=` build stamp in `index
 
 ```
 index.html          page shell, fonts, controls
-styles.css          catalog chrome (tokens, light + dark, responsive)
-app.js              renders entries + real sites, search, filters, copy, embeds, theme toggle
-data/foundations.js  9 style entries
+styles.css          catalog chrome, the atlas and the matrix (tokens, light + dark, responsive)
+app.js              renders the atlas, the matrix and the entries; search, facet filters, copy, embeds, theme
+data/foundations.js 9 style entries
 data/surfaces.js     6 style entries
 data/expressive.js   12 style entries
 data/patterns.js     16 style entries
-data/gallery.js      46 real sites: name, link, style tags, observations, framing permission
+data/facets.js      the classification: 22 columns, and every style's two axis values + tags
+data/gallery.js     46 real sites: name, link, style tags, observations, framing permission
 images/examples/     46 screenshots, captured from the live pages (720x450)
 tools/capture.js     headless capture of real sites -> tools/raw + capture-report.json
 tools/reshoot.js     re-captures specific sites with consent dialogs dismissed
 tools/build-shots.py downscales captures and builds review contact sheets
 tools/build-gallery.py  merges the capture report + annotations into data/gallery.js
-tools/verify.js      headless verification: counts, filter/search, clipboard, embeds, mobile, dark
+tools/verify.js      headless verification: counts, atlas placement, matrix, filters, search, clipboard, embeds, mobile, dark
 tools/verify-modal.js  headless verification of the detail modal: open/close paths, focus return, deep link, dark + mobile
 ```
 
@@ -55,13 +62,13 @@ python3 tools/build-gallery.py                   # rebuild data/gallery.js
 
 ## Adding an entry
 
-Append an object to one of the `data/*.js` files:
+Append an object to one of the `data/*.js` files, then classify it in `data/facets.js`:
 
 ```js
+// data/patterns.js
 {
   id: "my-style",           // used as the anchor and the specimen class
   name: "My style",
-  cat: "surfaces",          // foundations | surfaces | expressive | patterns
   era: "2026–",
   origin: "One line on where it came from.",
   blurb: "One or two sentences on the idea.",
@@ -72,22 +79,28 @@ Append an object to one of the `data/*.js` files:
   prompt: "A paste-ready prompt describing the style.",
   sources: ["https://…"]
 }
+
+// data/facets.js — the same pass that writes the traits
+"my-style": { v: 40, d: 60, t: { "soft-shadow": 2, round: 1, texture: 1 } },
 ```
 
-The renderer injects `css` into one shared sheet and puts `html` inside `<div class="spec spec--my-style">`, so scoping the selectors under `.spec--<id>` keeps entries from leaking into each other. Entries are sorted by name at load.
+`v` is restraint (0) to loud (100), `d` is flat (0) to dimensional (100), and every tag in `t` must be a column id from the top of the same file — `2` for a trait the style is made of, `1` for one supporting it. The atlas, the matrix, the filters, the neighbours and the copyable summary all derive from that one line. The renderer injects `css` into one shared sheet and puts `html` inside `<div class="spec spec--my-style">`, so scoping the selectors under `.spec--<id>` keeps entries from leaking into each other. Entries are sorted by name at load.
+
+The verify harness fails if a style has no facets, if a tag is not in the vocabulary, or if an axis value is out of range.
 
 ## Design intent
 
-The catalog chrome keeps to one neutral type ramp, hairline-only surfaces, a single accent, themed browser surfaces (selection, focus ring, scrollbar) and one authored interaction. The entries inside it deliberately break those rules — a hard offset shadow, a blurred pane, banded scanlines — because breaking them *is* the entry. That is the difference between a specimen case and a template.
+The catalog chrome keeps to one neutral type ramp, hairline-only surfaces, a single accent, themed browser surfaces (selection, focus ring, scrollbar) and one authored interaction. The atlas and the matrix are chrome too, so neither is allowed to look like a style. The entries inside deliberately break those rules — a hard offset shadow, a blurred pane, banded scanlines — because breaking them *is* the entry. That is the difference between a specimen case and a template.
 
 ## Verify
 
 ```bash
 python3 -m http.server 8791
 NODE_PATH=$(dirname $(dirname $(readlink -f $(which npx))))/lib/node_modules node tools/verify.js
+NODE_PATH=… node tools/verify-modal.js
 ```
 
-The harness asserts: 43 entries and 43 non-empty specimens, 46 real-site cards with 46 loaded screenshots, zero dead style links from the gallery tags, 16 live-embed buttons against 30 framing refusals, an embed that actually loads a document, zero console/page errors, no horizontal overflow at 1440px or 390px, category counts, the gallery filter, search result counts (including the no-match state), clipboard contents for all three copy buttons, dark-mode toggle, and that reduced-motion still shows every entry.
+The harness asserts: 43 entries and 43 non-empty specimens; 43 atlas points whose dots sit within one percent of their authored values, with no overlapping labels and none outside the plot; a 43 × 22 matrix whose mark counts match the declared data exactly and where every row has a neighbour; every style classified and every tag inside the vocabulary; facet filters narrowing the atlas, the matrix and the grid together, including a two-facet intersection and the clear path; the retired category chips being gone; the detail's placement, made-of traits, neighbour links and full facet list; 46 real-site cards with 46 loaded screenshots; zero dead style links from the gallery tags; 16 live-embed buttons against 30 framing refusals; an embed that actually loads a document; zero console/page errors; no horizontal overflow at 1440px or 390px; search result counts including the no-match state; clipboard contents for all three copy buttons; dark-mode toggle; and that reduced-motion still shows every entry.
 
 ## Deploy
 
