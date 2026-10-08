@@ -134,6 +134,14 @@ const OUT = path.join(__dirname, 'shots');
     kind: await page.locator('#detail .modal__kind').textContent(),
     madeOf: await page.locator('#detail .traitlist:not(.traitlist--all)').textContent()
   };
+  // the detail head is kept to essentials: title, era, one blurb line, kind badge
+  report.detailHead = await page.evaluate(() => ({
+    meta: document.querySelector('#detail .modal__meta').textContent,
+    blurbWords: document.querySelector('#detail .modal__blurb').textContent.split(/\s+/).filter(Boolean).length,
+    kindNoteVisible: document.querySelector('#detail .modal__kind > span:not(.tag)') ? true : false,
+    kindNoteTooltip: !!document.querySelector('#detail .modal__kind .tag--kind').getAttribute('title'),
+    blockheadHints: document.querySelectorAll('#detail .blockhead__hint').length
+  }));
   await page.locator('#detail [data-close]').click();
   await page.waitForTimeout(200);
 

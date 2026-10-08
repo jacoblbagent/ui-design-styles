@@ -139,12 +139,11 @@
     var f = facetOf(e.id);
     var place = '<div class="placement">' +
       '<p class="placement__axes"><span><b>Loud</b> ' + f.v + "/100</span><span><b>Dimensional</b> " + f.d + "/100</span></p>" +
-      '<p class="placement__note">Read from the traits this entry declares — ' +
-        '<a href="#sec-atlas" data-scroll="sec-atlas">see it placed on the atlas</a>.</p>' +
+      '<p class="placement__note"><a href="#sec-atlas" data-scroll="sec-atlas">On the atlas</a></p>' +
       "</div>";
 
     var sig = signatureOf(e.id);
-    var tags = '<div class="blockhead"><h4>Made of</h4><span class="blockhead__hint">signature traits, the ones that define it</span></div>' +
+    var tags = '<div class="blockhead"><h4>Made of</h4></div>' +
       '<ul class="traitlist">' + (sig.length
         ? sig.map(function (id) {
             var c = COL_OF[id];
@@ -156,7 +155,7 @@
 
     var rel = relatives(e.id, 4);
     var related = rel.length
-      ? '<div class="blockhead"><h4>Shares traits with</h4><span class="blockhead__hint">weighted overlap of declared traits</span></div>' +
+      ? '<div class="blockhead"><h4>Shares traits with</h4></div>' +
         '<ul class="related">' + rel.map(function (r) {
           var pct = Math.round(r.score * 100);
           return '<li><button class="chip" type="button" data-goto="' + r.id + '">' + esc(r.name) +
@@ -174,13 +173,12 @@
     return '<div class="modal__head">' +
         "<div>" +
           '<h2 class="modal__title" id="detail-title">' + esc(e.name) + "</h2>" +
-          '<p class="modal__meta">' + esc(e.era) + " &middot; " + stripTags(e.origin) + "</p>" +
+          '<p class="modal__meta">' + esc(e.era) + "</p>" +
         "</div>" +
         '<button class="iconbtn" type="button" data-close aria-label="Close details">' + ICON_CLOSE + "</button>" +
       "</div>" +
       '<p class="modal__blurb">' + e.blurb + "</p>" +
-      '<p class="modal__kind"><span class="tag tag--kind">' + esc(kindLabel(e.id)) + "</span>" +
-        "<span>" + esc(kindNote(e.id)) + "</span></p>" +
+      '<p class="modal__kind"><span class="tag tag--kind" title="' + esc(kindNote(e.id)) + '">' + esc(kindLabel(e.id)) + "</span></p>" +
       '<div class="spec spec--' + e.id + '">' + uniqueIds(e.html) + "</div>" +
       place + tags + related +
       '<div class="traits"><div class="blockhead"><h4>Traits</h4>' +
