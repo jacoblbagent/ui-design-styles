@@ -225,7 +225,6 @@
     }).join("");
 
     return '<section class="section" id="sec-atlas">' +
-      '<div class="section__head"><h2>Atlas</h2><span class="n">' + items.length + '</span></div>' +
       '<div class="atlas">' +
         '<div class="atlas__axis atlas__axis--y" aria-hidden="true"><span>Dimensional</span><span>Flat</span></div>' +
         '<div class="atlas__plot">' +

@@ -63,8 +63,9 @@ const OUT = path.join(__dirname, 'shots');
       text: el.textContent,
       visuallyHidden: r.width <= 2 && r.height <= 2 && el.classList.contains('sr-only'),
       stillALiveRegion: el.getAttribute('role') === 'status',
+      /* the atlas head is gone: no title, no count, no rule above the plot */
+      atlasHead: document.querySelectorAll('#sec-atlas .section__head').length,
       sectionCounts: {
-        atlas: document.querySelector('#sec-atlas .section__head .n').textContent,
         matrix: document.querySelector('#sec-matrix .section__head .n').textContent,
         entries: document.querySelector('#sec-all .section__head .n').textContent
       }
