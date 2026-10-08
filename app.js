@@ -234,10 +234,6 @@
         '<div class="atlas__axis atlas__axis--y" aria-hidden="true"><span>Dimensional</span><span>Flat</span></div>' +
         '<div class="atlas__plot">' +
           '<div class="atlas__grid" aria-hidden="true">' +
-            '<span class="atlas__quad atlas__quad--tl">Restrained &middot; dimensional</span>' +
-            '<span class="atlas__quad atlas__quad--tr">Loud &middot; dimensional</span>' +
-            '<span class="atlas__quad atlas__quad--bl">Restrained &middot; flat</span>' +
-            '<span class="atlas__quad atlas__quad--br">Loud &middot; flat</span>' +
             '<span class="atlas__mid atlas__mid--v"></span><span class="atlas__mid atlas__mid--h"></span>' +
           "</div>" +
           '<div class="atlas__space">' + dots + "</div>" +

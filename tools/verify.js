@@ -47,7 +47,10 @@ const OUT = path.join(__dirname, 'shots');
     keptMicroCopy: {
       axisCaptions: document.querySelectorAll('.atlas__axis').length,
       legendItems: document.querySelectorAll('.matrix__legend span').length,
-      readoutHint: document.querySelectorAll('.matrix__ro-hint').length
+      readoutHint: document.querySelectorAll('.matrix__ro-hint').length,
+      /* the quadrant captions restated the axis labels, so they are gone: the
+         axes alone name the scale */
+      quadrantCaptions: document.querySelectorAll('.atlas__quad').length
     }
   }));
 
