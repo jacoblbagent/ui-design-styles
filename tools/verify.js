@@ -34,6 +34,23 @@ const OUT = path.join(__dirname, 'shots');
     [...document.styleSheets].reduce((n, s) => { try { return n + s.cssRules.length; } catch (e) { return n; } }, 0));
   report.countLine = await page.locator('#count-line').textContent();
   report.pageHeight = await page.evaluate(() => document.body.scrollHeight);
+  // no explanatory blocks: the page states its numbers in the section heads and
+  // keeps its prose in the detail dialog
+  report.noProseBlocks = await page.evaluate(() => ({
+    mastheadSub: document.querySelectorAll('.masthead__sub').length,
+    filterHint: document.querySelectorAll('.filterhint').length,
+    sectionNotes: document.querySelectorAll('.section__note').length,
+    entryBlurbs: document.querySelectorAll('.entry__blurb').length,
+    footNotes: document.querySelectorAll('.foot__note').length,
+    /* what is left is functional micro-copy: the axis captions, the matrix
+       legend, the readout hint and the gallery notes */
+    keptMicroCopy: {
+      axisCaptions: document.querySelectorAll('.atlas__axis').length,
+      legendItems: document.querySelectorAll('.matrix__legend span').length,
+      readoutHint: document.querySelectorAll('.matrix__ro-hint').length
+    }
+  }));
+
   // the masthead tally is not shown any more: the section heads carry the counts
   report.mastheadCount = await page.evaluate(() => {
     const el = document.getElementById('count-line');
@@ -461,6 +478,12 @@ const OUT = path.join(__dirname, 'shots');
   await m.setViewportSize({ width: 390, height: 780 });
   await m.goto(BASE, { waitUntil: 'networkidle' });
   report.mobileHOverflow = await m.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  report.mobileAtlas = await m.evaluate(() => ({
+    plot: getComputedStyle(document.querySelector('.atlas__plot')).display,
+    axisRow: getComputedStyle(document.querySelector('.atlas__axis--x')).display,
+    legendRows: document.querySelectorAll('.atlas__legend li').length,
+    namesOnPlane: [...document.querySelectorAll('.atlas__name')].filter((n) => n.getBoundingClientRect().height > 0).length
+  }));
   report.mobileInputFont = await m.evaluate(() => getComputedStyle(document.getElementById('q')).fontSize);
   await m.screenshot({ path: path.join(OUT, 'mobile-top.png') });
   await m.evaluate(() => window.scrollTo(0, 900));

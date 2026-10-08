@@ -111,7 +111,6 @@
         '<h3 class="entry__title">' + esc(e.name) + "</h3>" +
         '<p class="entry__meta">' + esc(e.era) + "</p>" +
       "</div>" +
-      '<p class="entry__blurb">' + e.blurb + "</p>" +
       '<p class="entry__tags"><span class="tag tag--kind" title="' + esc(kindNote(e.id)) + '">' + esc(kindLabel(e.id)) + "</span>" + sig + "</p>" +
       '<div class="spec spec--' + e.id + '">' + e.html + "</div>" +
     "</article>";
@@ -231,10 +230,6 @@
 
     return '<section class="section" id="sec-atlas">' +
       '<div class="section__head"><h2>Atlas</h2><span class="n">' + items.length + '</span></div>' +
-      '<p class="section__note">Names are the marks: each style sits at its own two values — left to right is restraint to loud, bottom to top is flat to dimensional. ' +
-        "A name is only moved to stop two of them touching, and anything that moves keeps a hairline back to the exact spot. Values are authored per entry in <code>data/facets.js</code>, read from the traits each entry declares. " +
-        "A filter dims the styles that fall outside it rather than removing them, so you can see what a trait sits next to. Click a name for its full entry. " +
-        '<span class="only-narrow">On a screen this narrow the plane gives way to the list below: the same names with both values, in axis order.</span></p>' +
       '<div class="atlas">' +
         '<div class="atlas__axis atlas__axis--y" aria-hidden="true"><span>Dimensional</span><span>Flat</span></div>' +
         '<div class="atlas__plot">' +
@@ -390,10 +385,6 @@
 
     return '<section class="section" id="sec-matrix">' +
       '<div class="section__head"><h2>Trait matrix</h2><span class="n">' + items.length + " &times; " + COLUMNS.length + "</span></div>" +
-      '<p class="section__note">The columns are the recurring techniques, grouped material, form, type, colour, behaviour — the hairline boundaries between groups are where a column starts. A filled mark means the entry declares that trait: ' +
-        "the solid mark is the trait the style is made of, the faint one is supporting it. Rows read left to right as a fingerprint, so two styles with the same pattern are the same idea twice. " +
-        "Point at a mark and its row and column light up with the pair named in the readout; the column labels repeat down the table so you are never far from them. " +
-        "Click any column header, or any mark, to filter the whole page to that trait.</p>" +
       '<div class="matrix__legend"><span><span class="dot dot--sig"></span>signature</span><span><span class="dot dot--sup"></span>supporting</span>' +
         "<span><span class=\"dot dot--off\"></span>not declared</span><span>last column: closest neighbour by trait overlap</span></div>" +
       '<div class="matrix__body">' +
@@ -464,11 +455,7 @@
   function renderSites() {
     var visible = GALLERY.filter(siteMatches);
     if (!visible.length && state.view !== "gallery") return "";
-    var head = '<div class="section__head"><h2>Real-world examples</h2><span class="n">' + visible.length + "</span></div>" +
-      '<p class="section__note">Live sites, one per style family, captured from the real page by this repo\u2019s tooling on ' + CAPTURED +
-      ". The site is the source of truth — the screenshot is only a record of what it looked like. Where a site permits framing, " +
-      "you can load it right here; the rest send <code>X-Frame-Options</code> or a <code>frame-ancestors</code> policy and open in a new tab. " +
-      "Tags link to the matching style above.</p>";
+    var head = '<div class="section__head"><h2>Real-world examples</h2><span class="n">' + visible.length + "</span></div>";
     var body = visible.length
       ? '<div class="sites">' + visible.map(siteHTML).join("") + "</div>"
       : '<p class="section__note">No saved site matches that search.</p>';
@@ -517,8 +504,6 @@
       html += matrixHTML(visible);
       html += '<section class="section" id="sec-all">' +
         '<div class="section__head"><h2>Every entry</h2><span class="n">' + visible.length + "</span></div>" +
-        '<p class="section__note">The full record, alphabetical: live specimen, the traits that define it, the tokens and CSS, and a paste-ready prompt. ' +
-          "Click any card for the detail, including its placement and the styles it shares traits with.</p>" +
         filterNote(visible) +
         (visible.length
           ? '<div class="grid">' + visible.map(entryHTML).join("") + "</div>"
@@ -599,8 +584,6 @@
         "Real-world examples" + '<span class="chip__n">' + GALLERY.length + "</span></button>"
       : "";
     chips.innerHTML = all + kindChips + gallery + active + clear;
-    var hint = $("#filter-hint");
-    if (hint) hint.hidden = state.facets.length > 0 || state.view === "gallery";
   }
 
   function toggleFacet(id) {

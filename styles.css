@@ -144,16 +144,12 @@ kbd {
 }
 .chip[aria-pressed="true"] .chip__n { background: var(--panel); color: var(--ink); }
 
-.statusline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px; margin-top: 12px; }
-.filterhint { margin: 0; color: var(--muted); font-size: var(--t-12); }
 
 /* scrolling past the top collapses the header to its controls, so the sticky
    bar does not hold a third of a laptop viewport for the whole catalog */
 .masthead.is-tight { padding: 10px 0 10px; }
 .masthead.is-tight .masthead__title { font-size: var(--t-20); }
-.masthead.is-tight .masthead__sub, .masthead.is-tight .filterhint { display: none; }
 .masthead.is-tight .controls { margin-top: 10px; }
-.masthead.is-tight .statusline { margin-top: 8px; }
 .chip__x { margin-left: 1px; font-size: 13px; line-height: 1; opacity: .7; }
 
 /* the kind chips are the coarse filter, so they sit apart from the rest of the
@@ -656,7 +652,6 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
 
 /* The legend under the plot carries the names when the plane cannot. */
 .atlas__legend { grid-column: 1 / -1; margin-top: 12px; border-top: 1px solid var(--hair); padding-top: 10px; }
-.only-narrow { display: none; }
 .atlas__lghead { display: flex; justify-content: space-between; gap: 10px; margin: 0 0 4px; font: 500 10px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .atlas__legend ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0 18px; }
 .atlas__legend button {
@@ -684,7 +679,6 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
   .atlas__space { inset: 8px; }
   .atlas__space { inset: 8px; }
   .atlas__legend ul { grid-template-columns: 1fr; }
-  .only-narrow { display: inline; }
   .matrix__scroll { margin-top: 10px; }
   /* On a phone a bottom-pinned bar sits over the column headers and eats the
      taps meant for them, so it stops being sticky and moves above the table
