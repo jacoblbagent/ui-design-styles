@@ -422,8 +422,7 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 }
 
 /* The name is the only mark on the plot: no dot, no wrapper, no invisible hit
-   target. It is positioned so its own box lands on the style's two values, and
-   where it cannot sit exactly there a hairline runs back to the spot. */
+   target. It is positioned so its own box lands on the style's two values. */
 .atlas__name {
   position: absolute; margin: 0; padding: 2px 4px;
   border: 1px solid transparent; border-radius: 3px;
@@ -437,23 +436,8 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 .atlas__name[data-side="right"] { transform: translate(8px, calc(50% + var(--lnudge, 0px))); }
 .atlas__name[data-side="left"] { transform: translate(calc(-100% - 8px), calc(50% + var(--lnudge, 0px))); }
 
-/* the hairline back to the values: a run along the depth axis, plus the stub
-   across where the name stands to one side */
-.atlas__lead { position: absolute; pointer-events: none; opacity: .45; height: 0; }
-.atlas__name:not(.has-lead) .atlas__lead { display: none; }
-.atlas__name[data-side="center"] .atlas__lead { left: 50%; width: 0; border-left: 1px solid var(--hair-strong); }
-.atlas__name[data-side="center"][data-dir="up"] .atlas__lead { top: 100%; height: var(--lead, 0px); }
-.atlas__name[data-side="center"][data-dir="down"] .atlas__lead { bottom: 100%; height: var(--lead, 0px); }
-.atlas__name[data-side="right"] .atlas__lead { left: -8px; width: 8px; border-left: 1px solid var(--hair-strong); }
-.atlas__name[data-side="right"][data-dir="up"] .atlas__lead { top: 50%; height: var(--lead, 0px); border-top: 1px solid var(--hair-strong); }
-.atlas__name[data-side="right"][data-dir="down"] .atlas__lead { bottom: 50%; height: var(--lead, 0px); border-bottom: 1px solid var(--hair-strong); }
-.atlas__name[data-side="left"] .atlas__lead { right: -8px; width: 8px; border-right: 1px solid var(--hair-strong); }
-.atlas__name[data-side="left"][data-dir="up"] .atlas__lead { top: 50%; height: var(--lead, 0px); border-top: 1px solid var(--hair-strong); }
-.atlas__name[data-side="left"][data-dir="down"] .atlas__lead { bottom: 50%; height: var(--lead, 0px); border-bottom: 1px solid var(--hair-strong); }
-
 .atlas__name:hover { z-index: 2; border-color: var(--accent); color: var(--ink); }
 .atlas__name:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
-.atlas__name:hover .atlas__lead, .atlas__name:focus-visible .atlas__lead { opacity: 1; }
 .atlas__name.is-dim { opacity: .24; }
 .atlas__name.is-dim:hover { opacity: 1; }
 

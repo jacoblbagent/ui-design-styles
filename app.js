@@ -224,7 +224,7 @@
           ' data-x="' + p.x.toFixed(2) + '" data-y="' + p.y.toFixed(2) + '"' +
           ' style="left:' + p.x.toFixed(2) + '%;bottom:' + p.y.toFixed(2) + '%"' +
           ' title="' + esc(e.name) + " — " + esc(e.era) + " · loud " + f.v + "/100 · dimensional " + f.d + '/100">' +
-          '<span class="atlas__lead" aria-hidden="true"></span>' + esc(e.name) +
+          esc(e.name) +
         "</button>";
     }).join("");
 
@@ -311,15 +311,6 @@
       });
       name.setAttribute("data-side", best.side);
       name.style.setProperty("--lnudge", best.off + "px");
-      /* The name is the only thing drawn, so wherever it is not sitting on its
-         own values a hairline runs back to the exact spot. A name centred on
-         its values needs no line; one placed beside its values always needs the
-         short stub across, even when it did not move vertically. */
-      name.setAttribute("data-dir", best.off < 0 ? "up" : "down");
-      var half = name.getBoundingClientRect().height / 2;
-      var run = best.side === "center" ? Math.abs(best.off) - half - 1 : Math.abs(best.off);
-      name.style.setProperty("--lead", Math.max(0, run) + "px");
-      name.classList.toggle("has-lead", best.side !== "center" || run >= 2);
       placed.push(name.getBoundingClientRect());
     });
   }

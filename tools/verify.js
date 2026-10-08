@@ -146,34 +146,28 @@ const OUT = path.join(__dirname, 'shots');
       .map((sel) => document.querySelectorAll(sel).length).reduce((a, b) => a + b, 0),
     everyNameIsAButton: [...document.querySelectorAll('.atlas__name')].every((n) => n.tagName === 'BUTTON')
   }));
-  // the point (an invisible hit target under the name) must sit where its two
-  // authored values put it; where a name had to travel, it needs its leader line
+  // the name is the mark: it is placed at its two authored values, and where a
+  // collision forces it aside it simply stands there — no leader line is drawn
+  // back to the spot, so the plot carries names alone
   report.atlasNamePlacement = await page.evaluate(() => {
     const space = document.querySelector('.atlas__space').getBoundingClientRect();
-    const anchorMisses = [], unled = [];
+    const offValues = [];
+    let leadElements = 0, hasLeadClasses = 0;
     [...document.querySelectorAll('.atlas__name')].forEach((n) => {
       const x = space.left + (parseFloat(n.dataset.x) / 100) * space.width;
       const y = space.bottom - (parseFloat(n.dataset.y) / 100) * space.height;
       const box = n.getBoundingClientRect();
       const cx = (box.left + box.right) / 2, cy = (box.top + box.bottom) / 2;
-      let ax, ay;
-      if (n.classList.contains('has-lead')) {
-        const l = n.querySelector('.atlas__lead').getBoundingClientRect();
-        const corners = [[l.left, l.top], [l.right, l.top], [l.left, l.bottom], [l.right, l.bottom]];
-        corners.sort((m, o) => Math.hypot(o[0] - cx, o[1] - cy) - Math.hypot(m[0] - cx, m[1] - cy));
-        ax = corners[0][0]; ay = corners[0][1];
-      } else if (n.dataset.side === 'center') {
-        ax = cx; ay = cy;
-      } else {
-        ax = n.dataset.side === 'right' ? box.left - 8 : box.right + 8;
-        ay = cy;
-      }
-      const dx = Math.abs(ax - x), dy = Math.abs(ay - y);
-      if (dx > 3 || dy > 3) anchorMisses.push({ id: n.dataset.id, side: n.dataset.side, dx: +dx.toFixed(1), dy: +dy.toFixed(1) });
-      /* a name that does not sit on its own values must carry the line back */
-      if (!n.classList.contains('has-lead') && (Math.abs(dx) > 1.5 || Math.abs(dy) > 1.5)) unled.push(n.dataset.id);
+      if (Math.abs(cx - x) > 1.5 || Math.abs(cy - y) > 1.5) offValues.push(n.dataset.id);
+      leadElements += n.querySelectorAll('.atlas__lead').length;
+      if (n.classList.contains('has-lead')) hasLeadClasses++;
     });
-    return { anchorMisses, movedNamesWithoutLeader: unled };
+    return {
+      namesOffValues: offValues,
+      leadElements,
+      hasLeadClasses,
+      anyLeadInDocument: document.querySelectorAll('.atlas__lead').length
+    };
   });
 
   report.atlasLabelOverlaps = await page.evaluate(() => {
@@ -214,7 +208,7 @@ const OUT = path.join(__dirname, 'shots');
       everyRowHasNeighbour: [...document.querySelectorAll('.matrix__near')].every((td) => td.textContent.trim().length > 0) };
   });
 
-  // --- the reading aids: group boundaries, the crosshair, the readout, leader lines ---
+  // --- the reading aids: group boundaries, the crosshair, the readout, no tails ---
   report.matrixGroupBoundaries = await page.evaluate(() => {
     const form = document.querySelector('.matrix__cell[data-group="Form"]');
     const material = document.querySelector('.matrix__cell[data-group="Material"]');
@@ -294,17 +288,15 @@ const OUT = path.join(__dirname, 'shots');
 
   report.atlasLeads = await page.evaluate(() => {
     const names = [...document.querySelectorAll('.atlas__name')];
-    const leads = names.filter((n) => n.classList.contains('has-lead'));
     const nudges = names.map((n) => Math.abs(parseFloat(n.style.getPropertyValue('--lnudge')) || 0)).sort((a, b) => a - b);
     return {
       namesOnTheirValue: nudges.filter((v) => v < 12).length,
       medianNudge: nudges[Math.floor(nudges.length / 2)],
       sides: names.reduce((a, n) => (a[n.dataset.side] = (a[n.dataset.side] || 0) + 1, a), {}),
-      withLead: leads.length,
-      /* a name standing to one side of its values always needs the stub across */
-      everySideNameHasLead: names.filter((n) => n.dataset.side !== 'center').every((n) => n.classList.contains('has-lead')),
-      everyLongLeadHasLength: names.filter((n) => Math.abs(parseFloat(n.style.getPropertyValue('--lnudge')) || 0) > 16 && n.dataset.side === 'center')
-        .every((n) => parseFloat(n.style.getPropertyValue('--lead')) >= 2)
+      /* no tails of any kind: no lead element, no has-lead class, no --lead var */
+      leadElements: document.querySelectorAll('.atlas__lead').length,
+      hasLeadClasses: names.filter((n) => n.classList.contains('has-lead')).length,
+      leadVars: names.filter((n) => n.style.getPropertyValue('--lead')).length
     };
   });
 
