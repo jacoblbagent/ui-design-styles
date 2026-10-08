@@ -223,7 +223,6 @@ kbd {
 
 .modal__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .modal__title { margin: 0; font-size: var(--t-25); font-weight: 600; letter-spacing: -0.02em; }
-.modal__meta { margin: 6px 0 0; color: var(--muted); font-size: var(--t-12); max-width: 76ch; }
 .modal__blurb { margin: 0; color: var(--ink-2); font-size: var(--t-16); max-width: 76ch; }
 .modal .spec { min-height: 230px; }
 .modal .traits ul { margin-top: 0; }

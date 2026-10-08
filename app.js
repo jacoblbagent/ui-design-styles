@@ -173,7 +173,6 @@
     return '<div class="modal__head">' +
         "<div>" +
           '<h2 class="modal__title" id="detail-title">' + esc(e.name) + "</h2>" +
-          '<p class="modal__meta">' + esc(e.era) + "</p>" +
         "</div>" +
         '<button class="iconbtn" type="button" data-close aria-label="Close details">' + ICON_CLOSE + "</button>" +
       "</div>" +

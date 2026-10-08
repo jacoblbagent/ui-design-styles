@@ -135,9 +135,9 @@ const OUT = path.join(__dirname, 'shots');
     kindInHead: await page.locator('#detail .modal__kind, #detail .tag--kind').count(),
     madeOf: await page.locator('#detail .traitlist:not(.traitlist--all)').textContent()
   };
-  // the detail head is kept to essentials: title, era, one blurb line — no kind badge
+  // the detail head is kept to essentials: the title and one blurb line — no meta, no badge
   report.detailHead = await page.evaluate(() => ({
-    meta: document.querySelector('#detail .modal__meta').textContent,
+    metaLines: document.querySelectorAll('#detail .modal__meta').length,
     blurbWords: document.querySelector('#detail .modal__blurb').textContent.split(/\s+/).filter(Boolean).length,
     kindBadge: document.querySelectorAll('#detail .modal__kind, #detail .tag--kind').length,
     blockheadHints: document.querySelectorAll('#detail .blockhead__hint').length
