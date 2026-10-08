@@ -2,12 +2,14 @@
 
 Live: https://jacoblbagent.github.io/ui-design-styles/
 
-A single-page reference for UI/UX design styles. Every entry:
+A single-page reference for UI/UX design styles. The grid stays collapsed to an outline — name, era, blurb and a live specimen per card; click any card (or its **View details** button) for the full detail in a modal:
 
 - renders a **live specimen** built with the real technique the style is made of (no screenshots, no stock images),
 - lists the **specific traits** that define it, with the exact values (`backdrop-filter: blur(18px) saturate(160%)`, `box-shadow: 6px 6px 0 #000`, radii, type ramps),
 - carries a **copy button** for the traits, for the CSS, and for a ready-to-paste **prompt** describing the style,
 - notes what breaks the style, so the copy does not get misused.
+
+The modal closes on Escape, on the close button, and on a backdrop click; a `#<style-id>` link (including the tags on the real-world example cards) opens the matching entry's modal directly.
 
 43 style entries across four sections: Foundations, Surfaces & depth, Expressive & era-bound, Structure & interaction — plus a fifth section of 46 real-world sites showing those styles in the wild, each captured from the live page and tagged back to the style entries it demonstrates.
 
@@ -28,6 +30,7 @@ tools/reshoot.js     re-captures specific sites with consent dialogs dismissed
 tools/build-shots.py downscales captures and builds review contact sheets
 tools/build-gallery.py  merges the capture report + annotations into data/gallery.js
 tools/verify.js      headless verification: counts, filter/search, clipboard, embeds, mobile, dark
+tools/verify-modal.js  headless verification of the detail modal: open/close paths, focus return, deep link, dark + mobile
 ```
 
 ## Real-world examples

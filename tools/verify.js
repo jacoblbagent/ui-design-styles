@@ -142,17 +142,26 @@ const OUT = path.join(__dirname, 'shots');
   await page.waitForTimeout(220);
   report.afterClear = await page.locator('.entry').count();
 
-  // --- copy buttons actually write to the clipboard ---
-  await page.locator('.entry#glassmorphism [data-copy="css"]').click();
+  // --- copy buttons actually write to the clipboard (they live in the detail modal) ---
+  await page.locator('.entry#glassmorphism [data-detail]').click();
+  await page.waitForTimeout(200);
+  report.modalOpen = await page.evaluate(() => !!document.querySelector('#detail[open]'));
+  report.modalTitle = await page.locator('#detail .modal__title').textContent();
+  report.gridDetailHidden = await page.evaluate(() => !document.querySelector('.entry#glassmorphism .traits'));
+  await page.screenshot({ path: path.join(OUT, 'detail-modal.png') });
+  await page.locator('#detail [data-copy="css"]').click();
   await page.waitForTimeout(150);
   report.clipCss = await page.evaluate(() => navigator.clipboard.readText());
-  await page.locator('.entry#glassmorphism [data-copy="traits"]').click();
+  await page.locator('#detail [data-copy="traits"]').click();
   await page.waitForTimeout(150);
   report.clipTraits = await page.evaluate(() => navigator.clipboard.readText());
-  await page.locator('.entry#glassmorphism [data-copy="prompt"]').click();
+  await page.locator('#detail [data-copy="prompt"]').click();
   await page.waitForTimeout(150);
   report.clipPrompt = await page.evaluate(() => navigator.clipboard.readText());
   report.toastText = await page.locator('.toast').textContent();
+  await page.locator('#detail [data-close]').click();
+  await page.waitForTimeout(200);
+  report.modalClosed = await page.evaluate(() => !document.querySelector('#detail[open]'));
 
   // --- mobile ---
   const m = await ctx.newPage();

@@ -32,6 +32,8 @@
   /* ---------- building blocks ---------- */
   var ICON_COPY = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5V3.5a1.5 1.5 0 0 0-1.5-1.5H3.5A1.5 1.5 0 0 0 2 3.5V8a1.5 1.5 0 0 0 1.5 1.5h2"/></svg>';
   var ICON_EMBED = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M2 6.5h12M5 9.5h3"/></svg>';
+  var ICON_EXPAND = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4M10 14h4v-4M14 6V2h-4M2 10v4h4"/></svg>';
+  var ICON_CLOSE = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
 
   function traitsText(e) {
     var lines = ["## " + e.name + " (" + e.era + ")", "", e.blurb, "", "Traits:"];
@@ -50,11 +52,34 @@
     return "/* " + e.name + " — " + e.era + "\n   " + stripTags(e.blurb) + " */\n\n" + e.css;
   }
 
-  function entryHTML(e, i) {
-    var spec = '<div class="spec spec--' + e.id + '">' + e.html + "</div>";
+  /* ---------- grid card: summary only, detail lives in the modal ---------- */
+  function entryHTML(e) {
+    return '<article class="entry entry--summary" id="' + e.id + '" data-id="' + e.id + '">' +
+      '<div class="entry__top">' +
+        '<h3 class="entry__title">' + e.name + "</h3>" +
+        '<p class="entry__meta">' + e.era + "</p>" +
+      "</div>" +
+      '<p class="entry__blurb">' + e.blurb + "</p>" +
+      '<div class="spec spec--' + e.id + '">' + e.html + "</div>" +
+      '<div class="entry__foot">' +
+        '<button class="ghost" type="button" data-detail="' + e.id + '">' + ICON_EXPAND + "View details</button>" +
+        '<span class="entry__hint">Traits, tokens &amp; CSS</span>' +
+      "</div>" +
+    "</article>";
+  }
+
+  /* the specimen markup is authored for the page; scope its ids when it is
+     rendered a second time inside the dialog so nothing lands twice. */
+  function uniqueIds(html) {
+    return String(html)
+      .replace(/\bid="([^"]+)"/g, 'id="m-$1"')
+      .replace(/\bfor="([^"]+)"/g, 'for="m-$1"');
+  }
+
+  function detailHTML(e) {
     var traits = e.traits.map(function (t) { return "<li>" + t + "</li>"; }).join("");
     var avoid = (e.avoid && e.avoid.length)
-      ? '<h4 style="margin-top:14px">Watch out for</h4><ul>' +
+      ? '<h4 class="detail__sub">Watch out for</h4><ul>' +
         e.avoid.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>"
       : "";
     var sources = (e.sources && e.sources.length)
@@ -63,13 +88,15 @@
         }).join(", ") + "</p>"
       : "";
 
-    return '<article class="entry" id="' + e.id + '" data-id="' + e.id + '">' +
-      '<div>' +
-        '<h3 class="entry__title"><a href="#' + e.id + '">' + e.name + "</a></h3>" +
-        '<p class="entry__meta">' + e.era + " &middot; " + stripTags(e.origin) + "</p>" +
+    return '<div class="modal__head">' +
+        "<div>" +
+          '<h2 class="modal__title" id="detail-title">' + e.name + "</h2>" +
+          '<p class="modal__meta">' + e.era + " &middot; " + stripTags(e.origin) + "</p>" +
+        "</div>" +
+        '<button class="iconbtn" type="button" data-close aria-label="Close details">' + ICON_CLOSE + "</button>" +
       "</div>" +
-      '<p class="entry__blurb">' + e.blurb + "</p>" +
-      spec +
+      '<p class="modal__blurb">' + e.blurb + "</p>" +
+      '<div class="spec spec--' + e.id + '">' + uniqueIds(e.html) + "</div>" +
       '<div class="traits"><div class="blockhead"><h4>Traits</h4>' +
         '<button class="ghost" type="button" data-copy="traits" data-id="' + e.id + '">' + ICON_COPY + "Copy traits</button>" +
       "</div><ul>" + traits + "</ul>" + avoid + "</div>" +
@@ -81,8 +108,7 @@
         "<pre><code>" + esc(cssText(e)) + "</code></pre>" +
         "<pre><code>" + esc(e.prompt) + "</code></pre>" +
       "</details>" +
-      sources +
-    "</article>";
+      sources;
   }
 
   /* ---------- real-world examples ---------- */
@@ -278,6 +304,56 @@
     document.body.removeChild(ta);
   }
 
+  /* ---------- detail modal ---------- */
+  var modal = $("#detail");
+  var lastFocus = null;
+
+  function findEntry(id) {
+    for (var i = 0; i < CATALOG.length; i++) if (CATALOG[i].id === id) return CATALOG[i];
+    return null;
+  }
+
+  function openDetail(id) {
+    var e = findEntry(id);
+    if (!e || !modal || modal.open) return;
+    lastFocus = document.activeElement;
+    modal.innerHTML = detailHTML(e);
+    if (typeof modal.showModal === "function") modal.showModal();
+    else modal.setAttribute("open", "");
+    var closeBtn = modal.querySelector("[data-close]");
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function runCopy(btn) {
+    var e = findEntry(btn.getAttribute("data-id"));
+    if (!e) return;
+    var kind = btn.getAttribute("data-copy");
+    if (kind === "traits") copy(traitsText(e), "traits for " + e.name);
+    if (kind === "css") copy(cssText(e), "CSS for " + e.name);
+    if (kind === "prompt") copy(e.prompt, "prompt for " + e.name);
+  }
+
+  if (modal) {
+    /* a click that lands on the dialog itself is a backdrop click */
+    modal.addEventListener("click", function (ev) {
+      if (ev.target === modal || ev.target.closest("[data-close]")) { modal.close(); return; }
+      var btn = ev.target.closest("[data-copy]");
+      if (btn) runCopy(btn);
+    });
+    modal.addEventListener("close", function () {
+      modal.innerHTML = "";
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+      lastFocus = null;
+    });
+    /* a tag link or a pasted #hash jumps straight to the detail */
+    function fromHash() {
+      var id = (location.hash || "").replace(/^#/, "");
+      if (id && findEntry(id)) openDetail(id);
+    }
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
+  }
+
   main.addEventListener("click", function (ev) {
     var emb = ev.target.closest("[data-embed]");
     if (emb) {
@@ -292,15 +368,10 @@
       return;
     }
     var btn = ev.target.closest("[data-copy]");
-    if (!btn) return;
-    var id = btn.getAttribute("data-id");
-    var e = null;
-    for (var i = 0; i < CATALOG.length; i++) if (CATALOG[i].id === id) e = CATALOG[i];
-    if (!e) return;
-    var kind = btn.getAttribute("data-copy");
-    if (kind === "traits") copy(traitsText(e), "traits for " + e.name);
-    if (kind === "css") copy(cssText(e), "CSS for " + e.name);
-    if (kind === "prompt") copy(e.prompt, "prompt for " + e.name);
+    if (btn) { runCopy(btn); return; }
+    /* the card is a summary: clicking it anywhere opens the full detail */
+    var card = ev.target.closest(".entry");
+    if (card && !ev.target.closest("a")) openDetail(card.getAttribute("data-id"));
   });
 
   /* ---------- theme ---------- */
