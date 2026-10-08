@@ -213,6 +213,7 @@
       return '<button class="atlas__pt" type="button" data-id="' + e.id + '" data-side="' + p.side + '"' +
           ' style="left:' + p.x.toFixed(2) + '%;bottom:' + p.y.toFixed(2) + '%"' +
           ' title="' + esc(e.name) + " — " + esc(e.era) + " · loud " + f.v + "/100 · dimensional " + f.d + '/100">' +
+          '<span class="atlas__stem" aria-hidden="true"></span>' +
           '<span class="atlas__dot" data-sig="' + (sig || "") + '"></span>' +
           '<span class="atlas__label">' + esc(e.name) + "</span>" +
         "</button>";
@@ -311,26 +312,52 @@
       });
       pt.setAttribute("data-side", best.side);
       label.style.setProperty("--lnudge", best.off + "px");
+      /* a label that had to move gets a leader line, so the dot it belongs to
+         is never in doubt */
+      var lab = Math.abs(best.off);
+      pt.setAttribute("data-dir", best.off < 0 ? "up" : "down");
+      pt.style.setProperty("--labs", lab + "px");
+      pt.classList.toggle("has-stem", lab >= 13);
       placed.push(label.getBoundingClientRect());
     });
   }
 
-  /* ---------- the trait matrix: techniques as columns ---------- */
+  /* ---------- the trait matrix: techniques as columns ----------
+     Reading a mark means knowing both its row and its column, and with 22
+     rotated headers over 43 rows that trace is long. So the matrix carries
+     three aids: hairline boundaries between the five groups, a repeat of the
+     header every fifteen rows, and a crosshair that lights the hovered row and
+     column and names the pair in a readout above the table. */
+  var REPEAT_EVERY = 15;
+
   function matrixHTML(items) {
-    var head = COLUMNS.map(function (c) {
+    function colHead(c, live) {
       var on = state.facets.indexOf(c.id) !== -1;
       var n = items.filter(function (e) { return levelOf(e.id, c.id); }).length;
+      if (!live) {
+        /* the repeated rows are a reading aid, not a second header: plain text,
+           out of the tab order, hidden from assistive tech */
+        return '<td class="matrix__col matrix__col--repeat" data-group="' + c.group + '" aria-hidden="true">' +
+          '<span class="matrix__collabel">' + esc(c.label) + '</span><span class="matrix__coln">' + n + "</span></td>";
+      }
       return '<th scope="col" class="matrix__col" data-group="' + c.group + '">' +
         '<button class="matrix__colbtn" type="button" data-facet="' + c.id + '" aria-pressed="' + on + '" title="' + esc(c.note) + '">' +
           '<span class="matrix__collabel">' + esc(c.label) + '</span><span class="matrix__coln">' + n + "</span>" +
         "</button></th>";
-    }).join("");
+    }
 
-    var rows = items.map(function (e) {
+    var head = COLUMNS.map(function (c) { return colHead(c, true); }).join("");
+    var repeatHead = '<tr class="matrix__repeat" aria-hidden="true">' +
+      '<td class="matrix__row matrix__row--repeat">Style</td>' +
+      COLUMNS.map(function (c) { return colHead(c, false); }).join("") +
+      '<td class="matrix__near matrix__near--repeat">Shares with</td></tr>';
+
+    var rows = [];
+    items.forEach(function (e) {
       var cells = COLUMNS.map(function (c) {
         var lv = levelOf(e.id, c.id);
         var on = state.facets.indexOf(c.id) !== -1;
-        return '<td class="matrix__cell" data-level="' + lv + '" data-on="' + on + '">' +
+        return '<td class="matrix__cell" data-level="' + lv + '" data-on="' + on + '" data-group="' + c.group + '" data-facet="' + c.id + '">' +
           '<button type="button" data-facet="' + c.id + '" ' + (lv ? "" : "tabindex=\"-1\" ") +
             'aria-label="' + esc(e.name) + ": " + esc(c.label) + " — " +
             (lv === 2 ? "signature trait" : lv === 1 ? "supporting trait" : "not declared") + '">' +
@@ -338,26 +365,33 @@
           "</button></td>";
       }).join("");
       var rel = relatives(e.id, 1)[0];
-      return '<tr id="row-' + e.id + '">' +
+      rows.push('<tr id="row-' + e.id + '">' +
         '<th scope="row" class="matrix__row"><button type="button" data-id="' + e.id + '">' + esc(e.name) + "</button></th>" +
         cells +
         '<td class="matrix__near">' + (rel
           ? '<button type="button" data-goto="' + rel.id + '">' + esc(rel.name) + " <span>" + Math.round(rel.score * 100) + "%</span></button>"
           : "<span class=\"muted\">—</span>") + "</td>" +
-      "</tr>";
-    }).join("");
+      "</tr>");
+      /* a repeat of the column labels, so no mark is ever more than a few rows
+         from the text that names its column */
+      if ((rows.length % REPEAT_EVERY) === 0 && rows.length < items.length) rows.push(repeatHead);
+    });
 
     return '<section class="section" id="sec-matrix">' +
       '<div class="section__head"><h2>Trait matrix</h2><span class="n">' + items.length + " &times; " + COLUMNS.length + "</span></div>" +
-      '<p class="section__note">The columns are the recurring techniques, grouped material, form, type, colour, behaviour. A filled mark means the entry declares that trait — ' +
+      '<p class="section__note">The columns are the recurring techniques, grouped material, form, type, colour, behaviour — the hairline boundaries between groups are where a column starts. A filled mark means the entry declares that trait: ' +
         "the solid mark is the trait the style is made of, the faint one is supporting it. Rows read left to right as a fingerprint, so two styles with the same pattern are the same idea twice. " +
+        "Point at a mark and its row and column light up with the pair named in the readout; the column labels repeat down the table so you are never far from them. " +
         "Click any column header, or any mark, to filter the whole page to that trait.</p>" +
       '<div class="matrix__legend"><span><span class="dot dot--sig"></span>signature</span><span><span class="dot dot--sup"></span>supporting</span>' +
         "<span><span class=\"dot dot--off\"></span>not declared</span><span>last column: closest neighbour by trait overlap</span></div>" +
       '<div class="matrix__scroll"><table class="matrix">' +
         '<thead><tr><th scope="col" class="matrix__corner">Style</th>' + head + '<th scope="col" class="matrix__nearhead">Shares with</th></tr></thead>' +
-        "<tbody>" + rows + "</tbody>" +
+        "<tbody>" + rows.join("") + "</tbody>" +
       "</table></div>" +
+      '<p class="matrix__readout" id="matrix-readout" role="status" aria-live="polite">' +
+        '<span class="matrix__ro-hint">Hover or focus a mark — its row and column light up, and the pair is named here.</span>' +
+      "</p>" +
     "</section>";
   }
 
@@ -466,6 +500,7 @@
     }
 
     html += renderSites();
+    clearCrosshair();
     main.innerHTML = html;
     countLine.textContent = countText(visible.length, sites.length);
     if (state.view !== "gallery") {
@@ -727,6 +762,65 @@
     if (!el || ev.target.closest("a, button:not(.atlas__pt), input, select, textarea")) return;
     ev.preventDefault();
     openDetail(el.getAttribute("data-id"));
+  });
+
+  /* ---------- matrix crosshair: name the row and the column under the pointer ---------- */
+  var lastHot = null, hotNodes = [];
+
+  function clearCrosshair() {
+    hotNodes.forEach(function (n) { n.classList.remove("is-hotrow", "is-hotcol"); });
+    hotNodes = [];
+    lastHot = null;
+  }
+
+  function setCrosshair(cell) {
+    if (cell === lastHot) return;
+    clearCrosshair();
+    lastHot = cell;
+    var table = cell.closest("table");
+    var tr = cell.closest("tr");
+    if (!table || !tr) return;
+    var idx = cell.cellIndex;
+    tr.classList.add("is-hotrow");
+    hotNodes.push(tr);
+    var heads = table.tHead ? table.tHead.rows[0].cells : [];
+    var head = heads[idx];
+    if (head) { head.classList.add("is-hotcol"); hotNodes.push(head); }
+    var body = table.tBodies[0];
+    if (body) {
+      for (var i = 0; i < body.rows.length; i++) {
+        var row = body.rows[i];
+        if (row.classList.contains("matrix__repeat")) continue;
+        var peer = row.cells[idx];
+        if (peer) { peer.classList.add("is-hotcol"); hotNodes.push(peer); }
+      }
+    }
+    var ro = $("#matrix-readout");
+    var nameBtn = tr.querySelector(".matrix__row button");
+    var col = COL_OF[cell.getAttribute("data-facet")];
+    var lv = cell.getAttribute("data-level");
+    if (ro) {
+      ro.innerHTML = "<b>" + esc(nameBtn ? nameBtn.textContent : "") + "</b>" +
+        '<span class="matrix__ro-sep">·</span><b>' + esc(col ? col.label : "") + "</b>" +
+        '<span class="matrix__ro-state">' +
+          (lv === "2" ? "signature trait" : lv === "1" ? "supporting trait" : "not declared") + "</span>" +
+        '<span class="matrix__ro-click">' + (lv ? "click to filter by this trait" : "click to filter by this trait anyway") + "</span>";
+    }
+  }
+
+  main.addEventListener("pointerover", function (ev) {
+    var cell = ev.target.closest(".matrix__cell");
+    if (cell) setCrosshair(cell);
+  });
+  main.addEventListener("pointerout", function (ev) {
+    if (!main.contains(ev.relatedTarget)) clearCrosshair();
+  });
+  main.addEventListener("focusin", function (ev) {
+    var cell = ev.target.closest(".matrix__cell");
+    if (cell) setCrosshair(cell);
+  });
+  main.addEventListener("focusout", function (ev) {
+    if (!main.contains(ev.relatedTarget)) clearCrosshair();
   });
 
   /* ---------- theme ---------- */

@@ -82,6 +82,13 @@ const OUT = path.join(__dirname, 'shots');
       .map((l) => l.parentElement.getAttribute('data-id'));
   });
   report.matrixRows = await page.locator('.matrix tbody tr').count();
+  report.matrixStyleRows = await page.locator('.matrix tbody tr:not(.matrix__repeat)').count();
+  report.matrixRepeatRows = await page.locator('.matrix__repeat').count();
+  report.matrixRepeatIsDecorative = await page.evaluate(() => ({
+    buttons: document.querySelectorAll('.matrix__repeat button').length,
+    hidden: [...document.querySelectorAll('.matrix__repeat')].every((r) => r.getAttribute('aria-hidden') === 'true'),
+    labels: [...document.querySelectorAll('.matrix__repeat .matrix__collabel')].length
+  }));
   report.matrixCols = await page.locator('.matrix__col').count();
   report.matrixCells = await page.locator('.matrix__cell').count();
   report.matrixSignature = await page.locator('.matrix__cell[data-level="2"]').count();
@@ -91,8 +98,54 @@ const OUT = path.join(__dirname, 'shots');
     let sig = 0, sup = 0, want = 0;
     Object.keys(declared).forEach((id) => Object.values(declared[id].t).forEach((lv) => { if (lv === 2) sig++; if (lv === 1) sup++; }));
     document.querySelectorAll('.matrix__cell').forEach((c) => { want++; });
-    return { sig, sup, cells: want, rowsTimesCols: document.querySelectorAll('.matrix tbody tr').length * window.FACETS.columns.length,
+    const styleRows = document.querySelectorAll('.matrix tbody tr:not(.matrix__repeat)').length;
+    return { sig, sup, cells: want, rowsTimesCols: styleRows * window.FACETS.columns.length,
       everyRowHasNeighbour: [...document.querySelectorAll('.matrix__near')].every((td) => td.textContent.trim().length > 0) };
+  });
+
+  // --- the reading aids: group boundaries, the crosshair, the readout, leader lines ---
+  report.matrixGroupBoundaries = await page.evaluate(() => {
+    const form = document.querySelector('.matrix__cell[data-group="Form"]');
+    const material = document.querySelector('.matrix__cell[data-group="Material"]');
+    return {
+      formBorder: getComputedStyle(form).borderLeftWidth,
+      materialBorder: getComputedStyle(material).borderLeftWidth,
+      groups: [...new Set([...document.querySelectorAll('.matrix__col[data-group]')].map((c) => c.getAttribute('data-group')))]
+    };
+  });
+  // hover a mark in the middle of the table and read what the crosshair says
+  const midCell = page.locator('.matrix tbody tr:not(.matrix__repeat)').nth(19).locator('.matrix__cell').nth(14);
+  await midCell.scrollIntoViewIfNeeded();
+  await midCell.hover();
+  await page.waitForTimeout(220);
+  report.crosshair = {
+    readout: await page.locator('#matrix-readout').textContent(),
+    hotRows: await page.locator('.matrix tbody tr.is-hotrow').count(),
+    hotCells: await page.locator('.matrix__cell.is-hotcol').count(),
+    hotHeader: await page.locator('.matrix__col.is-hotcol .matrix__collabel').first().textContent(),
+    readoutPinned: await page.evaluate(() => {
+      const r = document.getElementById('matrix-readout').getBoundingClientRect();
+      return r.top > 0 && Math.round(window.innerHeight - r.bottom) <= 14;
+    })
+  };
+  await page.screenshot({ path: path.join(OUT, 'matrix-crosshair.png') });
+  await page.mouse.move(4, 4);
+  await page.waitForTimeout(200);
+  report.crosshairCleared = await page.locator('.is-hotcol, .is-hotrow').count();
+  report.crosshairKeyboard = await page.evaluate(() => {
+    const btn = document.querySelectorAll('.matrix tbody tr:not(.matrix__repeat) .matrix__cell button')[100];
+    btn.focus();
+    return { hot: document.querySelectorAll('.matrix__cell.is-hotcol').length, readout: document.getElementById('matrix-readout').textContent };
+  });
+  report.atlasStems = await page.evaluate(() => {
+    const moved = [...document.querySelectorAll('.atlas__label')].filter((l) => Math.abs(parseFloat(l.style.getPropertyValue('--lnudge'))) >= 13);
+    const stems = [...document.querySelectorAll('.atlas__pt.has-stem')];
+    return {
+      movedLabels: moved.length,
+      stems: stems.length,
+      everyMovedLabelHasStem: moved.every((l) => l.parentElement.classList.contains('has-stem')),
+      everyStemHasLength: stems.every((pt) => pt.querySelector('.atlas__stem').getBoundingClientRect().height >= 12)
+    };
   });
 
   await page.locator('.matrix__colbtn[data-facet="blur-glass"]').click();

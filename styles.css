@@ -434,6 +434,16 @@ body { scrollbar-color: var(--hair-strong) transparent; }
   position: absolute; inset: 0; box-sizing: border-box;
   border-radius: 50%; background: var(--ink); border: 1px solid var(--stage);
 }
+/* a label that had to move gets a leader line back to its dot: a run down or up
+   to the label's own row, then a stub across to the text */
+.atlas__stem { position: absolute; width: 6px; height: 0; pointer-events: none; opacity: .5; }
+.atlas__pt:not(.has-stem) .atlas__stem { display: none; }
+.atlas__pt[data-side="right"] .atlas__stem { left: 5.5px; border-left: 1px solid var(--hair-strong); }
+.atlas__pt[data-side="left"] .atlas__stem { right: 5.5px; border-right: 1px solid var(--hair-strong); }
+.atlas__pt[data-dir="down"] .atlas__stem { top: 5.5px; height: var(--labs, 0px); border-bottom: 1px solid var(--hair-strong); }
+.atlas__pt[data-dir="up"] .atlas__stem { bottom: 5.5px; height: var(--labs, 0px); border-top: 1px solid var(--hair-strong); }
+.atlas__pt:hover .atlas__stem, .atlas__pt:focus-visible .atlas__stem { opacity: 1; }
+
 .atlas__label {
   position: absolute; top: 50%; left: 12px;
   transform: translateY(calc(-50% + var(--lnudge, 0px)));
@@ -446,6 +456,48 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 .atlas__pt:hover .atlas__dot, .atlas__pt:focus-visible .atlas__dot { background: var(--accent); }
 .atlas__pt.is-dim { opacity: .24; }
 .atlas__pt.is-dim:hover { opacity: 1; }
+
+/* the five technique groups are the coarse landmarks: a mark sits in one of
+   them, and the boundary is where a group starts */
+.matrix__col[data-group="Form"], .matrix__cell[data-group="Form"],
+.matrix__col[data-group="Type"], .matrix__cell[data-group="Type"],
+.matrix__col[data-group="Colour"], .matrix__cell[data-group="Colour"],
+.matrix__col[data-group="Behaviour"], .matrix__cell[data-group="Behaviour"] { border-left: 1px solid var(--hair-strong); }
+
+/* the column labels repeat down the table, so no mark is far from its column name */
+.matrix__repeat .matrix__col, .matrix__repeat .matrix__row, .matrix__repeat .matrix__near { border-bottom: 1px solid var(--hair-strong); }
+.matrix__row--repeat, .matrix__near--repeat {
+  font: 500 10px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
+.matrix__col--repeat { color: var(--muted); }
+.matrix__col--repeat .matrix__collabel { font-size: 10px; }
+
+/* pinned to the bottom of the viewport for as long as the matrix is on screen,
+   so the pair is named next to the mark you are actually pointing at */
+.matrix__readout {
+  position: sticky; bottom: 12px; z-index: 3;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+  margin: 12px 0 0; padding: 9px 12px;
+  background: var(--panel); border: 1px solid var(--hair-strong);
+  border-left: 2px solid var(--accent); border-radius: var(--r-chip);
+  color: var(--muted); font-size: var(--t-12);
+}
+.matrix__readout b { color: var(--ink); font-weight: 600; }
+.matrix__ro-sep { color: var(--hair-strong); }
+.matrix__ro-state { color: var(--ink-2); }
+.matrix__ro-click { margin-left: auto; }
+.matrix__ro-hint { color: var(--muted); }
+
+/* the crosshair: the hovered row lights up and its column rings, so a mark can
+   be traced to both its names without counting cells */
+.matrix tbody tr.is-hotrow > .matrix__row { background: var(--panel-2); }
+.matrix tbody tr.is-hotrow > .matrix__cell { background: var(--panel-2); }
+.matrix tbody tr.is-hotrow > .matrix__near { background: var(--panel-2); }
+.matrix__cell.is-hotcol { box-shadow: inset 0 0 0 1px var(--hair-strong); }
+.matrix thead .matrix__col.is-hotcol { background: var(--accent-soft); }
+.matrix thead .matrix__col.is-hotcol .matrix__collabel { color: var(--accent); }
+.matrix tbody tr.is-hotrow > .matrix__cell[data-on="true"] { background: var(--accent-soft); }
+.matrix__near.is-hotcol { color: var(--ink); }
 
 .matrix__legend {
   display: flex; flex-wrap: wrap; gap: 16px; margin: 14px 0 0;
@@ -601,10 +653,23 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
   /* 43 labels cannot sit side by side in one narrow column: the labels come
      off the plane and the legend below carries the names and values instead */
   .atlas__plot { grid-column: 1; height: 620px; }
-  .atlas__label { display: none; }
+  /* a label that had to move gets a leader line back to its dot: vertical to the
+   label's own row, then a stub across to the text */
+.atlas__stem { position: absolute; width: 6px; height: 0; pointer-events: none; opacity: .5; }
+.atlas__pt:not(.has-stem) .atlas__stem { display: none; }
+.atlas__pt[data-side="right"] .atlas__stem { left: 5.5px; border-left: 1px solid var(--hair-strong); }
+.atlas__pt[data-side="left"] .atlas__stem { right: 5.5px; border-right: 1px solid var(--hair-strong); }
+.atlas__pt[data-dir="down"] .atlas__stem { top: 5.5px; height: var(--labs, 0px); border-bottom: 1px solid var(--hair-strong); }
+.atlas__pt[data-dir="up"] .atlas__stem { bottom: 5.5px; height: var(--labs, 0px); border-top: 1px solid var(--hair-strong); }
+.atlas__pt:hover .atlas__stem, .atlas__pt:focus-visible .atlas__stem { opacity: 1; }
+
+.atlas__label { display: none; }
   .atlas__space { inset: 8px; }
   .atlas__legend ul { grid-template-columns: 1fr; }
   .matrix__scroll { margin-top: 10px; }
+  /* the readout stays one line on a phone: the click hint is the first thing to go */
+  .matrix__readout { bottom: 8px; padding: 7px 10px; font-size: 11px; }
+  .matrix__ro-click { display: none; }
   .matrix__corner, .matrix__nearhead, .matrix__row { padding-left: 10px; }
   .matrix__colbtn { padding: 6px 3px 5px; }
   .filterline { align-items: flex-start; }
