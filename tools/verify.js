@@ -390,20 +390,24 @@ const OUT = path.join(__dirname, 'shots');
     document.getElementById('sec-matrix').scrollIntoView({ block: 'start' });
     window.scrollBy(0, 620);
     await new Promise((r) => setTimeout(r, 240));
-    const th = document.querySelector('table.matrix thead th.matrix__col');
-    const corner = document.querySelector('table.matrix thead .matrix__corner');
+    const thead = document.querySelector('table.matrix thead');
+    const th = thead.querySelector('th.matrix__col');
+    const corner = thead.querySelector('.matrix__corner');
     const mastheadH = document.querySelector('.masthead').offsetHeight;
-    const r = th.getBoundingClientRect();
+    const r = thead.getBoundingClientRect();
     const label = th.querySelector('.matrix__collabel').getBoundingClientRect();
     const cornerTop = Math.round(corner.getBoundingClientRect().top);
     window.scrollTo(0, 0);
     return {
-      position: getComputedStyle(th).position,
+      position: getComputedStyle(thead).position,
       top: Math.round(r.top), mastheadH,
       pinned: Math.abs(r.top - mastheadH) <= 1,
       cornerPinned: Math.abs(cornerTop - mastheadH) <= 1,
       labelsInsideStickyRow: label.top >= r.top - 1 && label.bottom <= r.bottom + 1,
-      opaque: getComputedStyle(th).backgroundColor,
+      opaque: getComputedStyle(thead).backgroundColor,
+      /* the header cells themselves stay transparent so a diagonal label can
+         overrun into the next column without being painted over */
+      cellOpaque: getComputedStyle(th).backgroundColor,
       wrapperOverflowY: getComputedStyle(document.querySelector('.matrix__scroll')).overflowY
     };
   });

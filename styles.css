@@ -481,11 +481,17 @@ body { scrollbar-color: var(--hair-strong) transparent; }
    screen, so a mark is never far from the name of its column. The wrapper keeps
    clipping the horizontal overflow without becoming a scroll container in the
    other axis — `overflow-y: clip` is what lets the sticky header ride the page
-   scrollport instead of a wrapper that moves with the page. */
-table.matrix thead th {
+   scrollport instead of a wrapper that moves with the page.
+   The *thead* carries the sticky position and the opaque backdrop, not each
+   cell: a diagonal label overruns its own cell into the next one, and an opaque
+   neighbouring cell would paint over the tail of the word. With the cells
+   transparent the label is free to overrun, and the single thead plate still
+   hides the rows scrolling under it. */
+table.matrix thead {
   position: sticky; top: var(--masthead-h, 190px); z-index: 5;
-  background: var(--panel); border-bottom: 1px solid var(--hair-strong);
+  background: var(--panel);
 }
+table.matrix thead th { border-bottom: 1px solid var(--hair-strong); }
 
 /* pinned to the bottom of the viewport for as long as the matrix is on screen,
    so the pair is named next to the mark you are actually pointing at — and the
@@ -544,19 +550,26 @@ table.matrix tbody tr:last-child th, table.matrix tbody tr:last-child td { borde
 table.matrix .matrix__corner { position: sticky; left: 0; z-index: 6; background: var(--panel); border-right: 1px solid var(--hair); }
 .matrix__nearhead { width: 1%; }
 
-.matrix__col { vertical-align: bottom; padding: 0; }
+/* the label runs diagonally (45° up to the right) so the column names read as
+   words rather than as a vertical spine; the cell is tall enough to hold the
+   whole rotated box, so nothing is clipped by the scroll wrapper's top edge */
+.matrix__col { vertical-align: bottom; padding: 0; height: 68px; }
 /* a column header scrolled to must clear the sticky masthead, not hide under it */
 table.matrix thead th, .matrix__colbtn { scroll-margin-top: calc(var(--masthead-h, 190px) + 14px); }
 .matrix__colbtn {
-  display: flex; flex-direction: column; align-items: center; gap: 3px; width: 100%;
-  background: none; border: 0; margin: 0; padding: 8px 4px 6px; cursor: pointer;
+  position: relative; display: block; width: 100%; height: 100%;
+  background: none; border: 0; margin: 0; padding: 0; cursor: pointer;
   touch-action: manipulation;
 }
 .matrix__collabel {
-  writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;
+  position: absolute; left: 7px; bottom: 5px;
+  transform-origin: left bottom; transform: rotate(-45deg); white-space: nowrap;
   font: 500 10.5px/1 var(--sans); letter-spacing: .02em; color: var(--ink-2);
 }
-.matrix__coln { font: 400 9.5px/1 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums; }
+.matrix__coln {
+  position: absolute; right: 3px; bottom: 3px;
+  font: 400 9.5px/1 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums;
+}
 .matrix__colbtn:hover .matrix__collabel { color: var(--accent); }
 .matrix__colbtn[aria-pressed="true"] { background: var(--accent-soft); }
 .matrix__colbtn[aria-pressed="true"] .matrix__collabel { color: var(--accent); }
