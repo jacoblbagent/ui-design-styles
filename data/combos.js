@@ -17,6 +17,13 @@ window.COMBOS = [
 
   {
     id: "swiss-landing",
+    loading: `<div class="sw-load"><span class="sw-lrule"></span><span class="sw-lbar"></span><span class="sw-lbar"></span><span class="sw-lbar"></span><p class="sw-lnote">Loading</p></div>`,
+    loadingCss: `.spec--combo-swiss-landing .sw-load { width: 100%; max-width: 290px; padding: 20px; background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-swiss-landing .sw-lrule { display: block; height: 6px; margin-bottom: 16px; background: var(--hair); }
+.spec--combo-swiss-landing .sw-lbar { display: block; height: 11px; margin-bottom: 9px; background: var(--hair); }
+.spec--combo-swiss-landing .sw-lbar:nth-of-type(3) { width: 90%; }
+.spec--combo-swiss-landing .sw-lbar:nth-of-type(4) { width: 64%; height: 15px; margin-bottom: 0; }
+.spec--combo-swiss-landing .sw-lnote { margin: 16px 0 0; font: 500 11px/1 "Instrument Sans", sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }`,
     style: "swiss",
     pattern: "hero-landing",
     practice: "content-design",
@@ -36,6 +43,12 @@ window.COMBOS = [
 
   {
     id: "brutal-states",
+    loading: `<div class="bs-load"><span class="bs-ltag">Loading</span><span class="bs-lbar"></span><span class="bs-lbar short"></span><span class="bs-lbtn"></span></div>`,
+    loadingCss: `.spec--combo-brutal-states .bs-load { width: 100%; max-width: 280px; padding: 18px; background: #fff; border: 2px solid #000; border-radius: 0; box-shadow: 7px 7px 0 #000; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-brutal-states .bs-ltag { display: inline-block; padding: 4px 8px; background: #ffe14d; border: 2px solid #000; font: 700 11px/1 "Instrument Sans", sans-serif; letter-spacing: .04em; text-transform: uppercase; }
+.spec--combo-brutal-states .bs-lbar { display: block; height: 12px; margin-top: 12px; background: #e2e2e2; border: 2px solid #000; }
+.spec--combo-brutal-states .bs-lbar.short { width: 62%; }
+.spec--combo-brutal-states .bs-lbtn { display: block; width: 104px; height: 34px; margin-top: 16px; background: #d4d4d4; border: 2px solid #000; box-shadow: 4px 4px 0 #000; }`,
     style: "neo-brutalism",
     pattern: "card-ui",
     practice: "error-resilience",
@@ -53,6 +66,17 @@ window.COMBOS = [
 
   {
     id: "glass-overlay",
+    loading: `<div class="gl-load"><span class="gl-lground"><i></i><i></i><i></i><i></i></span><span class="gl-lpane"><b>Loading</b><i></i><i></i></span></div>`,
+    loadingCss: `.spec--combo-glass-overlay .gl-load { position: relative; width: 100%; max-width: 300px; height: 174px; border-radius: 14px; overflow: hidden; background: radial-gradient(circle at 24% 22%, #ff8a5b, #7a4de0 52%, #1b2a6b); font-family: "Instrument Sans", sans-serif; }
+.spec--combo-glass-overlay .gl-lground { position: absolute; inset: 14px; display: grid; gap: 8px; align-content: start; }
+.spec--combo-glass-overlay .gl-lground i { height: 12px; border-radius: 6px; background: rgba(255,255,255,.28); animation: combo-pulse 1.5s ease-in-out infinite; }
+.spec--combo-glass-overlay .gl-lground i:nth-child(2) { width: 72%; }
+.spec--combo-glass-overlay .gl-lground i:nth-child(3) { width: 84%; }
+.spec--combo-glass-overlay .gl-lground i:nth-child(4) { width: 46%; }
+.spec--combo-glass-overlay .gl-lpane { position: absolute; left: 26px; right: 26px; bottom: 22px; display: grid; gap: 8px; padding: 14px; border-radius: 14px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.45); backdrop-filter: blur(14px) saturate(180%); }
+.spec--combo-glass-overlay .gl-lpane b { font: 600 13px/1 "Instrument Sans", sans-serif; color: #fff; }
+.spec--combo-glass-overlay .gl-lpane i { height: 8px; border-radius: 4px; background: rgba(255,255,255,.5); animation: combo-pulse 1.5s ease-in-out infinite; }
+.spec--combo-glass-overlay .gl-lpane i:nth-of-type(2) { width: 62%; }`,
     style: "glassmorphism",
     pattern: "overlay-layer",
     practice: "motion-micro",
@@ -75,6 +99,12 @@ window.COMBOS = [
 
   {
     id: "terminal-palette",
+    loading: `<div class="tp-load"><p class="tp-lbar">loading<b class="tp-cursor"></b></p><p class="tp-lrow">··········</p><p class="tp-lrow">··········</p><p class="tp-lfoot">no images · waiting</p></div>`,
+    loadingCss: `.spec--combo-terminal-palette .tp-load { width: 100%; max-width: 300px; padding: 12px; background: #0b0d10; border: 1px solid #2a3038; border-radius: 4px; font-family: "IBM Plex Mono", monospace; }
+.spec--combo-terminal-palette .tp-lbar { margin: 0 0 10px; padding: 8px 10px; border: 1px solid #2a3038; color: #8de08d; font-size: 12px; }
+.spec--combo-terminal-palette .tp-cursor { display: inline-block; width: 7px; height: 12px; margin-left: 6px; vertical-align: -2px; background: #8de08d; animation: combo-pulse 1s steps(1, end) infinite; }
+.spec--combo-terminal-palette .tp-lrow { margin: 0; padding: 7px 8px; font-size: 12px; color: #3a4550; }
+.spec--combo-terminal-palette .tp-lfoot { margin: 10px 0 0; font-size: 11px; color: #566370; }`,
     style: "terminal-cli",
     pattern: "command-palette",
     practice: "performance-first",
@@ -97,6 +127,14 @@ window.COMBOS = [
 
   {
     id: "material-shell",
+    loading: `<div class="ms-load"><span class="ms-ltop"></span><div class="ms-lbody"><span class="ms-lcard"></span><span class="ms-lcard"></span></div><div class="ms-lnav"><i></i><i></i><i></i></div></div>`,
+    loadingCss: `.spec--combo-material-shell .ms-load { position: relative; width: 100%; max-width: 300px; height: 178px; background: #f2eef8; border-radius: 8px; overflow: hidden; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-material-shell .ms-ltop { position: absolute; left: 0; right: 0; top: 0; height: 46px; background: #fff; box-shadow: 0 2px 4px rgba(40,24,80,.18); }
+.spec--combo-material-shell .ms-ltop::after { content: ""; position: absolute; left: 0; bottom: -3px; width: 40%; height: 3px; background: #5b3df5; animation: combo-sweep 1.5s ease-in-out infinite; }
+.spec--combo-material-shell .ms-lbody { display: grid; gap: 10px; padding: 62px 14px 0; }
+.spec--combo-material-shell .ms-lcard { height: 34px; border-radius: 4px; background: #fff; box-shadow: 0 1px 2px rgba(40,24,80,.14); }
+.spec--combo-material-shell .ms-lnav { position: absolute; left: 0; right: 0; bottom: 0; height: 46px; display: flex; align-items: center; justify-content: space-around; background: #fff; box-shadow: 0 -2px 4px rgba(40,24,80,.14); }
+.spec--combo-material-shell .ms-lnav i { width: 26px; height: 8px; border-radius: 4px; background: #cfc4e6; }`,
     style: "material-2",
     pattern: "navigation-shell",
     practice: "elevation-hierarchy",
@@ -120,6 +158,12 @@ window.COMBOS = [
 
   {
     id: "fluent-bento",
+    loading: `<div class="fb-load"><span class="fb-ltile big"><i></i></span><span class="fb-ltile"><i></i></span><span class="fb-ltile"><i></i></span><span class="fb-ltile wide"><i></i></span></div>`,
+    loadingCss: `.spec--combo-fluent-bento .fb-load { width: 100%; max-width: 300px; padding: 10px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 62px 44px; gap: 8px; background: linear-gradient(140deg, #d8e6ff, #f1e4ff 60%, #ffe9f0); }
+.spec--combo-fluent-bento .fb-ltile { position: relative; overflow: hidden; border-radius: 8px; background: rgba(255,255,255,.54); border: 1px solid rgba(255,255,255,.8); backdrop-filter: blur(10px); }
+.spec--combo-fluent-bento .fb-ltile.big { grid-row: span 2; }
+.spec--combo-fluent-bento .fb-ltile.wide { grid-column: span 2; }
+.spec--combo-fluent-bento .fb-ltile i { position: absolute; inset: 0; transform: translateX(-120%); background: linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,.85) 50%, rgba(255,255,255,0) 100%); animation: combo-sweep 1.5s ease-in-out infinite; }`,
     style: "fluent-design",
     pattern: "bento-grid",
     practice: "design-system",
@@ -139,6 +183,14 @@ window.COMBOS = [
 
   {
     id: "hud-telemetry",
+    loading: `<div class="ht-load"><p class="ht-lt">sync · geo</p><p class="ht-lread"><b>- - - -</b> req/s</p><span class="ht-lbar"><i></i></span><p class="ht-lmore">waiting for telemetry</p></div>`,
+    loadingCss: `.spec--combo-hud-telemetry .ht-load { width: 100%; max-width: 300px; padding: 16px; background: #07080d; border: 1px solid #1f2b3a; border-radius: 2px; font-family: "IBM Plex Mono", monospace; }
+.spec--combo-hud-telemetry .ht-lt { margin: 0; font-size: 10px; letter-spacing: .16em; color: #5de0c8; }
+.spec--combo-hud-telemetry .ht-lread { margin: 12px 0 0; font-size: 12px; color: #9fb3c8; }
+.spec--combo-hud-telemetry .ht-lread b { font-size: 26px; font-weight: 500; color: #7dfbe0; text-shadow: 0 0 14px rgba(125,251,224,.6); font-variant-numeric: tabular-nums; animation: combo-pulse 1.5s ease-in-out infinite; }
+.spec--combo-hud-telemetry .ht-lbar { display: block; height: 6px; margin-top: 12px; background: #131b26; overflow: hidden; }
+.spec--combo-hud-telemetry .ht-lbar i { display: block; width: 30%; height: 100%; background: linear-gradient(90deg, #31b6ff, #7dfbe0); box-shadow: 0 0 12px rgba(49,182,255,.7); animation: combo-sweep 1.5s linear infinite; }
+.spec--combo-hud-telemetry .ht-lmore { margin: 14px 0 0; padding-top: 10px; border-top: 1px solid #1f2b3a; font-size: 11px; color: #ff5f9e; }`,
     style: "cyberpunk-hud",
     pattern: "data-dashboard",
     practice: "progressive-disclosure",
@@ -160,6 +212,10 @@ window.COMBOS = [
 
   {
     id: "minimal-empty",
+    loading: `<div class="me-load"><span class="me-lspin"></span><p class="me-lnote">Loading</p></div>`,
+    loadingCss: `.spec--combo-minimal-empty .me-load { width: 100%; max-width: 280px; padding: 24px 20px; background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; text-align: center; font-family: "Instrument Sans", sans-serif; color: var(--ink); }
+.spec--combo-minimal-empty .me-lspin { display: block; width: 20px; height: 20px; margin: 0 auto; border: 1.5px solid var(--hair-strong); border-top-color: var(--ink); border-radius: 50%; animation: combo-spin .9s linear infinite; }
+.spec--combo-minimal-empty .me-lnote { margin: 12px 0 0; font-size: 13px; color: var(--muted); }`,
     style: "minimalism",
     pattern: "empty-state",
     practice: "research-driven",
@@ -177,6 +233,12 @@ window.COMBOS = [
 
   {
     id: "depth-panes",
+    loading: `<div class="dp-load"><span class="dp-lpane back">Library</span><span class="dp-lpane front">Loading<i>fetching</i></span></div>`,
+    loadingCss: `.spec--combo-depth-panes .dp-load { position: relative; width: 100%; max-width: 300px; height: 178px; border-radius: 14px; overflow: hidden; background: radial-gradient(circle at 68% 30%, #2d3346, #101319 70%); font-family: "Instrument Sans", sans-serif; }
+.spec--combo-depth-panes .dp-lpane { position: absolute; padding: 10px 14px; border-radius: 12px; background: rgba(226,235,255,.14); border: 1px solid rgba(226,235,255,.4); backdrop-filter: blur(8px); color: #eef2ff; font: 500 12px/1.3 "Instrument Sans", sans-serif; animation: combo-pulse 1.6s ease-in-out infinite; }
+.spec--combo-depth-panes .dp-lpane.back { left: 26px; top: 30px; transform: scale(.86); opacity: .7; }
+.spec--combo-depth-panes .dp-lpane.front { right: 26px; bottom: 30px; box-shadow: 0 0 0 8px rgba(143,208,255,.12); }
+.spec--combo-depth-panes .dp-lpane i { display: block; margin-top: 6px; font-style: normal; font-size: 11px; color: #9fd0ff; }`,
     style: "spatial-vision",
     pattern: "overlay-layer",
     practice: "spatial-interaction",
@@ -194,6 +256,13 @@ window.COMBOS = [
 
   {
     id: "isometric-wizard",
+    loading: `<div class="iw-load"><span class="iw-lsteps"><i class="on"></i><i></i><i></i></span><p class="iw-lplate">Loading step 1</p></div>`,
+    loadingCss: `.spec--combo-isometric-wizard .iw-load { position: relative; width: 100%; max-width: 300px; height: 176px; border-radius: 12px; overflow: hidden; background: linear-gradient(180deg, #eaeef6, #dfe6f2); font-family: "Instrument Sans", sans-serif; }
+.spec--combo-isometric-wizard .iw-load::after { content: ""; position: absolute; left: -20%; right: -20%; bottom: -30px; height: 150px; background: repeating-linear-gradient(60deg, rgba(255,255,255,.9) 0 1px, transparent 1px 34px), repeating-linear-gradient(-60deg, rgba(255,255,255,.9) 0 1px, transparent 1px 34px); transform: skewY(-6deg); }
+.spec--combo-isometric-wizard .iw-lsteps { position: absolute; left: 18px; top: 18px; display: flex; gap: 6px; z-index: 2; }
+.spec--combo-isometric-wizard .iw-lsteps i { width: 24px; height: 24px; border-radius: 50%; border: 1px solid #9aa6bd; background: #fff; }
+.spec--combo-isometric-wizard .iw-lsteps i.on { background: #1f4fd8; border-color: #1f4fd8; animation: combo-pulse 1.5s ease-in-out infinite; }
+.spec--combo-isometric-wizard .iw-lplate { position: absolute; left: 34px; top: 78px; z-index: 2; margin: 0; padding: 16px 20px; background: #fff; border: 1px solid #c3ccdd; border-radius: 10px; box-shadow: 10px 12px 0 rgba(31,79,216,.16); transform: rotate(-1.5deg); font: 600 14px/1.2 "Instrument Sans", sans-serif; color: #14171c; }`,
     style: "isometric",
     pattern: "onboarding-wizard",
     practice: "motion-micro",
@@ -212,6 +281,12 @@ window.COMBOS = [
 
   {
     id: "drawn-forms",
+    loading: `<div class="dr-load"><span class="dr-llabel"></span><span class="dr-linput"></span><span class="dr-lbar"></span><span class="dr-lspin"></span></div>`,
+    loadingCss: `.spec--combo-drawn-forms .dr-load { position: relative; width: 100%; max-width: 274px; padding: 18px; background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-drawn-forms .dr-llabel { display: block; width: 54px; height: 12px; background: var(--hair); border-radius: 8px 6px 7px 5px; }
+.spec--combo-drawn-forms .dr-linput { display: block; height: 42px; margin-top: 8px; background: var(--panel-2); border: 2px solid var(--hair-strong); border-radius: 14px 10px 12px 9px; }
+.spec--combo-drawn-forms .dr-lbar { display: block; width: 70%; height: 10px; margin-top: 10px; background: var(--hair); border-radius: 7px 5px 8px 6px; }
+.spec--combo-drawn-forms .dr-lspin { position: absolute; right: 20px; bottom: 18px; width: 22px; height: 22px; border: 2px solid var(--hair-strong); border-top-color: var(--accent); border-radius: 50% 46% 52% 44%; animation: combo-spin 1s linear infinite; }`,
     style: "organic-handdrawn",
     pattern: "form-validation",
     practice: "accessibility-first",
@@ -233,6 +308,13 @@ window.COMBOS = [
 
   {
     id: "oled-feed",
+    loading: `<div class="of-load"><span class="of-lmedia"><i></i></span><span class="of-lhook"></span><span class="of-lbar"><i></i></span></div>`,
+    loadingCss: `.spec--combo-oled-feed .of-load { position: relative; width: 100%; max-width: 172px; aspect-ratio: 9/15; border: 1px solid #23262b; border-radius: 12px; overflow: hidden; background: #000; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-oled-feed .of-lmedia { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 58% 26%, #2a1220, #0a0c12 80%); }
+.spec--combo-oled-feed .of-lmedia i { position: absolute; inset: 0; transform: translateX(-120%); background: linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,.16) 50%, rgba(255,255,255,0) 100%); animation: combo-sweep 1.7s ease-in-out infinite; }
+.spec--combo-oled-feed .of-lhook { position: absolute; left: 12px; right: 12px; bottom: 22px; height: 14px; border-radius: 3px; background: #1c1f26; }
+.spec--combo-oled-feed .of-lbar { position: absolute; left: 12px; right: 12px; bottom: 11px; height: 2px; background: rgba(255,255,255,.24); }
+.spec--combo-oled-feed .of-lbar i { display: block; width: 38%; height: 100%; background: #fff; }`,
     style: "dark-oled",
     pattern: "feed-timeline",
     practice: "attention-first",
@@ -251,6 +333,11 @@ window.COMBOS = [
 
   {
     id: "render-hero",
+    loading: `<div class="rh-load"><span class="rh-lring"></span><span class="rh-lbar"></span><span class="rh-lbtn"></span></div>`,
+    loadingCss: `.spec--combo-render-hero .rh-load { width: 100%; max-width: 280px; padding: 22px 20px; background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; text-align: center; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-render-hero .rh-lring { display: block; width: 96px; height: 96px; margin: 0 auto; border: 2px dashed var(--hair-strong); border-radius: 50%; animation: combo-spin 3s linear infinite; }
+.spec--combo-render-hero .rh-lbar { display: block; width: 70%; height: 16px; margin: 18px auto 0; border-radius: 4px; background: var(--hair); }
+.spec--combo-render-hero .rh-lbtn { display: block; width: 200px; max-width: 100%; height: 42px; margin: 14px auto 0; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--hair); }`,
     style: "render-3d",
     pattern: "hero-landing",
     practice: "conversion-optimised",
@@ -270,6 +357,13 @@ window.COMBOS = [
 
   {
     id: "y2k-brand",
+    loading: `<div class="yb-load"><span class="yb-lmark"></span><p class="yb-lnote">Loading</p><span class="yb-lbar"><i></i></span></div>`,
+    loadingCss: `.spec--combo-y2k-brand .yb-load { position: relative; width: 100%; max-width: 290px; padding: 20px; border-radius: 22px; overflow: hidden; background: linear-gradient(160deg, #7fe3ff, #4aa8f0 42%, #b6f36a 88%); font-family: "Instrument Sans", sans-serif; color: #06314a; }
+.spec--combo-y2k-brand .yb-load::after { content: ""; position: absolute; left: -30%; top: -60%; width: 120%; height: 120%; background: linear-gradient(72deg, rgba(255,255,255,.68) 0 12%, rgba(255,255,255,0) 34%); }
+.spec--combo-y2k-brand .yb-lmark { position: relative; display: block; width: 64px; height: 11px; border-radius: 3px; background: rgba(6,49,74,.35); }
+.spec--combo-y2k-brand .yb-lnote { position: relative; margin: 16px 0 0; font: 700 15px/1 "Instrument Sans", sans-serif; letter-spacing: .02em; }
+.spec--combo-y2k-brand .yb-lbar { position: relative; display: block; height: 12px; margin-top: 18px; border-radius: 999px; background: rgba(6,49,74,.22); overflow: hidden; }
+.spec--combo-y2k-brand .yb-lbar i { display: block; width: 42%; height: 100%; border-radius: 999px; background: linear-gradient(180deg, #eafaff, #9fe6ff); box-shadow: inset 0 1px 0 rgba(255,255,255,.8); animation: combo-sweep 1.5s ease-in-out infinite; }`,
     style: "y2k-frutiger",
     pattern: "hero-landing",
     practice: "brand-expression-first",
@@ -288,6 +382,15 @@ window.COMBOS = [
 
   {
     id: "memphis-reward",
+    loading: `<div class="mr-load"><span class="mr-lconfetti"><i></i><i></i><i></i></span><span class="mr-lh"></span><span class="mr-lbar"><i></i></span></div>`,
+    loadingCss: `.spec--combo-memphis-reward .mr-load { position: relative; width: 100%; max-width: 272px; padding: 20px; border: 2px solid #111; border-radius: 4px; background: #fff8e7; box-shadow: 6px 6px 0 #111; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-memphis-reward .mr-lconfetti { position: absolute; right: 12px; top: 12px; display: flex; gap: 5px; }
+.spec--combo-memphis-reward .mr-lconfetti i { width: 9px; height: 9px; border-radius: 50%; background: #ff4d6d; animation: combo-pulse 1.5s ease-in-out infinite; }
+.spec--combo-memphis-reward .mr-lconfetti i:nth-child(2) { border-radius: 0; background: #23c4c4; transform: rotate(18deg); }
+.spec--combo-memphis-reward .mr-lconfetti i:nth-child(3) { background: #ffc043; }
+.spec--combo-memphis-reward .mr-lh { display: block; width: 122px; height: 20px; background: #e6dfcf; }
+.spec--combo-memphis-reward .mr-lbar { display: block; height: 14px; margin-top: 12px; border: 2px solid #111; background: #fff; overflow: hidden; }
+.spec--combo-memphis-reward .mr-lbar i { display: block; width: 32%; height: 100%; background: repeating-linear-gradient(45deg, #23c4c4 0 6px, #7fe3ff 6px 12px); animation: combo-sweep 1.5s linear infinite; }`,
     style: "memphis",
     pattern: "gamified",
     practice: "joy-first",
@@ -311,6 +414,13 @@ window.COMBOS = [
 
   {
     id: "pixel-arcade",
+    loading: `<div class="pa-load"><p class="pa-lh">LOADING</p><span class="pa-lbar"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pa-lblip">waiting · 0%</span></div>`,
+    loadingCss: `.spec--combo-pixel-arcade .pa-load { width: 100%; max-width: 268px; padding: 18px; background: #1a1c2c; border: 4px solid #41a6f6; box-shadow: 0 6px 0 #0f1018; font-family: "IBM Plex Mono", monospace; }
+.spec--combo-pixel-arcade .pa-lh { margin: 0; font-size: 14px; font-weight: 500; letter-spacing: .22em; color: #ffcd75; animation: combo-pulse 1s steps(1, end) infinite; }
+.spec--combo-pixel-arcade .pa-lbar { position: relative; display: flex; gap: 3px; margin-top: 14px; overflow: hidden; }
+.spec--combo-pixel-arcade .pa-lbar i { width: 14px; height: 16px; background: #29366f; }
+.spec--combo-pixel-arcade .pa-lbar::after { content: ""; position: absolute; top: 0; bottom: 0; width: 36px; transform: translateX(-120%); background: linear-gradient(90deg, transparent, rgba(56,183,100,.9), transparent); animation: combo-sweep 1.5s linear infinite; }
+.spec--combo-pixel-arcade .pa-lblip { display: block; margin-top: 16px; padding-top: 10px; border-top: 2px solid #29366f; font-size: 11px; color: #94b0c2; }`,
     style: "pixel-art",
     pattern: "gamified",
     practice: "sound-haptics",
@@ -330,6 +440,13 @@ window.COMBOS = [
 
   {
     id: "luxury-stills",
+    loading: `<div class="lx-load"><span class="lx-lstill"></span><p class="lx-lcap">Loading</p><span class="lx-lbar"><i></i></span></div>`,
+    loadingCss: `.spec--combo-luxury-stills .lx-load { position: relative; width: 100%; max-width: 292px; aspect-ratio: 21/9; border-radius: 2px; overflow: hidden; background: #0d0b09; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-luxury-stills .lx-lstill { position: absolute; inset: 0; background: radial-gradient(110% 120% at 74% 24%, #3a2a12, #0d0b09 90%); animation: combo-pulse 2s ease-in-out infinite; }
+.spec--combo-luxury-stills .lx-load::after { content: ""; position: absolute; inset: 0; border-top: 7px solid #0d0b09; border-bottom: 7px solid #0d0b09; }
+.spec--combo-luxury-stills .lx-lcap { position: absolute; left: 14px; bottom: 15px; margin: 0; font: 400 11px/1.4 "Instrument Sans", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #f1e6d4; }
+.spec--combo-luxury-stills .lx-lbar { position: absolute; left: 14px; right: 14px; bottom: 4px; height: 1px; background: rgba(241,230,212,.25); }
+.spec--combo-luxury-stills .lx-lbar i { display: block; width: 40%; height: 100%; background: #c69a52; animation: combo-sweep 1.8s ease-in-out infinite; }`,
     style: "luxury-premium",
     pattern: "card-ui",
     practice: "cinematic-media-first",
@@ -348,6 +465,13 @@ window.COMBOS = [
 
   {
     id: "hig-thumb",
+    loading: `<div class="hg-load"><span class="hg-lrow"></span><span class="hg-lrow"></span><span class="hg-lspin"></span><div class="hg-ltabs"><i></i><i></i><i></i><i></i></div></div>`,
+    loadingCss: `.spec--combo-hig-thumb .hg-load { position: relative; width: 100%; max-width: 244px; height: 178px; border-radius: 18px; overflow: hidden; background: linear-gradient(180deg, #f7f8fa, #eef1f6); font-family: "Instrument Sans", sans-serif; box-shadow: inset 0 0 0 1px rgba(20,23,28,.08); }
+.spec--combo-hig-thumb .hg-lrow { position: relative; display: block; height: 46px; margin: 12px 14px 0; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgba(20,23,28,.08); overflow: hidden; }
+.spec--combo-hig-thumb .hg-lrow::after { content: ""; position: absolute; inset: 0; transform: translateX(-120%); background: linear-gradient(90deg, rgba(20,23,28,0) 0, rgba(20,23,28,.08) 50%, rgba(20,23,28,0) 100%); animation: combo-sweep 1.5s ease-in-out infinite; }
+.spec--combo-hig-thumb .hg-lspin { position: absolute; left: 50%; top: 44%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border: 2px solid rgba(20,23,28,.15); border-top-color: #6b7280; border-radius: 50%; animation: combo-spin .9s linear infinite; }
+.spec--combo-hig-thumb .hg-ltabs { position: absolute; left: 0; right: 0; bottom: 0; height: 52px; padding-bottom: 6px; display: flex; align-items: center; justify-content: space-around; background: rgba(255,255,255,.72); backdrop-filter: blur(12px) saturate(160%); border-top: 1px solid rgba(20,23,28,.1); }
+.spec--combo-hig-thumb .hg-ltabs i { width: 22px; height: 22px; border-radius: 7px; background: #dbe0e8; }`,
     style: "ios-human-interface",
     pattern: "navigation-shell",
     practice: "responsive-mobile-first",
@@ -368,6 +492,13 @@ window.COMBOS = [
 
   {
     id: "vaporwave-scroll",
+    loading: `<div class="vw-load"><span class="vw-lsun"></span><span class="vw-lfloor"></span><p class="vw-lh">LOADING</p><span class="vw-lrail"><i></i></span></div>`,
+    loadingCss: `.spec--combo-vaporwave-scroll .vw-load { position: relative; width: 100%; max-width: 300px; height: 178px; border-radius: 8px; overflow: hidden; background: linear-gradient(180deg, #1b0b3b, #7a2b8f 52%, #ff5f8d); font-family: "Instrument Sans", sans-serif; }
+.spec--combo-vaporwave-scroll .vw-lsun { position: absolute; left: 50%; top: 34%; width: 72px; height: 72px; margin-left: -36px; border-radius: 50%; background: linear-gradient(180deg, #ffe14d, #ff5f8d); animation: combo-pulse 1.7s ease-in-out infinite; }
+.spec--combo-vaporwave-scroll .vw-lfloor { position: absolute; left: -20%; right: -20%; bottom: 0; height: 58px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.5) 0 1px, transparent 1px 22px), repeating-linear-gradient(0deg, rgba(255,255,255,.5) 0 1px, transparent 1px 16px); transform: perspective(120px) rotateX(52deg); }
+.spec--combo-vaporwave-scroll .vw-lh { position: absolute; left: 14px; bottom: 20px; margin: 0; font: 700 20px/1 "Instrument Sans", sans-serif; letter-spacing: .14em; color: #fff; text-shadow: 0 0 18px rgba(255,95,141,.9); }
+.spec--combo-vaporwave-scroll .vw-lrail { position: absolute; right: 14px; top: 14px; bottom: 14px; width: 2px; background: rgba(255,255,255,.3); }
+.spec--combo-vaporwave-scroll .vw-lrail i { position: absolute; left: -3px; top: 20%; width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px #fff; animation: combo-pulse 1.7s ease-in-out infinite; }`,
     style: "vaporwave",
     pattern: "hero-landing",
     practice: "scroll-narrative",
@@ -390,6 +521,12 @@ window.COMBOS = [
 
   {
     id: "brutal-forms",
+    loading: `<div class="bf-load"><span class="bf-llabel"></span><span class="bf-linput"><i></i></span><span class="bf-lsub">Loading</span></div>`,
+    loadingCss: `.spec--combo-brutal-forms .bf-load { width: 100%; max-width: 272px; padding: 18px; background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-brutal-forms .bf-llabel { display: block; width: 92px; height: 12px; background: var(--hair); }
+.spec--combo-brutal-forms .bf-linput { position: relative; display: block; height: 42px; margin-top: 8px; background: var(--panel-2); border: 2px solid var(--hair-strong); overflow: hidden; }
+.spec--combo-brutal-forms .bf-linput i { position: absolute; inset: 0; transform: translateX(-120%); background: linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 100%); animation: combo-sweep 1.5s ease-in-out infinite; }
+.spec--combo-brutal-forms .bf-lsub { display: inline-block; margin-top: 16px; padding: 12px 20px; background: var(--ink); border: 2px solid var(--ink); box-shadow: 5px 5px 0 #ffd400; color: var(--bg); font: 700 13px/1 "Instrument Sans", sans-serif; }`,
     style: "brutalist-web",
     pattern: "form-validation",
     practice: "accessibility-first",

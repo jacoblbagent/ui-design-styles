@@ -729,3 +729,33 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
   .atlas__name { transition: none; }
 }
+
+
+/* ---------- combo samples: the loading state ----------
+   Each combo sample holds two states in one stage: the sample as drawn, and the
+   same UI in its loading state. One small control per sample swaps them, and its
+   label names the state it would show. The motion is the loading indicator
+   itself, so it exists only for these states and stops under reduced motion. */
+.combo .spec > .combo__view,
+.combo .spec > .combo__load { width: 100%; display: flex; align-items: center; justify-content: center; }
+.combo .spec > .combo__load { display: none; }
+.combo .spec.is-loading > .combo__load { display: flex; }
+.combo .spec.is-loading > .combo__view { display: none; }
+.combo .spec > .combo__state {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  font: 500 var(--t-12)/1 var(--sans);
+  color: var(--ink-2); background: var(--panel);
+  border: 1px solid var(--hair-strong); border-radius: var(--r-chip);
+  padding: 6px 9px; cursor: pointer; touch-action: manipulation;
+}
+.combo .spec > .combo__state:hover { border-color: var(--ink-2); }
+.combo .spec > .combo__state:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.combo .spec > .combo__state[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+@keyframes combo-sweep { 0% { transform: translateX(-120%); } 100% { transform: translateX(220%); } }
+@keyframes combo-pulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+@keyframes combo-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .combo .spec * { animation: none !important; }
+}

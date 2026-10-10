@@ -95,7 +95,8 @@
      `.spec--combo-<id>`, an entry's under `.spec--<id>`, so the two cannot
      reach each other */
   styleEl.textContent = CATALOG.map(function (e) { return e.css; })
-    .concat(COMBOS.map(function (c) { return c.css; })).join("\n\n");
+    .concat(COMBOS.map(function (c) { return c.css; }))
+    .concat(COMBOS.map(function (c) { return c.loadingCss || ""; })).join("\n\n");
   document.head.appendChild(styleEl);
 
   /* ---------- building blocks ---------- */
@@ -246,7 +247,11 @@
        combo would read as a claim the data cannot support */
     if (parts.filter(Boolean).length !== 3) return "";
     return '<li class="combo' + (comboFacetFit(c) ? "" : " is-dim") + '">' +
-      '<div class="spec spec--combo-' + c.id + '">' + (c.html || "") + "</div>" +
+      '<div class="spec spec--combo-' + c.id + '">' +
+        '<div class="combo__view">' + (c.html || "") + "</div>" +
+        '<div class="combo__load">' + (c.loading || "") + "</div>" +
+        '<button class="combo__state" type="button" aria-pressed="false">Loading</button>' +
+      "</div>" +
       '<div class="combo__trio">' + parts.join('<span class="combo__plus" aria-hidden="true">+</span>') + "</div>" +
       '<p class="combo__why">' + esc(c.why) + "</p>" +
     "</li>";
@@ -968,6 +973,18 @@
 
   toggle.addEventListener("click", function () {
     applyTheme(state.theme === "dark" ? "light" : "dark");
+  });
+
+  /* each combo sample carries two states — the UI as drawn and the same UI in
+     its loading state. One small control per sample swaps them; its label names
+     the state it would show, and aria-pressed is the state it is showing. */
+  main.addEventListener("click", function (ev) {
+    var b = ev.target.closest(".combo__state");
+    if (!b) return;
+    var spec = b.closest(".spec");
+    var on = spec.classList.toggle("is-loading");
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    b.textContent = on ? "Loaded" : "Loading";
   });
 
   /* ---------- the one authored interaction: press to confirm ---------- */

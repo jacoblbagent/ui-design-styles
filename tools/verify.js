@@ -138,7 +138,7 @@ const OUT = path.join(__dirname, 'shots');
     };
   });
   // --- combos: a style, a pattern and a practice that hold up together ---
-  report.combos = await page.evaluate(() => {
+  report.combos = await page.evaluate(async () => {
     const list = window.COMBOS || [];
     const F = window.FACETS.styles;
     const cat = {};
@@ -146,6 +146,19 @@ const OUT = path.join(__dirname, 'shots');
     const kindsOf = (c) => [c.style, c.pattern, c.practice].map((id) => (F[id] || {}).k);
     const section = document.getElementById('sec-combos');
     const heads = [...document.querySelectorAll('.section')].map((s) => s.id);
+    /* a sample's two states both have to paint their own ground */
+    const sampleId = (s) => s.className.replace('spec spec--combo-', '');
+    const groundedOf = (root, spec) => {
+      let n = root;
+      while (n && n !== spec) {
+        const cs = getComputedStyle(n);
+        if (cs.backgroundImage !== 'none' || cs.backgroundColor !== 'rgba(0, 0, 0, 0)') return true;
+        n = n.parentElement;
+      }
+      return false;
+    };
+    const rootOf = (s, sel) => { const w = s.querySelector(sel); return w && w.firstElementChild; };
+    const grounded = (s, sel) => { const r = rootOf(s, sel); return !!r && groundedOf(r, s); };
     return {
       declared: list.length,
       rendered: document.querySelectorAll('#sec-combos .combo').length,
@@ -172,21 +185,58 @@ const OUT = path.join(__dirname, 'shots');
          anywhere it does not belong */
       samplesOverflowing: [...document.querySelectorAll('#sec-combos .spec')]
         .filter((s) => s.scrollWidth > s.clientWidth + 1 || s.scrollHeight > s.clientHeight + 1).length,
-      /* every sample paints its own ground: a themed surface (or its own
-         gradient/plate), never the chrome behind it, so the ink inside is read
-         against the sample and not against the page */
-      samplesWithoutOwnBackground: [...document.querySelectorAll('#sec-combos .spec')].filter((s) => {
-        let n = s.firstElementChild;
-        while (n && n !== s) {
-          const cs = getComputedStyle(n);
-          if (cs.backgroundImage !== 'none' || cs.backgroundColor !== 'rgba(0, 0, 0, 0)') return false;
-          n = n.parentElement;
-        }
-        return true;
-      }).map((s) => s.className.replace('spec spec--combo-', '')),
+      /* every sample paints its own ground in both states: a themed surface (or
+         its own gradient/plate), never the chrome behind it, so the ink inside
+         is read against the sample and not against the page */
+      samplesWithoutOwnBackground: [...document.querySelectorAll('#sec-combos .spec')]
+        .filter((s) => !grounded(s, '.combo__view')).map(sampleId),
+      /* the loading state is a real second state: declared, scoped like the view,
+         hidden until a control asks for it, and grounded like the view */
+      everyComboHasLoading: list.every((c) => typeof c.loading === 'string' && c.loading.trim().length > 20 &&
+        typeof c.loadingCss === 'string' && c.loadingCss.trim().length > 20),
+      everyLoadingScoped: list.every((c) => c.loadingCss.split('\n').filter((l) => l.indexOf('{') !== -1)
+        .every((l) => l.indexOf('.spec--combo-' + c.id) !== -1)),
+      stateToggles: document.querySelectorAll('#sec-combos .combo__state').length,
+      everyToggleIsAButton: [...document.querySelectorAll('#sec-combos .combo__state')].every((b) => b.tagName === 'BUTTON'),
+      loadingHiddenByDefault: [...document.querySelectorAll('#sec-combos .combo__load')].every((el) => getComputedStyle(el).display === 'none'),
+      loadingWithoutOwnBackground: [...document.querySelectorAll('#sec-combos .spec')].filter((s) => {
+        s.classList.add('is-loading');
+        const bad = !grounded(s, '.combo__load');
+        s.classList.remove('is-loading');
+        return bad;
+      }).map(sampleId),
       comboClassesInEntries: document.querySelectorAll('#sec-all [class*="spec--combo-"]').length
     };
   });
+  /* the sample's second state is swapped by a real control, and swapped back */
+  const stateBtn = page.locator('#sec-combos .combo__state').first();
+  await stateBtn.click();
+  await page.waitForTimeout(220);
+  report.comboState = await page.evaluate(() => {
+    const b = document.querySelector('#sec-combos .combo__state');
+    const spec = b.closest('.spec');
+    return {
+      pressed: b.getAttribute('aria-pressed'),
+      label: b.textContent.trim(),
+      specLoading: spec.classList.contains('is-loading'),
+      viewHidden: getComputedStyle(spec.querySelector('.combo__view')).display === 'none',
+      loadShown: getComputedStyle(spec.querySelector('.combo__load')).display !== 'none',
+      loadingCount: document.querySelectorAll('#sec-combos .spec.is-loading').length
+    };
+  });
+  await stateBtn.click();
+  await page.waitForTimeout(220);
+  report.comboState.back = await page.evaluate(() => {
+    const b = document.querySelector('#sec-combos .combo__state');
+    const spec = b.closest('.spec');
+    return {
+      pressed: b.getAttribute('aria-pressed'),
+      label: b.textContent.trim(),
+      loadingCount: document.querySelectorAll('#sec-combos .spec.is-loading').length,
+      viewShown: getComputedStyle(spec.querySelector('.combo__view')).display !== 'none'
+    };
+  });
+
   /* a combo name is a real control: it opens that entry's detail */
   const comboBtn = page.locator('#sec-combos .combo__name').first();
   const comboMember = await comboBtn.getAttribute('data-id');
@@ -608,16 +658,26 @@ const OUT = path.join(__dirname, 'shots');
      surface in dark, so no sample is dark ink on a dark page */
   report.comboSamplesInDark = await page.evaluate(() => {
     const specs = [...document.querySelectorAll('#sec-combos .spec')];
-    const grounded = specs.filter((s) => {
-      let n = s.firstElementChild;
-      while (n && n !== s) {
+    const groundedOf = (root, spec) => {
+      let n = root;
+      while (n && n !== spec) {
         const cs = getComputedStyle(n);
         if (cs.backgroundImage !== 'none' || cs.backgroundColor !== 'rgba(0, 0, 0, 0)') return true;
         n = n.parentElement;
       }
       return false;
-    }).length;
-    return { theme: document.documentElement.getAttribute('data-theme'), grounded, total: specs.length };
+    };
+    const rootOf = (s, sel) => { const w = s.querySelector(sel); return w && w.firstElementChild; };
+    let viewGrounded = 0, loadGrounded = 0;
+    specs.forEach((s) => {
+      const v = rootOf(s, '.combo__view');
+      if (v && groundedOf(v, s)) viewGrounded += 1;
+      s.classList.add('is-loading');
+      const l = rootOf(s, '.combo__load');
+      if (l && groundedOf(l, s)) loadGrounded += 1;
+      s.classList.remove('is-loading');
+    });
+    return { theme: document.documentElement.getAttribute('data-theme'), viewGrounded, loadGrounded, total: specs.length };
   });
   await page.locator('#theme-toggle').click();
 
