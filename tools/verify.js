@@ -42,18 +42,18 @@ const OUT = path.join(__dirname, 'shots');
     sectionNotes: document.querySelectorAll('.section__note').length,
     entryBlurbs: document.querySelectorAll('.entry__blurb').length,
     footNotes: document.querySelectorAll('.foot__note').length,
-    /* what is left is functional micro-copy: the axis captions, the matrix
+    /* what is left is functional micro-copy: the corner captions, the matrix
        legend, the readout hint and the gallery notes */
     keptMicroCopy: {
       axisCaptions: document.querySelectorAll('.atlas__axis').length,
       legendItems: document.querySelectorAll('.matrix__legend span').length,
       readoutHint: document.querySelectorAll('.matrix__ro-hint').length,
-      /* the corner captions name the restraint->loud scale at the top edge as
-         well as the bottom one, one word per corner */
+      /* the four corners name the four half-planes, one word each and none
+         twice, so the plot carries no axis captions of its own */
       quadrantCaptions: document.querySelectorAll('.atlas__quad').length,
+      quadrantWords: [...document.querySelectorAll('.atlas__quad')].map((el) => el.textContent),
       quadrantCorners: [...document.querySelectorAll('.atlas__quad')]
-        .map((el) => el.className.replace('atlas__quad ', '')),
-      quadrantBottomCaptions: document.querySelectorAll('.atlas__quad--bl, .atlas__quad--br').length
+        .map((el) => el.className.replace('atlas__quad ', ''))
     }
   }));
 
@@ -542,7 +542,8 @@ const OUT = path.join(__dirname, 'shots');
   report.mobileHOverflow = await m.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   report.mobileAtlas = await m.evaluate(() => ({
     plot: getComputedStyle(document.querySelector('.atlas__plot')).display,
-    axisRow: getComputedStyle(document.querySelector('.atlas__axis--x')).display,
+    cornerCaptions: [...document.querySelectorAll('.atlas__quad')]
+      .filter((c) => c.getBoundingClientRect().height > 0).length,
     legendRows: document.querySelectorAll('.atlas__legend li').length,
     namesOnPlane: [...document.querySelectorAll('.atlas__name')].filter((n) => n.getBoundingClientRect().height > 0).length
   }));

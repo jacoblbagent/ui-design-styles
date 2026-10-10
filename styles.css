@@ -403,13 +403,12 @@ body { scrollbar-color: var(--hair-strong) transparent; }
    are chrome, so neither is allowed to look like a style specimen. */
 
 .atlas {
-  display: grid; grid-template-columns: auto 1fr; grid-template-rows: 1fr auto;
-  gap: 8px 6px; margin-top: 18px;
+  margin-top: 18px;
   border: 1px solid var(--hair); border-radius: var(--r-card);
-  background: var(--stage); padding: 18px 20px 12px 8px;
+  background: var(--stage); padding: 18px 20px 12px;
 }
 
-.atlas__plot { position: relative; grid-column: 2; grid-row: 1; height: clamp(360px, 46vw, 580px); margin: 4px 18px 0 22px; }
+.atlas__plot { position: relative; height: clamp(360px, 46vw, 580px); margin-top: 4px; }
 
 .atlas__grid { position: absolute; inset: 0; pointer-events: none; }
 /* the coordinate space is inset so a value of 0 or 100 still renders as a whole
@@ -419,24 +418,17 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 .atlas__mid--v { left: 50%; top: 0; bottom: 0; border-left: 1px dashed var(--hair-strong); }
 .atlas__mid--h { top: 50%; left: 0; right: 0; border-top: 1px dashed var(--hair-strong); }
 
-/* The two top corners name the quadrant. Only the top two: the bottom corners
-   sit directly above the x captions, where a quadrant label restated them. */
+/* The four corners name the four half-planes, one word each, none twice: the
+   top is dimensional, the right loud, the bottom flat, the left restrained.
+   Together they carry every axis end, so the plot needs no axis captions. */
 .atlas__quad {
   position: absolute; font: 500 10px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase;
   color: var(--muted); opacity: .85;
 }
 .atlas__quad--tl { left: 6px; top: 4px; }
 .atlas__quad--tr { right: 6px; top: 4px; }
-
-.atlas__axis {
-  display: flex; justify-content: space-between; gap: 10px;
-  font: 500 10px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
-}
-.atlas__axis--x { grid-column: 2; grid-row: 2; padding: 2px 2px 0; }
-.atlas__axis--y {
-  grid-column: 1; grid-row: 1; flex-direction: column; align-items: center;
-  writing-mode: vertical-rl; transform: rotate(180deg); padding: 0 0 0 2px;
-}
+.atlas__quad--bl { left: 6px; bottom: 4px; }
+.atlas__quad--br { right: 6px; bottom: 4px; }
 
 /* The name is the only mark on the plot: no dot, no wrapper, no invisible hit
    target. It is positioned so its own box lands on the style's two values. */
@@ -640,13 +632,13 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
 /* ---------- narrow screens: the matrix scrolls, the atlas flatten ---------- */
 
 @media (max-width: 900px) {
-  .atlas { grid-template-columns: auto 1fr; padding: 14px 14px 10px 6px; }
+  .atlas { padding: 14px 14px 10px; }
   .atlas__plot { height: clamp(420px, 96vw, 620px); }
   .atlas__quad { font-size: 9px; letter-spacing: .06em; }
 }
 
 /* The legend under the plot carries the names when the plane cannot. */
-.atlas__legend { grid-column: 1 / -1; margin-top: 12px; border-top: 1px solid var(--hair); padding-top: 10px; }
+.atlas__legend { margin-top: 12px; border-top: 1px solid var(--hair); padding-top: 10px; }
 .atlas__lghead { display: flex; justify-content: space-between; gap: 10px; margin: 0 0 4px; font: 500 10px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .atlas__legend ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0 18px; }
 .atlas__legend button {
@@ -665,12 +657,11 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
 }
 
 @media (max-width: 640px) {
-  .atlas { grid-template-columns: 1fr; padding: 14px 14px 12px; }
-  .atlas__axis--y { display: none; }
+  .atlas { padding: 14px 14px 12px; }
   /* One narrow column cannot carry 43 names on the plane, and there are no dots
      to fall back on any more, so the plane goes and the list below IS the atlas
      on a phone: the same names, both values, in axis order. */
-  .atlas__plot, .atlas__axis--x, .atlas__axis--y { display: none; }
+  .atlas__plot { display: none; }
   .atlas__space { inset: 8px; }
   .atlas__space { inset: 8px; }
   .atlas__legend ul { grid-template-columns: 1fr; }
