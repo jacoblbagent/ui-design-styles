@@ -48,9 +48,12 @@ const OUT = path.join(__dirname, 'shots');
       axisCaptions: document.querySelectorAll('.atlas__axis').length,
       legendItems: document.querySelectorAll('.matrix__legend span').length,
       readoutHint: document.querySelectorAll('.matrix__ro-hint').length,
-      /* the quadrant captions restated the axis labels, so they are gone: the
-         axes alone name the scale */
-      quadrantCaptions: document.querySelectorAll('.atlas__quad').length
+      /* the quadrant captions name the quadrant at the two top corners only:
+         the bottom corners sit directly above the x captions */
+      quadrantCaptions: document.querySelectorAll('.atlas__quad').length,
+      quadrantCorners: [...document.querySelectorAll('.atlas__quad')]
+        .map((el) => el.className.replace('atlas__quad ', '')),
+      quadrantBottomCaptions: document.querySelectorAll('.atlas__quad--bl, .atlas__quad--br').length
     }
   }));
 
