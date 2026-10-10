@@ -802,6 +802,552 @@
 }`,
   prompt: "Design a dark-first interface: true black or near-black ground, elevation expressed as a lighter border plus one tonal step rather than a shadow, colours desaturated 10–20% and lightened, text at #e8eaed rather than pure white, primaries inverted to a light fill with a dark label, and transparent logos placed on bordered tiles.",
   sources: []
+},
+
+{
+  id: "hero-landing",
+  name: "Marketing / hero landing",
+  era: "2010s–",
+  origin: "The product landing page: one promise stated above the fold, then proof.",
+  blurb: "The most common screen on the web, and a structure more than a look: an eyebrow, one headline carrying the value in plain words, one supporting line, a single primary action, and a trust row directly beneath — all inside one screen of the fold.",
+  traits: [
+    "One promise, stated once: eyebrow, one headline, one supporting line — no second headline.",
+    "A single primary action; the secondary action is demoted to a ghost or a text link.",
+    "A trust row (logos, one metric) immediately under the action, not scattered down the page.",
+    "The headline names the value, not the product: the product name belongs in the lockup.",
+    "Left-aligned or centred as a deliberate choice, with the action in the first viewport at every width.",
+    "One supporting image or product surface, never a carousel of promises."
+  ],
+  avoid: [
+    "Two equal-weight buttons, which is no call to action.",
+    "A rotating hero — three promises shown in sequence are three promises half-seen.",
+    "Stock imagery doing the work the headline should."
+  ],
+  html: `<div class="hp-hero">
+    <p class="hp-eyebrow">Now in beta</p>
+    <h4 class="hp-head">Ship the whole page</h4>
+    <p class="hp-sub">One component, every screen. No second codebase to keep in step.</p>
+    <div class="hp-cta"><span class="hp-p">Start free</span><span class="hp-s">Book a demo</span></div>
+    <div class="hp-logos"><i>&#9670;</i><i>&#9650;</i><i>&#9679;</i><i>&#9632;</i></div>
+  </div>`,
+  css: `.spec--hero-landing .hp-hero {
+  width: 100%; max-width: 340px; padding: 30px 22px 22px; text-align: center; border-radius: 14px;
+  background: #0f1117; color: #f4f5f7; font-family: "Instrument Sans", sans-serif;
+}
+.spec--hero-landing .hp-eyebrow { margin: 0; font: 600 11px/1 "Instrument Sans", sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #8b93a7; }
+.spec--hero-landing .hp-head { margin: 12px 0 0; font-size: clamp(26px, 7vw, 36px); line-height: 1.02; letter-spacing: -0.025em; font-weight: 700; }
+.spec--hero-landing .hp-sub { margin: 10px auto 0; max-width: 24em; font-size: 13.5px; line-height: 1.5; color: #a9b0c0; }
+.spec--hero-landing .hp-cta { display: flex; gap: 9px; justify-content: center; margin-top: 18px; }
+.spec--hero-landing .hp-p { padding: 11px 18px; border-radius: 9px; background: #4f7cff; font: 600 13px/1 "Instrument Sans", sans-serif; }
+.spec--hero-landing .hp-s { padding: 11px 18px; border-radius: 9px; box-shadow: inset 0 0 0 1px #343b4d; font: 600 13px/1 "Instrument Sans", sans-serif; color: #cfd4e0; }
+.spec--hero-landing .hp-logos { display: flex; gap: 18px; justify-content: center; margin-top: 22px; color: #5a6273; font-size: 15px; }`,
+  prompt: "Design a product hero: an eyebrow label, one headline that states the value in plain words, one supporting line, a single primary action with the secondary demoted to a ghost, a trust row of logos or one metric directly beneath, one product surface as the only image, and the headline plus action inside the first viewport at every width. No second promise, no carousel.",
+  sources: []
+},
+
+{
+  id: "onboarding-wizard",
+  name: "Onboarding / wizard",
+  era: "1990s–",
+  origin: "Setup flows and installers: the shortest honest path through a decision set.",
+  blurb: "A decision set broken into single-question screens with a visible position. One decision per step, a stated place in the sequence, Back always reachable, and defaults good enough that a person can finish without answering everything.",
+  traits: [
+    "One decision per step, with its position stated (" + "\"Step 2 of 3\"" + ") and progress shown as a rail of steps.",
+    "The longest step sets the frame, so the layout does not jump between steps.",
+    "Back is always available except after a committed action; Continue is the single primary.",
+    "Defaults that let a person finish without answering every question.",
+    "A short plain-language hint under the question that sets expectations (" + "\"you can change this later\"" + ").",
+    "Progress is honest — no filler steps added to look thorough."
+  ],
+  avoid: [
+    "Collecting data the first run does not use.",
+    "A step that cannot be skipped or gone back from.",
+    "A progress bar that jumps backwards when the person goes Back."
+  ],
+  html: `<div class="ow-card">
+    <div class="ow-steps"><i class="done"></i><i class="now"></i><i></i></div>
+    <p class="ow-step">Step 2 of 3</p>
+    <h4 class="ow-q">Where do you ship?</h4>
+    <p class="ow-hint">You can change this later.</p>
+    <div class="ow-actions"><span class="ow-back">Back</span><span class="ow-next">Continue</span></div>
+  </div>`,
+  css: `.spec--onboarding-wizard .ow-card {
+  width: 100%; max-width: 300px; padding: 20px; background: #fff; border-radius: 14px;
+  border: 1px solid #e6e8ec; font-family: "Instrument Sans", sans-serif;
+}
+.spec--onboarding-wizard .ow-steps { display: flex; gap: 6px; }
+.spec--onboarding-wizard .ow-steps i { width: 22px; height: 4px; border-radius: 999px; background: #e0e3e9; }
+.spec--onboarding-wizard .ow-steps i.done { background: #1f7a4d; }
+.spec--onboarding-wizard .ow-steps i.now { background: #1f7a4d; width: 34px; }
+.spec--onboarding-wizard .ow-step { margin: 12px 0 0; font: 500 11px/1 "Instrument Sans", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #8a8f99; }
+.spec--onboarding-wizard .ow-q { margin: 8px 0 0; font-size: 19px; font-weight: 600; color: #16181d; }
+.spec--onboarding-wizard .ow-hint { margin: 6px 0 0; font-size: 12.5px; color: #7d838f; }
+.spec--onboarding-wizard .ow-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.spec--onboarding-wizard .ow-back { font: 500 13px/1 "Instrument Sans", sans-serif; color: #7d838f; }
+.spec--onboarding-wizard .ow-next { padding: 10px 16px; border-radius: 9px; background: #16181d; color: #fff; font: 600 13px/1 "Instrument Sans", sans-serif; }`,
+  prompt: "Design a setup wizard: one decision per screen, a step rail that states position, the longest step setting the frame so nothing jumps, Back always available with a single primary Continue, sensible defaults so the flow can be finished without answering everything, a short hint under each question, and honest progress.",
+  sources: []
+},
+
+{
+  id: "feed-timeline",
+  name: "Feed / infinite scroll",
+  era: "2006–",
+  origin: "Social timelines and content streams: an unbounded list of same-shaped units in reverse time.",
+  blurb: "One unit, repeated. Every item has the same shape and states author, time and content, the reader learns it once and reads fifty, and continuation is explicit — a cursor, a loader, or an end marker — never a silent stop.",
+  traits: [
+    "Same-shaped units in reverse-chronological order, so one card teaches the whole feed.",
+    "Each unit states its author, its time and one piece of content; nothing is inferred.",
+    "Continuation is explicit — " + "\"loading older\"" + ", a cursor, or an end marker.",
+    "Live arrivals are announced and do not silently prepend above the reader's place.",
+    "The reader's position is preserved when more loads, and a way back exists.",
+    "Media in a unit reserves its space so the list does not shift as it streams in."
+  ],
+  avoid: [
+    "Infinite scroll with no end state and no way back to a position.",
+    "Mixing unit shapes in one feed, which breaks the rhythm the whole pattern depends on.",
+    "Autoplay media that hijacks the scroll."
+  ],
+  html: `<div class="ft-feed">
+    <article class="ft-post"><span class="ft-av"></span><div><p class="ft-meta">Ana &middot; 2h</p><p class="ft-body">Shipped the new map layer.</p></div></article>
+    <article class="ft-post"><span class="ft-av b"></span><div><p class="ft-meta">Sam &middot; 5h</p><p class="ft-body">Two routes added today.</p></div></article>
+    <div class="ft-more"><i></i>Loading older</div>
+  </div>`,
+  css: `.spec--feed-timeline .ft-feed { width: 100%; max-width: 310px; background: #fff; border: 1px solid #e8eaee; border-radius: 12px; overflow: hidden; font-family: "Instrument Sans", sans-serif; }
+.spec--feed-timeline .ft-post { display: flex; gap: 10px; padding: 12px 14px; box-shadow: inset 0 -1px 0 #eef0f3; }
+.spec--feed-timeline .ft-av { width: 32px; height: 32px; border-radius: 50%; background: #cdd6e6; flex: none; }
+.spec--feed-timeline .ft-av.b { background: #e2d3c4; }
+.spec--feed-timeline .ft-meta { margin: 0; font: 600 11.5px/1.4 "Instrument Sans", sans-serif; color: #6b7280; }
+.spec--feed-timeline .ft-body { margin: 2px 0 0; font-size: 13.5px; line-height: 1.45; color: #191b20; }
+.spec--feed-timeline .ft-more { display: flex; align-items: center; gap: 8px; padding: 13px 14px; font: 500 12px/1 "Instrument Sans", sans-serif; color: #9aa0ab; }
+.spec--feed-timeline .ft-more i { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #d3d7de; border-top-color: #6b7280; }`,
+  prompt: "Design a feed: one repeated unit shape in reverse-chronological order carrying author, time and one piece of content, explicit continuation (loading-older row, cursor or end marker), live arrivals announced rather than silently prepended, position preserved when more loads, and media that reserves its space so nothing shifts.",
+  sources: []
+},
+
+{
+  id: "command-palette",
+  name: "Command palette",
+  era: "2012–",
+  origin: "Editor and app launchers: one keystroke, then fuzzy search over everything you can do.",
+  blurb: "An intent-first surface. One keystroke opens a single search over the product's verbs and objects, fuzzy-matched with the top hit pre-selected, every result showing its object and its consequence, and the whole thing runnable without the pointer.",
+  traits: [
+    "One entry point (<code>&#8984;K</code> / <code>Ctrl-K</code>) that is the same everywhere in the product.",
+    "Fuzzy match over verbs, objects and recently used items, with the top hit pre-selected.",
+    "Grouped results, each row naming its object and its consequence.",
+    "Keyboard-first: arrows move, Enter runs, Escape closes; the pointer is optional.",
+    "Reachable actions only — nothing listed that cannot be run from here.",
+    "Recents and context shorten the list, so the palette learns the person rather than the manual."
+  ],
+  avoid: [
+    "Fifty items in a different order each call, which is a menu wearing a palette.",
+    "A palette that cannot be opened, or moved, from the keyboard.",
+    "Listing settings as commands; a palette is for actions with a consequence."
+  ],
+  html: `<div class="cp-pal">
+    <div class="cp-input"><span class="cp-caret"></span>open<kbd>&#8984;K</kbd></div>
+    <ul class="cp-list">
+      <li class="sel"><b>Open project</b><span>Jump to a workspace</span><kbd>&#9166;</kbd></li>
+      <li><b>New file</b><span>Create in current folder</span></li>
+      <li><b>Toggle theme</b></li>
+    </ul>
+  </div>`,
+  css: `.spec--command-palette .cp-pal { width: 100%; max-width: 320px; border-radius: 12px; overflow: hidden; background: rgba(24,26,32,.86); backdrop-filter: blur(16px) saturate(140%); border: 1px solid rgba(255,255,255,.1); box-shadow: 0 18px 40px rgba(0,0,0,.45); font-family: "Instrument Sans", sans-serif; color: #e7e9ee; }
+.spec--command-palette .cp-input { display: flex; align-items: center; gap: 8px; padding: 12px 14px; font-size: 14px; box-shadow: inset 0 -1px 0 rgba(255,255,255,.08); }
+.spec--command-palette .cp-caret { width: 1.5px; height: 16px; background: #4f7cff; }
+.spec--command-palette .cp-input kbd { margin-left: auto; font: 500 11px/1 "IBM Plex Mono", monospace; color: #9aa0ab; border: 1px solid rgba(255,255,255,.14); border-radius: 5px; padding: 3px 6px; }
+.spec--command-palette .cp-list { list-style: none; margin: 0; padding: 6px; }
+.spec--command-palette .cp-list li { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 8px; }
+.spec--command-palette .cp-list li.sel { background: rgba(79,124,255,.18); box-shadow: inset 0 0 0 1px rgba(79,124,255,.4); }
+.spec--command-palette .cp-list b { font: 600 13px/1 "Instrument Sans", sans-serif; }
+.spec--command-palette .cp-list span { font-size: 11.5px; color: #9aa0ab; }
+.spec--command-palette .cp-list kbd { margin-left: auto; font: 500 11px/1 "IBM Plex Mono", monospace; color: #9aa0ab; }`,
+  prompt: "Design a command palette: one keyboard entry point (Cmd/Ctrl-K) available everywhere, a fuzzy search over verbs, objects and recents with the top hit pre-selected, grouped rows each naming the object and its consequence, full keyboard operation (arrows, Enter, Escape), and only actions that can actually be run from here. Never a re-ordered menu.",
+  sources: []
+},
+
+{
+  id: "navigation-shell",
+  name: "App navigation shell",
+  era: "2010s–",
+  origin: "Native app frames and web apps: persistent chrome that owns the layout and never moves for content.",
+  blurb: "The frame the product lives in. A persistent rail or bottom bar for top-level moves, a bar for the current context, and a body for content — the shell owns the layout, the screen fills the body, and the way back is always on screen.",
+  traits: [
+    "Three zones: a persistent rail (or bottom bar) for top-level moves, a bar for the current context, a body for content.",
+    "The shell owns the layout; screens fill the body and never move the chrome.",
+    "One level of hierarchy visible at a time; deeper structure is revealed in place.",
+    "The current location is marked in both the rail and the contextual bar.",
+    "Chrome collapses with intent (rail shrinks, bar merges) rather than disappearing.",
+    "The primary action for the current screen sits in the contextual bar, not floating loose."
+  ],
+  avoid: [
+    "Two navigation systems of equal weight, which makes the path ambiguous.",
+    "A shell that scrolls away, so the way back is not always on screen.",
+    "Hiding the primary move behind a gesture with no visible affordance."
+  ],
+  html: `<div class="ns-app">
+    <aside class="ns-rail"><span class="act">&#9636;</span><span>&#9635;</span><span>&#9733;</span></aside>
+    <div class="ns-main">
+      <div class="ns-top"><span class="ns-title">Inbox</span><span class="ns-act">&#9998;</span></div>
+      <div class="ns-body"><span class="ns-line"></span><span class="ns-line s"></span></div>
+    </div>
+  </div>`,
+  css: `.spec--navigation-shell .ns-app { display: grid; grid-template-columns: 50px 1fr; width: 100%; max-width: 320px; height: 170px; border: 1px solid #e6e8ec; border-radius: 12px; overflow: hidden; background: #fff; font-family: "Instrument Sans", sans-serif; }
+.spec--navigation-shell .ns-rail { background: #14161c; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 14px 0; color: #6d7482; font-size: 16px; }
+.spec--navigation-shell .ns-rail .act { color: #fff; }
+.spec--navigation-shell .ns-top { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; box-shadow: inset 0 -1px 0 #eef0f3; }
+.spec--navigation-shell .ns-title { font: 600 15px/1 "Instrument Sans", sans-serif; color: #16181d; }
+.spec--navigation-shell .ns-act { color: #8a8f99; }
+.spec--navigation-shell .ns-body { padding: 16px 14px; display: grid; gap: 10px; align-content: start; }
+.spec--navigation-shell .ns-line { height: 12px; border-radius: 4px; background: #eef0f3; }
+.spec--navigation-shell .ns-line.s { width: 60%; }`,
+  prompt: "Design an app navigation shell: a persistent rail or bottom bar for top-level moves, a contextual bar for the current screen carrying its primary action, and a body that screens fill without moving the chrome. Mark the current location in both zones, collapse chrome with intent rather than hiding it, and keep one visible level of hierarchy with deeper structure revealed in place.",
+  sources: []
+},
+
+{
+  id: "overlay-layer",
+  name: "Overlay layer (modal / drawer / sheet)",
+  era: "2010s–",
+  origin: "The layered web: content on top of content, with a scrim to say how much it blocks.",
+  blurb: "Interruption with a weight that matches its cost. A modal blocks and traps; a sheet and a popover do not. One scrim for the modal, none for the rest, and every layer closes on Escape, on its own control, and — if modal — on the backdrop.",
+  traits: [
+    "Weight matches blocking power: one scrim for a full modal, none for a sheet or popover.",
+    "A modal traps focus and blocks the page; a sheet and a popover leave the page reachable.",
+    "Every layer closes on Escape, on its own control, and (if modal) on a backdrop click.",
+    "Dismiss returns focus to the element that opened it.",
+    "The topmost layer owns the stack; nothing opens beneath it, and the stack has one depth.",
+    "The sheet is anchored to its edge with an affordance (a grab handle), and scrolls inside itself."
+  ],
+  avoid: [
+    "An overlay for a task that could live in the page — layering is for interruptions, not navigation.",
+    "A sheet taller than the screen with no internal scroll, or a modal that cannot be closed from the keyboard.",
+    "Stacking overlays on overlays."
+  ],
+  html: `<div class="ol-stage">
+    <div class="ol-scrim"></div>
+    <div class="ol-sheet">
+      <span class="ol-grab"></span>
+      <p class="ol-title">Move to folder</p>
+      <p class="ol-row">Invoices</p>
+      <p class="ol-row">Archive</p>
+    </div>
+  </div>`,
+  css: `.spec--overlay-layer .ol-stage { position: relative; width: 100%; max-width: 320px; height: 172px; border-radius: 12px; overflow: hidden; background: linear-gradient(160deg,#dfe6f2,#c7d3e6); }
+.spec--overlay-layer .ol-scrim { position: absolute; inset: 0; background: rgba(16,20,30,.42); backdrop-filter: blur(2px); }
+.spec--overlay-layer .ol-sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; border-radius: 16px 16px 0 0; padding: 10px 16px 16px; box-shadow: 0 -12px 30px rgba(0,0,0,.22); font-family: "Instrument Sans", sans-serif; }
+.spec--overlay-layer .ol-grab { display: block; width: 36px; height: 4px; border-radius: 999px; background: #d3d7de; margin: 0 auto 12px; }
+.spec--overlay-layer .ol-title { margin: 0 0 10px; font: 600 15px/1 "Instrument Sans", sans-serif; color: #16181d; }
+.spec--overlay-layer .ol-row { margin: 0; padding: 10px 0; font-size: 13.5px; color: #2c3138; box-shadow: inset 0 -1px 0 #eef0f3; }`,
+  prompt: "Design an overlay system: a modal for blocking interruptions with a scrim and focus trap, a sheet or popover with no scrim for non-blocking ones, a grab handle and internal scroll on sheets, closing paths on Escape, on the layer's own control and on the backdrop for modals, and focus returned to the opener on dismiss. One depth of stack, nothing opened beneath.",
+  sources: []
+},
+
+{
+  id: "form-validation",
+  name: "Form and validation",
+  era: "1990s–",
+  origin: "The data-entry screen: getting a person through a set of fields with as little friction and as much clarity as possible.",
+  blurb: "The most-used and most-neglected screen. Labels above fields that stay visible, validation on blur and submit rather than every keystroke, and errors that sit with their field, name the problem in a sentence and state the fix.",
+  traits: [
+    "Label above the field, always visible — a placeholder is not a label.",
+    "Validate on blur and on submit, never on every keystroke of a field still being typed.",
+    "The error sits with its field, in a sentence that names the problem and the fix.",
+    "One message per field; the first failure scrolls into view and takes focus.",
+    "Required vs optional stated once for the whole form, not starred on every field.",
+    "Success is quiet — the field returns to rest, no celebration."
+  ],
+  avoid: [
+    "Red-lining a field before the person has finished entering it.",
+    "A summary at the top with no anchor to the offending field.",
+    "Clearing entered values when a submit fails."
+  ],
+  html: `<div class="fv-form">
+    <label class="fv-field bad"><span>Email</span><input value="ana@site" readonly></label>
+    <p class="fv-err">Include an @ and a domain, like ana@site.com.</p>
+    <label class="fv-field"><span>Name</span><input value="Ana Rivera" readonly></label>
+  </div>`,
+  css: `.spec--form-validation .fv-form { width: 100%; max-width: 300px; padding: 18px; border: 1px solid #e6e8ec; border-radius: 12px; background: #fff; font-family: "Instrument Sans", sans-serif; }
+.spec--form-validation .fv-field { display: block; margin-bottom: 6px; }
+.spec--form-validation .fv-field span { display: block; font: 600 11.5px/1 "Instrument Sans", sans-serif; color: #4b5159; margin-bottom: 6px; }
+.spec--form-validation .fv-field input { width: 100%; padding: 10px 12px; font: 400 13.5px/1 "Instrument Sans", sans-serif; color: #16181d; border: 1px solid #cfd4dc; border-radius: 8px; background: #fff; }
+.spec--form-validation .fv-field.bad input { border-color: #c62d2d; box-shadow: 0 0 0 3px rgba(198,45,45,.14); }
+.spec--form-validation .fv-err { margin: 0 0 14px; font-size: 12px; line-height: 1.4; color: #c62d2d; }`,
+  prompt: "Design a form: labels above fields and always visible, help text where it belongs, validation on blur and submit rather than per-keystroke, per-field error messages in a sentence naming the problem and the fix, the first failure focused and scrolled into view, required/optional stated once, and no value cleared on a failed submit.",
+  sources: []
+},
+
+{
+  id: "responsive-mobile-first",
+  name: "Responsive / mobile-first",
+  era: "2010–",
+  origin: "The multi-device web: design the narrowest case first, then add as space allows.",
+  blurb: "A way of working more than a look. Base styles are the phone, media queries only ever add, layout is fluid from <code>clamp()</code> and <code>minmax()</code>, targets are touch-sized, and a component reflows on its own width rather than the viewport's.",
+  traits: [
+    "Narrowest case first: base styles are the phone, media queries enhance and only use <code>min-width</code>.",
+    "A single-column source order that reflows into multiple columns as width allows.",
+    "Fluid values — <code>clamp()</code> type ramps and <code>minmax()</code> grids — instead of fixed pixel widths.",
+    "Touch first: 44px targets, <code>touch-action: manipulation</code>, and 16px minimum inputs so iOS does not zoom.",
+    "Content outranks breakpoints — a component responds to its own container, not the viewport.",
+    "Tested between the breakpoints, not only at them."
+  ],
+  avoid: [
+    "Desktop-down: starting wide and hiding pieces with <code>display: none</code>, which strands the phone with the leftovers.",
+    "Device-named breakpoints (a specific phone) instead of content-driven ones.",
+    "Fixed pixel containers that only look right at one width."
+  ],
+  html: `<div class="rm-wrap">
+    <div class="rm-bar"></div>
+    <div class="rm-grid"><span>1</span><span>2</span><span>3</span></div>
+  </div>`,
+  css: `.spec--responsive-mobile-first .rm-wrap { width: 100%; max-width: 320px; padding: 14px; background: #fff; border: 1px solid #e6e8ec; border-radius: 12px; font-family: "Instrument Sans", sans-serif; }
+.spec--responsive-mobile-first .rm-bar { height: 34px; border-radius: 8px; background: #14161c; margin-bottom: 12px; }
+.spec--responsive-mobile-first .rm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 10px; }
+.spec--responsive-mobile-first .rm-grid span { height: 64px; border-radius: 8px; background: #eef0f3; display: flex; align-items: center; justify-content: center; font: 600 13px/1 "Instrument Sans", sans-serif; color: #8a8f99; }`,
+  prompt: "Work mobile-first: base styles target the narrowest width, all media queries use min-width and only add, one-column source order reflows into multiple columns, type and space use clamp() and grids use minmax(), targets are at least 44px with 16px inputs and touch-action manipulation, and components respond to their own container width. Never start wide and hide pieces with display:none.",
+  sources: []
+},
+
+{
+  id: "content-design",
+  name: "Content design / UX writing",
+  era: "2010s–",
+  origin: "The product-content discipline: the interface is its words, so the words are designed first.",
+  blurb: "A practice with no look of its own — its material is language. Every label, error, empty state and button is a sentence with an owner, written in plain words that name what the person controls, under one voice that shifts tone by state and never blames the reader.",
+  traits: [
+    "The interface is written before it is drawn: every label, error, empty state and button is a sentence with an owner.",
+    "Plain language over system language — " + "\"Couldn't save your draft\"" + " beats " + "\"Error 409\"" + ".",
+    "Labels name what the person controls, not how the system is built — " + "\"Notifications\"" + ", not " + "\"Alert config\"" + ".",
+    "Errors state what happened, what it means and the next step, in that order, without blame.",
+    "One voice, tone shifting by state: calm in success, direct in error, brief in urgency.",
+    "No lorem and no placeholder strings; the longest and shortest plausible content is written and tested."
+  ],
+  avoid: [
+    "Writing the copy last, as the final step before ship, when the layout has already fixed the words.",
+    "Tone that jokes in an error or apologises without saying what to do.",
+    "System words leaked into the interface (codes, table names, developer shorthand)."
+  ],
+  html: `<div class="cd-panel">
+    <p class="cd-label">Card number</p>
+    <p class="cd-input">4242 4242 4242 424</p>
+    <p class="cd-msg">That card number is one digit short — it should be 16 digits.</p>
+    <p class="cd-help">We only use this to take the payment. You can change it any time.</p>
+    <span class="cd-cta">Save and finish later</span>
+  </div>`,
+  css: `.spec--content-design .cd-panel { width: 100%; max-width: 300px; padding: 18px; border: 1px solid #e6e8ec; border-radius: 12px; background: #fff; font-family: "Instrument Sans", sans-serif; }
+.spec--content-design .cd-label { margin: 0; font: 600 11.5px/1 "Instrument Sans", sans-serif; color: #4b5159; }
+.spec--content-design .cd-input { margin: 6px 0 0; padding: 10px 12px; border: 1px solid #c62d2d; border-radius: 8px; font-size: 13.5px; color: #16181d; letter-spacing: .04em; }
+.spec--content-design .cd-msg { margin: 8px 0 0; font-size: 12.5px; line-height: 1.45; color: #c62d2d; }
+.spec--content-design .cd-help { margin: 12px 0 0; font-size: 12.5px; line-height: 1.45; color: #6b7280; }
+.spec--content-design .cd-cta { display: inline-block; margin-top: 14px; font: 600 13px/1 "Instrument Sans", sans-serif; color: #16181d; border-bottom: 1.5px solid #16181d; }`,
+  prompt: "Write the interface before drawing it: every label, error, empty state and button is a sentence with an owner, in plain language, naming what the person controls. Errors state what happened, what it means and the next step, without blame. One voice with tone shifting by state. No lorem, no system words — codes, table names and developer shorthand stay out of the interface.",
+  sources: []
+},
+
+{
+  id: "research-driven",
+  name: "Research-driven design",
+  era: "1990s–",
+  origin: "Usability engineering and design research: decisions that cite what people actually did.",
+  blurb: "A practice whose material is evidence. Every decision points at a finding, a quote or a task result rather than a preference, each finding carries its source, and the smallest change that tests the assumption ships before the next round of observation.",
+  traits: [
+    "Decisions cite evidence — a finding, a quote, a task result or a metric — never " + "\"best practice\"" + " alone.",
+    "Recruit for behaviour, not demographics: five to eight participants per round beats one large survey.",
+    "Ask about the past and the task, never the future preference (" + "\"would you use\u2026\"" + ").",
+    "Separate what people did from what they said; observed friction outranks stated preference.",
+    "Every finding carries its source: participant count, task and the observation.",
+    "Ship the smallest change that tests the assumption, then observe again."
+  ],
+  avoid: [
+    "Leading questions and confirmation interviews that produce the answer the team already wanted.",
+    "Treating one loud customer as a finding.",
+    "Research that ends in a report nobody can act on — every finding needs an owner and a next step."
+  ],
+  html: `<div class="rd-card">
+    <p class="rd-k">Finding 03</p>
+    <p class="rd-q">&ldquo;I didn't know it had saved.&rdquo;</p>
+    <p class="rd-meta">4 of 6 participants &middot; task 2 &middot; observed</p>
+  </div>`,
+  css: `.spec--research-driven .rd-card { width: 100%; max-width: 300px; padding: 18px; border-radius: 12px; background: #14161c; color: #e7e9ee; font-family: "Instrument Sans", sans-serif; }
+.spec--research-driven .rd-k { margin: 0; font: 600 10.5px/1 "IBM Plex Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: #7f8798; }
+.spec--research-driven .rd-q { margin: 12px 0 0; font-size: 17px; line-height: 1.35; font-style: italic; }
+.spec--research-driven .rd-meta { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid #2a2e38; font: 500 11.5px/1 "Instrument Sans", sans-serif; color: #9aa0ab; }`,
+  prompt: "Work research-driven: every decision cites a finding, quote, task result or metric rather than a preference; recruit five to eight behaviourally; ask about past tasks not future preferences; treat observed friction as stronger than stated preference; label each finding with its participant count, task and observation; and ship the smallest change that tests the assumption before observing again.",
+  sources: []
+},
+
+{
+  id: "design-system",
+  name: "Design system / atomic composition",
+  era: "2013–",
+  origin: "Atomic design and component-driven development: the interface assembled from levels, with the system as a governed product.",
+  blurb: "A practice about composition and governance. Work is assembled from primitives into components into patterns, one component serves one purpose with variants as tokens, every part is named, the state matrix is complete, and drift is treated as a bug with an owner.",
+  traits: [
+    "Three composition levels — primitive, component (atom then molecule), and pattern — and nothing skips a level.",
+    "One component per purpose, with variants expressed as tokens or props rather than near-duplicate components.",
+    "Anatomy documented: every part named (container, label, icon, state layer) so it can be referenced.",
+    "State matrix complete: default, hover, focus-visible, active, disabled, loading and error.",
+    "Governance is part of the system: a contribution path, a versioning rule and a deprecation policy.",
+    "The system is a product with consumers; usage is measured and drift is treated as a bug."
+  ],
+  avoid: [
+    "A component library with no documented states or governance — that is a folder, not a system.",
+    "Forking a component for one screen; that is how a system becomes a set of screenshots.",
+    "Shipping components before the tokens they are built from."
+  ],
+  html: `<div class="ds-tree">
+    <div class="ds-row p"><b>#1c1f23</b><span>primitive</span></div>
+    <div class="ds-row t"><b>--surface-raised</b><span>semantic token</span></div>
+    <div class="ds-row c"><span class="ds-chip">Button / primary</span><span>component</span></div>
+  </div>`,
+  css: `.spec--design-system .ds-tree { width: 100%; max-width: 300px; display: grid; gap: 8px; font-family: "Instrument Sans", sans-serif; }
+.spec--design-system .ds-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 13px; border-radius: 10px; background: #fff; border: 1px solid #e6e8ec; }
+.spec--design-system .ds-row b { font: 600 12.5px/1 "IBM Plex Mono", monospace; color: #16181d; font-weight: 600; }
+.spec--design-system .ds-row span { font-size: 11px; color: #8a8f99; }
+.spec--design-system .ds-row.p { border-left: 3px solid #4f7cff; }
+.spec--design-system .ds-row.t { border-left: 3px solid #b06a2c; }
+.spec--design-system .ds-row.c { border-left: 3px solid #1f7a4d; }
+.spec--design-system .ds-chip { padding: 5px 9px; border-radius: 6px; background: #16181d; color: #fff !important; font: 600 11.5px/1 "Instrument Sans", sans-serif; }`,
+  prompt: "Run the interface as a design system: compose in three levels (primitive, component, pattern) with nothing skipping a level; one component per purpose with variants as tokens or props; documented anatomy with every part named; a complete state matrix (default, hover, focus-visible, active, disabled, loading, error); and governance — contribution path, versioning, deprecation — treating the system as a product whose drift is a bug.",
+  sources: []
+},
+
+{
+  id: "dark-patterns",
+  name: "Dark patterns / deceptive design",
+  era: "2010–",
+  origin: "Growth-hacked consent and checkout flows: the anti-practice, documented so it is recognised and removed.",
+  blurb: "A practice recorded as a warning. Each of these techniques raises a metric and takes value from the person: false urgency, confirmshaming, pre-selected consent, a roach-motel cancel, misdirection and forced action. It carries no look of its own — it is a set of moves to recognise and take out.",
+  traits: [
+    "False urgency: a countdown or " + "\"only 2 left\"" + " that resets and is not tied to real stock.",
+    "Confirmshaming: the decline is worded to insult the choice (" + "\"No thanks, I hate saving\"" + ").",
+    "Pre-selected consent: an opt-in already ticked, or a default that must be actively undone.",
+    "Roach motel: trivial to subscribe, deliberately hard to cancel or delete.",
+    "Misdirection: the desired action styled prominently, the escape route demoted to a faint link.",
+    "Obstruction: a task interrupted by an unrelated upsell with no visible skip."
+  ],
+  avoid: [
+    "Shipping any of these — the entry exists so they are recognised; the fix is to remove them, not to theme them.",
+    "A/B testing a dark pattern for conversion: it works on the metric and fails the person.",
+    "Calling a dark pattern " + "\"best practice\"" + " because a larger product ships it."
+  ],
+  html: `<div class="dp-modal">
+    <p class="dp-t">Wait! Don't miss out</p>
+    <p class="dp-s">Your 40% discount will be gone forever if you leave now.</p>
+    <span class="dp-yes">Yes, keep my discount</span>
+    <span class="dp-no">no thanks, I hate saving money</span>
+    <label class="dp-check"><i></i>Email me daily</label>
+  </div>`,
+  css: `.spec--dark-patterns .dp-modal { width: 100%; max-width: 300px; padding: 20px; border-radius: 14px; background: #fff; border: 1px solid #e6e8ec; text-align: center; font-family: "Instrument Sans", sans-serif; }
+.spec--dark-patterns .dp-t { margin: 0; font-size: 17px; font-weight: 700; color: #16181d; }
+.spec--dark-patterns .dp-s { margin: 8px 0 16px; font-size: 12.5px; line-height: 1.5; color: #6b7280; }
+.spec--dark-patterns .dp-yes { display: block; padding: 12px; border-radius: 9px; background: #1f7a4d; color: #fff; font: 600 13.5px/1 "Instrument Sans", sans-serif; }
+.spec--dark-patterns .dp-no { display: block; margin-top: 10px; font: 400 10.5px/1.4 "Instrument Sans", sans-serif; color: #b3b7bf; text-decoration: underline; }
+.spec--dark-patterns .dp-check { display: flex; align-items: center; gap: 7px; justify-content: center; margin-top: 14px; font-size: 11.5px; color: #8a8f99; }
+.spec--dark-patterns .dp-check i { position: relative; width: 13px; height: 13px; border-radius: 3px; background: #1f7a4d; }
+.spec--dark-patterns .dp-check i::after { content: ""; position: absolute; left: 4px; top: 1.5px; width: 4px; height: 7px; border: solid #fff; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }`,
+  prompt: "Recognise and remove dark patterns: false urgency (resetting countdowns, fake stock), confirmshaming (an insulting decline), pre-selected consent, roach-motel cancels, misdirection that demotes the escape route, and obstruction with no visible skip. Each raises a metric and takes value from the person — the correct action is to delete it, never to theme it or A/B test it.",
+  sources: ["https://www.deceptive.design/", "https://en.wikipedia.org/wiki/Dark_pattern"]
+},
+
+{
+  id: "localization-rtl",
+  name: "Localization / RTL",
+  era: "2000s–",
+  origin: "The multilingual product: one layout serving scripts that read in different directions and different lengths.",
+  blurb: "A practice about survival across scripts. Layout uses logical properties so it mirrors for free, direction-aware glyphs flip while media never does, type stacks cover the script, no words are baked into images, and nothing is truncated to fit an English-sized slot.",
+  traits: [
+    "Logical properties only — <code>margin-inline-start</code>, <code>padding-inline</code>, <code>inset-inline</code> — never <code>left</code> or <code>right</code>.",
+    "Direction-aware glyphs: chevrons, arrows and progress mirror in RTL; logos, maps and media do not.",
+    "<code>dir</code> on the root, <code>lang</code> per run, and a per-script font stack so CJK and Arabic shape correctly.",
+    "No text baked into images and no fixed-width labels — German runs roughly 30% longer than English.",
+    "Plural, gender and date/number formats via <code>Intl</code>, never string concatenation.",
+    "Layouts that survive the mirror; a mirrored chevron on an unmirrored row is the classic tell."
+  ],
+  avoid: [
+    "Centring everything to dodge the mirror problem; RTL is a mirror, not a centre.",
+    "Truncating a translation to fit an English-sized slot — let the text size the control.",
+    "Forcing a Latin webfont over a script it does not cover."
+  ],
+  html: `<div class="lz-pair">
+    <div class="lz-row" dir="ltr"><span class="lz-ic">?</span><span>Help centre</span><span class="lz-chev">&rsaquo;</span></div>
+    <div class="lz-row" dir="rtl"><span class="lz-ic">?</span><span>مركز المساعدة</span><span class="lz-chev">&lsaquo;</span></div>
+  </div>`,
+  css: `.spec--localization-rtl .lz-pair { width: 100%; max-width: 300px; display: grid; gap: 10px; font-family: "Instrument Sans", "Noto Sans Arabic", "Noto Sans", sans-serif; }
+.spec--localization-rtl .lz-row { display: flex; align-items: center; gap: 10px; padding-inline: 14px 12px; padding-block: 12px; border: 1px solid #e6e8ec; border-radius: 10px; background: #fff; font-size: 13.5px; color: #16181d; }
+.spec--localization-rtl .lz-ic { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #eef0f3; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #6b7280; }
+.spec--localization-rtl .lz-chev { margin-inline-start: auto; color: #b3b7bf; }`,
+  prompt: "Localize with logical properties only (margin-inline-start, padding-inline, inset-inline) so the layout mirrors for free; mirror direction-aware glyphs but never logos or media; set dir on the root and lang per run with a per-script font stack; keep text out of images and out of fixed-width labels; format plurals, dates and numbers with Intl; and let translations size their own controls instead of truncating to English.",
+  sources: []
+},
+
+{
+  id: "performance-first",
+  name: "Performance-first / perceived performance",
+  era: "2010s–",
+  origin: "The slow-network web: weight and time treated as design constraints, not engineering afterthoughts.",
+  blurb: "A practice where speed is part of the design. A budget is declared up front, weight is a design decision, the critical path ships first, media reserves its space, and the wait — where there is one — is made legible rather than hidden behind a spinner.",
+  traits: [
+    "A budget declared up front (for example <code>&lt; 150KB JS</code>, LCP <code>&lt; 2.5s</code>) and treated as a constraint on the design.",
+    "Perceived speed over raw speed: skeleton or optimistic states that make the wait legible.",
+    "Weight is a design decision — fewer, subsetted webfonts; no hero video without a reason.",
+    "Critical path first: above-the-fold HTML and CSS inlined, the rest deferred.",
+    "Space reserved for media (<code>width</code>/<code>height</code> or <code>aspect-ratio</code>) so nothing shifts.",
+    "Measured on a mid-range device on a slow connection, not a desktop on fibre."
+  ],
+  avoid: [
+    "Adding a spinner instead of reducing the payload — the best perceived-performance fix is less to wait for.",
+    "Deferring the thing the person came for; deferring the hero is worse than shipping it.",
+    "Layout shift from late-arriving media, which reads as jank even when the bytes were fast."
+  ],
+  html: `<div class="pf-wrap">
+    <div class="pf-paint">above the fold</div>
+    <div class="pf-bars">
+      <i style="width:34%"></i><i style="width:58%"></i><i style="width:22%"></i>
+    </div>
+  </div>`,
+  css: `.spec--performance-first .pf-wrap { width: 100%; max-width: 300px; font-family: "Instrument Sans", sans-serif; }
+.spec--performance-first .pf-paint { height: 78px; border-radius: 10px; border: 1px solid #e6e8ec; background: repeating-linear-gradient(135deg,#f2f4f7 0 8px,#e8ebf0 8px 16px); display: flex; align-items: center; justify-content: center; font: 600 12px/1 "Instrument Sans", sans-serif; color: #8a8f99; }
+.spec--performance-first .pf-bars { display: grid; gap: 6px; margin-top: 12px; }
+.spec--performance-first .pf-bars i { height: 8px; border-radius: 4px; background: #4f7cff; }`,
+  prompt: "Design performance-first: declare a budget up front (JS weight, LCP) as a design constraint, prefer perceived speed with skeletons or optimistic states over hidden waits, treat font and media weight as design decisions, inline the critical path and defer the rest, reserve space for media to avoid shifts, and measure on a mid-range device on a slow connection. Reduce the payload before adding a spinner.",
+  sources: []
+},
+
+{
+  id: "error-resilience",
+  name: "Error resilience / recovery",
+  era: "2010s–",
+  origin: "Resilient systems thinking: the error is a designed state, and the person's work is protected through it.",
+  blurb: "A practice that treats failure as a first-class state. Every screen has an error design with type, tone and next step; the person's work is preserved; and the message says what happened, what it means and the one action that recovers.",
+  traits: [
+    "The error is a designed state, not a fallback: every screen has one, with type, tone and next step defined.",
+    "Say what happened, what it means and one primary recovery action — in that order.",
+    "Preserve the person's work: keep local state and never clear a form on failure.",
+    "Two tiers: inline for a field, a page or section banner for a whole failure, a toast only for the transient.",
+    "Separate the recoverable (retry) from the fatal (contact support, or work continues elsewhere).",
+    "Log the error where engineers will see it, and never surface a raw code without a plain sentence."
+  ],
+  avoid: [
+    "One generic " + "\"Something went wrong\"" + " with no path forward — that is a dead end, not an error state.",
+    "Clearing input when a submit fails, which punishes the person for the system's fault.",
+    "A toast for a failure that needs a decision; it disappears before it is read."
+  ],
+  html: `<div class="er-banner">
+    <span class="er-ic">!</span>
+    <div>
+      <p class="er-t">Couldn't load your drafts</p>
+      <p class="er-s">Your work is saved on this device.</p>
+    </div>
+    <span class="er-retry">Retry</span>
+  </div>`,
+  css: `.spec--error-resilience .er-banner { display: flex; align-items: flex-start; gap: 10px; width: 100%; max-width: 300px; padding: 13px 14px; border-radius: 10px; background: #fff4f2; border: 1px solid #f0cec6; font-family: "Instrument Sans", sans-serif; }
+.spec--error-resilience .er-ic { flex: none; width: 20px; height: 20px; border-radius: 50%; background: #c62d2d; color: #fff; display: flex; align-items: center; justify-content: center; font: 700 12px/1 "Instrument Sans", sans-serif; }
+.spec--error-resilience .er-t { margin: 0; font: 600 13px/1.3 "Instrument Sans", sans-serif; color: #7a1f1f; }
+.spec--error-resilience .er-s { margin: 3px 0 0; font-size: 12px; line-height: 1.4; color: #9a5a52; }
+.spec--error-resilience .er-retry { flex: none; align-self: center; margin-inline-start: auto; font: 600 12px/1 "Instrument Sans", sans-serif; color: #7a1f1f; text-decoration: underline; }`,
+  prompt: "Design for error resilience: treat every screen's error as a designed state with defined type, tone and next step; state what happened, what it means and one primary recovery action in that order; preserve the person's work and never clear a form on failure; use inline errors for fields and a banner for whole failures with a toast only for the transient; separate recoverable from fatal; and log errors while never surfacing a raw code without a plain sentence.",
+  sources: []
 }
 
 );

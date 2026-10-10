@@ -24,11 +24,13 @@ window.FACETS = {
     { id: "gradient",    label: "Gradient",    group: "Material",  note: "A gradient is the surface itself, not a decoration on it." },
     { id: "texture",     label: "Texture",     group: "Material",  note: "Grain, scanlines, halftone or an all-over pattern." },
     { id: "imagery",     label: "Imagery",     group: "Material",  note: "Photography or full-bleed media carries the page." },
+    { id: "illustration", label: "Illustration", group: "Material", note: "Drawn vector art — flat figures, blobs or sprites — is the material, not a photo." },
 
     { id: "hard-border", label: "Hard border", group: "Form",      note: "2px+ solid strokes on every element, inputs included." },
     { id: "square",      label: "Square",      group: "Form",      note: "Radius 0: sharp corners, or corners deliberately clipped." },
     { id: "round",       label: "Round",       group: "Form",      note: "Generous radii, 16px through to a full pill." },
     { id: "spatial",     label: "Spatial",     group: "Form",      note: "A real z-axis: stacked planes or tilt, not a painted shadow." },
+    { id: "density",     label: "Density",     group: "Form",      note: "Tight rhythm and small type: many elements per screen, single-digit padding, the air removed." },
 
     { id: "mono",        label: "Mono",        group: "Type",      note: "Monospace type, usually with tabular numerals." },
     { id: "display",     label: "Display",     group: "Type",      note: "Oversized, serif, or otherwise expressive typography." },
@@ -103,7 +105,32 @@ window.FACETS = {
     "holographic":         { k: "style", v: 85, d: 80, t: { gradient: 2, glow: 2, "loud-color": 2, display: 1, texture: 1 } },
     "isometric":           { k: "style", v: 55, d: 70, t: { spatial: 2, gradient: 1, "soft-shadow": 1, round: 1 } },
     "render-3d":           { k: "style", v: 75, d: 90, t: { imagery: 2, "soft-shadow": 2, gradient: 1, round: 1 } },
-    "zero-ui":             { k: "practice", v: 20, d: 10, t: { ambient: 2, flat: 1 } }
+    "zero-ui":             { k: "practice", v: 20, d: 10, t: { ambient: 2, flat: 1 } },
+
+    "anti-design":         { k: "style", v: 95, d: 35, t: { "loud-color": 2, display: 2, texture: 2, flat: 1, "hard-border": 1, "hard-shadow": 1 } },
+    "art-deco":            { k: "style", v: 55, d: 35, t: { display: 2, monochrome: 2, gradient: 1, square: 1, texture: 1, "hard-border": 1 } },
+    "corporate-memphis":   { k: "style", v: 60, d: 30, t: { illustration: 2, flat: 2, round: 1, "loud-color": 1, gradient: 1 } },
+    "grunge":              { k: "style", v: 70, d: 25, t: { texture: 2, display: 2, "dark-ground": 1, mono: 1, imagery: 1, flat: 1 } },
+    "ios-human-interface": { k: "style", v: 35, d: 35, t: { round: 2, "blur-glass": 1, hairline: 1, motion: 1, flat: 1 } },
+    "japanese-web":        { k: "style", v: 70, d: 40, t: { data: 2, density: 2, "loud-color": 2, hairline: 1, texture: 1, display: 1, imagery: 1 } },
+    "pixel-art":           { k: "style", v: 75, d: 20, t: { texture: 2, square: 2, mono: 1, "loud-color": 1, flat: 1 } },
+
+    "command-palette":     { k: "pattern", v: 25, d: 50, t: { reveal: 2, "blur-glass": 1, mono: 1, hairline: 1, motion: 1, round: 1 } },
+    "feed-timeline":       { k: "pattern", v: 30, d: 25, t: { hairline: 1, imagery: 1, motion: 1, flat: 1, reveal: 1, data: 1 } },
+    "form-validation":     { k: "pattern", v: 16, d: 24, t: { hairline: 2, reveal: 1, flat: 1, round: 1 } },
+    "hero-landing":        { k: "pattern", v: 50, d: 40, t: { display: 1, imagery: 1, flat: 1, round: 1, motion: 1 } },
+    "navigation-shell":    { k: "pattern", v: 25, d: 25, t: { hairline: 1, flat: 1, round: 1, reveal: 1, mono: 1 } },
+    "onboarding-wizard":   { k: "pattern", v: 22, d: 18, t: { reveal: 2, round: 1, flat: 1, hairline: 1, motion: 1 } },
+    "overlay-layer":       { k: "pattern", v: 35, d: 55, t: { spatial: 1, "soft-shadow": 1, "blur-glass": 1, reveal: 1, round: 1, motion: 1 } },
+
+    "content-design":      { k: "practice", v: 14, d: 12, t: { flat: 1 } },
+    "dark-patterns":       { k: "practice", v: 40, d: 30, t: { reveal: 2, motion: 1, "loud-color": 1 } },
+    "design-system":       { k: "practice", v: 22, d: 25, t: { flat: 1, round: 1, hairline: 1 } },
+    "error-resilience":    { k: "practice", v: 20, d: 30, t: { reveal: 1, hairline: 1, flat: 1 } },
+    "localization-rtl":    { k: "practice", v: 12, d: 22, t: { flat: 1, hairline: 1 } },
+    "performance-first":   { k: "practice", v: 25, d: 12, t: { motion: 1, data: 1, flat: 1 } },
+    "research-driven":     { k: "practice", v: 30, d: 18, t: { data: 1, flat: 1 } },
+    "responsive-mobile-first": { k: "practice", v: 20, d: 12, t: { flat: 1, hairline: 1, reveal: 1, density: 1 } }
   }
 
 };

@@ -492,6 +492,163 @@
 .spec--fluent-design .fl-btn:hover::after { opacity: 1; }`,
   prompt: "Design a Fluent-style interface: acrylic panels (backdrop-filter blur(30px) saturate(125%) over a 60–80% tint), a reveal highlight that tracks the pointer inside each control, four elevation levels expressed as a shadow plus a 1px top highlight, connected animation when an element changes position, 4px radii on controls and 8px on cards, one accent hue against neutral grey, and one system serving both light and dark.",
   sources: ["https://fluent2.microsoft.design/", "https://en.wikipedia.org/wiki/Fluent_Design_System"]
+},
+
+{
+  id: "ios-human-interface",
+  name: "iOS (Human Interface)",
+  era: "2007–",
+  origin: "Apple's Human Interface Guidelines: system type, large titles, and translucent materials that carry hierarchy instead of chrome.",
+  blurb: "A platform language rather than a decorative one. SF type sits on a fixed optical ramp, a large title shrinks into the bar as you scroll, bars and sheets are blur-backed materials, corners are continuous squircles and every target is obliged to be 44pt so it feels physical under a finger.",
+  traits: [
+    "System type on a fixed ramp: <code>34px</code> large title down to <code>13px</code> footnote, tracking <code>-0.02em</code> on the big sizes.",
+    "Materials, not borders: bars and sheets are <code>backdrop-filter: blur(20px) saturate(180%)</code> over a tinted ground.",
+    "Continuous corners — a squircle (<code>border-radius: 10px / 22%</code>), never a plain circular corner on a card.",
+    "Separators as inset <code>0.5px</code> hairlines from the leading edge, in <code>rgba(60,60,67,.29)</code>.",
+    "Hit targets 44&times;44pt minimum, with the visible glyph free to be smaller than the target.",
+    "Motion is a spring (<code>cubic-bezier(.34,1.56,.64,1)</code>) at 300–500ms; content enters from the edge it belongs to."
+  ],
+  avoid: [
+    "Re-inventing the nav bar or overriding the edge-swipe back gesture; the language is a contract with the platform, not a skin over it.",
+    "Hard drop shadows and custom field outlines — depth on iOS is material and motion, not elevation shadow."
+  ],
+  html: `<div class="hi-screen">
+    <div class="hi-bar"><span class="hi-back">&lsaquo; Settings</span><button class="hi-done" type="button">Done</button></div>
+    <h4 class="hi-title">Display</h4>
+    <div class="hi-group">
+      <div class="hi-row"><span class="hi-label">Notifications</span><span class="hi-seg"><i>On</i><i class="sel">Off</i></span></div>
+      <div class="hi-row"><span class="hi-label">Appearance</span><span class="hi-chev">&rsaquo;</span></div>
+      <div class="hi-row hi-row--last"><span class="hi-sw on"><i></i></span><span class="hi-label">True tone</span></div>
+    </div>
+  </div>`,
+  css: `.spec--ios-human-interface { --hi-blue: #0a84ff; }
+.spec--ios-human-interface .hi-screen {
+  width: 100%; max-width: 320px; border-radius: 22px; overflow: hidden;
+  background: #f2f2f7; font-family: -apple-system, "Instrument Sans", sans-serif;
+  box-shadow: inset 0 0 0 1px rgba(60,60,67,.14);
+}
+.spec--ios-human-interface .hi-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 16px 6px; font-size: 16px; color: var(--hi-blue);
+  background: rgba(242,242,247,.82); backdrop-filter: blur(20px) saturate(180%);
+}
+.spec--ios-human-interface .hi-done { border: 0; background: none; font: 600 16px/1 inherit; color: var(--hi-blue); cursor: pointer; }
+.spec--ios-human-interface .hi-title {
+  margin: 0; padding: 2px 16px 10px; font-size: 34px; line-height: 1.1;
+  font-weight: 700; letter-spacing: -0.02em; color: #1c1c1e;
+}
+.spec--ios-human-interface .hi-group { margin: 0 12px 14px; border-radius: 12px; background: #fff; overflow: hidden; }
+.spec--ios-human-interface .hi-row {
+  display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 14px;
+  box-shadow: inset 0 -0.5px 0 rgba(60,60,67,.29); font-size: 15px; color: #1c1c1e;
+}
+.spec--ios-human-interface .hi-row--last { box-shadow: none; }
+.spec--ios-human-interface .hi-label { flex: 1; }
+.spec--ios-human-interface .hi-chev { color: #c4c4c6; font-size: 18px; }
+.spec--ios-human-interface .hi-seg { display: inline-flex; background: #e9e9eb; border-radius: 8px; padding: 2px; }
+.spec--ios-human-interface .hi-seg i { font-style: normal; font-size: 13px; padding: 3px 10px; border-radius: 6px; color: #3c3c43; }
+.spec--ios-human-interface .hi-seg .sel { background: #fff; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.14); }
+.spec--ios-human-interface .hi-sw { width: 47px; height: 29px; border-radius: 999px; background: #e9e9eb; position: relative; }
+.spec--ios-human-interface .hi-sw.on { background: #34c759; }
+.spec--ios-human-interface .hi-sw i { position: absolute; top: 2px; left: 2px; width: 25px; height: 25px; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.2); }
+.spec--ios-human-interface .hi-sw.on i { left: 20px; }`,
+  prompt: "Design an iOS interface per Apple's Human Interface Guidelines: SF type on the optical ramp (34px large title to 13px footnote, -0.02em tracking), a title that collapses into a blur-backed nav bar on scroll, translucent materials (backdrop-filter blur(20px) saturate(180%)) instead of borders, continuous squircle corners, inset 0.5px hairline separators, 44pt minimum hit targets, and spring motion (cubic-bezier(.34,1.56,.64,1)) entering from the originating edge.",
+  sources: ["https://developer.apple.com/design/human-interface-guidelines/"]
+},
+
+{
+  id: "art-deco",
+  name: "Art Deco",
+  era: "1925–1939, revived since",
+  origin: "The 1925 Paris exposition: symmetry, stepped geometry and gilding borrowed from machine-age ornament, and Bauhaus's geometric severity as its plainer cousin.",
+  blurb: "Ornament is the structure. Symmetry is absolute, motifs step or fan outward, gold is laid on a deep ground as a linear gradient rather than flat colour, and the type is a wide-tracked uppercase display that behaves like an engraved plaque.",
+  traits: [
+    "Axial symmetry: everything centres on one vertical line, with paired side elements mirrored.",
+    "Gold as a metal, not a colour — <code>linear-gradient(#f6e3b0, #c39a45 55%, #8f6d25)</code> with <code>background-clip: text</code>.",
+    "Fan, chevron or stepped-sunburst motifs from <code>repeating-conic-gradient</code> or stacked offsets.",
+    "A framed field: double rules, inlaid hairlines and a deep ground (<code>#10151f</code> or oxblood) rather than white space.",
+    "Wide-tracked uppercase display type, <code>letter-spacing: .08em</code> to <code>.42em</code> depending on role.",
+    "A small geometric mark (diamond or lozenge) used as the only punctuation between runs."
+  ],
+  avoid: [
+    "Gold on white — the metal only reads against a dark, saturated ground; on white it turns into a mustard accent.",
+    "Using it as mere drop caps on a modern layout; Art Deco is a whole field, framing included, not a font."
+  ],
+  html: `<div class="ad-plaque">
+    <div class="ad-ray"></div>
+    <p class="ad-kicker">Est. 1925</p>
+    <h4 class="ad-name">The Meridian</h4>
+    <div class="ad-rule"><i></i><b></b><i></i></div>
+    <p class="ad-sub">Rooms &middot; Dining &middot; Ballroom</p>
+  </div>`,
+  css: `.spec--art-deco .ad-plaque {
+  position: relative; width: 100%; max-width: 300px; padding: 24px 20px 20px; text-align: center; overflow: hidden;
+  background: #10151f; color: #e8c884; font-family: Georgia, "Times New Roman", serif;
+  border: 1px solid #a8823c; box-shadow: inset 0 0 0 5px #10151f, inset 0 0 0 6px #7a5f28;
+}
+.spec--art-deco .ad-ray {
+  position: absolute; inset: -40% -20% auto; height: 150%; pointer-events: none;
+  background: repeating-conic-gradient(from 0deg at 50% 0%, rgba(232,200,132,.18) 0 4deg, transparent 4deg 12deg);
+}
+.spec--art-deco .ad-kicker {
+  position: relative; margin: 0; font: 600 10px/1 "Instrument Sans", sans-serif;
+  letter-spacing: .42em; text-transform: uppercase; color: #cbb072;
+}
+.spec--art-deco .ad-name {
+  position: relative; margin: 11px 0 0; font-size: 29px; line-height: 1; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  background: linear-gradient(#f6e3b0, #c39a45 55%, #8f6d25);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.spec--art-deco .ad-rule { position: relative; display: flex; align-items: center; gap: 8px; margin: 15px 0; }
+.spec--art-deco .ad-rule i { flex: 1; height: 1px; background: #8f6d25; }
+.spec--art-deco .ad-rule b { width: 8px; height: 8px; transform: rotate(45deg); border: 1px solid #c39a45; }
+.spec--art-deco .ad-sub { position: relative; margin: 0; font: 400 11px/1.4 "Instrument Sans", sans-serif; letter-spacing: .2em; text-transform: uppercase; color: #9a8b6a; }`,
+  prompt: "Design in the Art Deco register: absolute vertical symmetry, a deep saturated ground framed by double rules and inlaid hairlines, gold applied as a three-stop linear gradient clipped to text, a fan or stepped-sunburst motif from repeating-conic-gradient, wide-tracked uppercase geometric display type, and a single lozenge mark as punctuation. No white space, no flat mustard gold.",
+  sources: ["https://en.wikipedia.org/wiki/Art_Deco", "https://en.wikipedia.org/wiki/Bauhaus"]
+},
+
+{
+  id: "grunge",
+  name: "Grunge / distressed",
+  era: "1990s–",
+  origin: "Nineties print and album art: photocopied texture, degraded type and torn collage carried onto the screen.",
+  blurb: "The surface itself is damaged. A noise or halftone texture lies over everything at a blend mode, layers are torn and rotated like a photocopied collage, and the display type is deliberately abused — misregistered, overprinted and roughly set.",
+  traits: [
+    "A noise layer over the whole composition: an SVG <code>feTurbulence</code> grain at <code>mix-blend-mode: overlay</code>, roughly 50% opacity.",
+    "Misregistered display type: doubled shadows offset as ink plates (<code>1px 0 0</code> red, <code>-1px 0 0</code> cyan).",
+    "Torn or rotated collage layers, never squared to the frame.",
+    "A newsprint or near-black ground with one bleeding accent (oxide red, sickly green).",
+    "Dashed and partial rules where a solid line would be too clean.",
+    "Monospace or condensed label type set loose, as if stamped rather than typeset."
+  ],
+  avoid: [
+    "One flat noise tile over a clean layout — the distress has to reach the type and the framing, not just sit on top.",
+    "Grunge texture generated per-element; a single grain layer for the whole piece reads as one print run, many read as clip art."
+  ],
+  html: `<div class="gr-poster">
+    <span class="gr-grain"></span>
+    <p class="gr-tag">N&deg; 07</p>
+    <h4 class="gr-head">Riot<br>Season</h4>
+    <p class="gr-line">Six nights &middot; warehouse &middot; doors 8</p>
+  </div>`,
+  css: `.spec--grunge .gr-poster {
+  position: relative; width: 100%; max-width: 300px; padding: 22px 20px; overflow: hidden;
+  background: #1a1817; color: #ddd6cc; font-family: "Instrument Sans", sans-serif; border: 1px solid #2a2725;
+}
+.spec--grunge .gr-grain {
+  position: absolute; inset: 0; opacity: .5; mix-blend-mode: overlay; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.spec--grunge .gr-tag { position: relative; margin: 0; font: 700 11px/1 "IBM Plex Mono", monospace; letter-spacing: .3em; color: #b23a2e; }
+.spec--grunge .gr-head {
+  position: relative; margin: 10px 0 12px; font-size: 42px; line-height: .86; font-weight: 800;
+  letter-spacing: -0.02em; text-transform: uppercase;
+  text-shadow: 1px 0 0 #b23a2e, -1px 0 0 #4a7d78;
+}
+.spec--grunge .gr-line { position: relative; margin: 0; padding-top: 10px; border-top: 1px dashed #4a4642; font: 500 12px/1.5 "IBM Plex Mono", monospace; color: #8f8880; }`,
+  prompt: "Design a grunge piece: a single SVG feTurbulence grain layer over the whole composition at mix-blend-mode overlay, misregistered display type with red and cyan ink-plate shadows, torn and rotated collage layers out of square with the frame, a newsprint or near-black ground with one bleeding accent, dashed partial rules, and stamped monospace labels. The distress must reach the framing and the type, not sit only on the surface.",
+  sources: ["https://en.wikipedia.org/wiki/Grunge_typography"]
 }
 
 );

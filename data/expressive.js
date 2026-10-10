@@ -671,6 +671,180 @@
 .spec--isometric .p3 { background: #b3c9ec; transform: translateZ(60px); box-shadow: 0 0 0 1px #97b0da; }`,
   prompt: "Design an isometric interface: parallel projection at 30° (transform: rotateX(54.736deg) rotateZ(45deg)), no vanishing point, every edge parallel to one of three axes, three-face shading from a single fixed light, a diamond or hex ground grid with elements on its intersections, depth from stacked slabs at a fixed spacing, hard edges and small radii, and no perspective or depth-of-field.",
   sources: ["https://en.wikipedia.org/wiki/Isometric_projection", "https://en.wikipedia.org/wiki/Axonometric_projection"]
+},
+
+{
+  id: "corporate-memphis",
+  name: "Corporate Memphis",
+  era: "2017–2022",
+  origin: "Facebook's Alegria system, then every SaaS landing page: flat, limb-stretched vector figures that had to be neutral enough for any story.",
+  blurb: "Illustration carries the page. Figures are flat and unmodulated with no outlines, limbs stretched into long capsules, bodies built from circles and blobs, on a muted but bright secondary palette that keeps every hue at the same weight so nothing implies a hierarchy.",
+  traits: [
+    "Flat illustration as the primary material: vector shapes with no outlines, no shading and no gradients inside the figure.",
+    "Exaggerated proportions — a small round head, an elongated capsule body and very long limbs — so the figure reads at any size.",
+    "A muted-but-bright secondary palette where every hue is held at one saturation, plus one accent for the single call to action.",
+    "Blob and capsule geometry: <code>border-radius: 56% 44% 40% 60% / 52% 60% 40% 48%</code> for organic shapes.",
+    "Figures never make eye contact and never imply identity — no faces beyond a featureless head.",
+    "Generous rounded cards and pill buttons floating over the illustration, not competing with it."
+  ],
+  avoid: [
+    "Outlining the figures or adding depth — the whole register collapses the moment it becomes editorial illustration.",
+    "Specific facial features or skin-tone-as-character; the style's point is interchangeable, identity-neutral figures."
+  ],
+  html: `<div class="cm-scene">
+    <div class="cm-blob"></div>
+    <div class="cm-figure"><span class="cm-head"></span><span class="cm-body"></span><span class="cm-arm"></span></div>
+    <div class="cm-card">
+      <p class="cm-t">Team plans</p>
+      <p class="cm-s">Everything, for everyone.</p>
+      <span class="cm-btn">Get started</span>
+    </div>
+  </div>`,
+  css: `.spec--corporate-memphis .cm-scene {
+  position: relative; width: 100%; max-width: 320px; height: 190px; overflow: hidden;
+  border-radius: 16px; background: #f4f0e8; font-family: "Instrument Sans", sans-serif;
+}
+.spec--corporate-memphis .cm-blob {
+  position: absolute; right: -30px; bottom: -40px; width: 180px; height: 180px;
+  border-radius: 56% 44% 40% 60% / 52% 60% 40% 48%; background: #ff8a5c;
+}
+.spec--corporate-memphis .cm-figure { position: absolute; left: 26px; bottom: 0; }
+.spec--corporate-memphis .cm-head { position: absolute; left: 10px; top: -26px; width: 30px; height: 30px; border-radius: 50%; background: #7b5cf0; }
+.spec--corporate-memphis .cm-body { display: block; width: 50px; height: 96px; border-radius: 24px 24px 0 0; background: #2f4bd8; }
+.spec--corporate-memphis .cm-arm { position: absolute; left: 40px; top: 6px; width: 74px; height: 15px; border-radius: 999px; background: #2f4bd8; transform: rotate(-24deg); transform-origin: left center; }
+.spec--corporate-memphis .cm-card { position: absolute; left: 96px; top: 30px; width: 150px; padding: 12px 14px; border-radius: 14px; background: #fff; }
+.spec--corporate-memphis .cm-t { margin: 0; font: 700 15px/1.2 "Instrument Sans", sans-serif; color: #241f3d; }
+.spec--corporate-memphis .cm-s { margin: 4px 0 10px; font-size: 11.5px; color: #6b6780; }
+.spec--corporate-memphis .cm-btn { display: inline-block; padding: 8px 12px; border-radius: 999px; background: #ffc233; color: #241f3d; font: 600 12px/1 "Instrument Sans", sans-serif; }`,
+  prompt: "Design a Corporate Memphis page: flat outlineless vector illustration built from circles, capsules and organic blobs, figures with tiny round heads, elongated bodies and very long limbs, a muted-but-bright secondary palette at one saturation plus a single accent for the call to action, featureless interchangeable figures, and generous rounded cards and pill buttons over the art. No outlines, no shading, no facial features.",
+  sources: ["https://en.wikipedia.org/wiki/Corporate_Memphis"]
+},
+
+{
+  id: "pixel-art",
+  name: "Pixel art / 8-bit",
+  era: "1970s–, revived",
+  origin: "The constraint of the first graphics hardware, later kept deliberately as a register: the grid is the medium.",
+  blurb: "Everything sits on a coarse grid and nothing is smoothed. Edges are hard and aliased, the palette is a fixed handful of hues, corners are square, and depth — where it exists at all — is a one-pixel bevel rather than a shadow.",
+  traits: [
+    "A unit grid: every dimension, gap and offset is a multiple of one step (<code>4px</code>, <code>8px</code>, <code>12px</code>).",
+    "Hard aliased edges — <code>image-rendering: pixelated</code> on any bitmap, and staircased bevels from <code>box-shadow</code> instead of <code>border-radius</code>.",
+    "A fixed small palette (8–16 hues) with no gradients, no blur and no anti-aliasing anywhere.",
+    "Depth by one-pixel bevel: a light edge top-left, a dark edge bottom-right, both exactly one unit thick.",
+    "Type from a bitmap or slab monospace with a step-locked size and generous <code>letter-spacing</code>.",
+    "Hairline-free: separation comes from a one-unit dark gap, never a soft divider."
+  ],
+  avoid: [
+    "Blur, gradients or <code>border-radius</code> — a single smooth curve breaks the grid and the spell with it.",
+    "A large modern palette with fine hue steps; the look depends on the palette being countable and flat."
+  ],
+  html: `<div class="px-panel">
+    <div class="px-hud"><span class="px-lives"><i></i><i></i><i></i></span><span class="px-score">SCORE 1280</span></div>
+    <div class="px-track"><span style="--w:62%"></span><i class="px-coin"></i></div>
+    <span class="px-btn">&#9650; START</span>
+  </div>`,
+  css: `.spec--pixel-art .px-panel {
+  width: 100%; max-width: 300px; padding: 14px; background: #2b2b4a;
+  font-family: "IBM Plex Mono", monospace; image-rendering: pixelated;
+  box-shadow: 0 0 0 4px #12121f, inset 0 0 0 2px #4a4a7a, inset 4px 4px 0 rgba(255,255,255,.08);
+}
+.spec--pixel-art .px-hud { display: flex; justify-content: space-between; align-items: center; }
+.spec--pixel-art .px-lives { display: flex; gap: 4px; }
+.spec--pixel-art .px-lives i { width: 12px; height: 12px; background: #ff4d6d; box-shadow: 0 0 0 2px #12121f; }
+.spec--pixel-art .px-score { color: #ffd23f; font: 700 11px/1 "IBM Plex Mono", monospace; letter-spacing: .18em; }
+.spec--pixel-art .px-track { position: relative; height: 12px; margin: 14px 0; background: #12121f; box-shadow: inset 0 0 0 2px #4a4a7a; }
+.spec--pixel-art .px-track span { display: block; height: 100%; width: var(--w); background: repeating-linear-gradient(90deg, #38e07b 0 6px, #2fb866 6px 12px); }
+.spec--pixel-art .px-coin { position: absolute; right: 6px; top: -4px; width: 20px; height: 20px; background: #ffd23f; box-shadow: inset 0 0 0 4px #ffb01f, 0 0 0 2px #12121f; }
+.spec--pixel-art .px-btn { display: inline-block; padding: 8px 12px; background: #ff8a3d; color: #12121f; font: 700 12px/1 "IBM Plex Mono", monospace; letter-spacing: .1em; box-shadow: 0 0 0 2px #12121f, inset 0 -4px 0 rgba(0,0,0,.25); }`,
+  prompt: "Design an 8-bit pixel UI: everything on a 4/8/12px unit grid, hard aliased edges with image-rendering pixelated, staircased one-pixel bevels from box-shadow instead of radii, a fixed 8–16 hue flat palette with zero gradients, blur or anti-aliasing, separation from one-unit dark gaps rather than hairlines, and bitmap monospace type at step-locked sizes.",
+  sources: ["https://en.wikipedia.org/wiki/Pixel_art"]
+},
+
+{
+  id: "japanese-web",
+  name: "Japanese web density",
+  era: "2000s–",
+  origin: "Japanese portal and corporate sites: a small viewport discipline that keeps the whole information map on one screen.",
+  blurb: "Density, not air. Many small elements are packed inside framed boxes with thin dividers, banners and section labels stay on screen, saturated banner colour sits against white, and a vertical or mixed text run is a normal layout block rather than a special case.",
+  traits: [
+    "High density: <code>11–13px</code> body type, single-digit padding and a divider between almost every row.",
+    "Everything is framed — bordered panels and boxed link lists arranged in a tight grid, not floating on white space.",
+    "A CJK-capable stack first (<code>\"Hiragino Kaku Gothic ProN\", \"Noto Sans JP\"</code>) so <code>text-orientation</code> and line-breaking behave.",
+    "Vertical text as a layout block: <code>writing-mode: vertical-rl; text-orientation: upright</code> for a tab or banner.",
+    "Saturated banner colour (a strong red or blue) as the only large fill, laid flat against the dense white field.",
+    "Zebra-striped rows and boxed badge labels instead of whitespace to separate entries."
+  ],
+  avoid: [
+    "Importing the density without the framing — dense type alone on an open page reads as cramped, not as the register.",
+    "Force-setting a Latin webfont over CJK text; it silently falls back and breaks the line rhythm the density depends on."
+  ],
+  html: `<div class="jp-portal">
+    <div class="jp-banner">お知らせ</div>
+    <div class="jp-cols">
+      <ul class="jp-links">
+        <li>新着情報</li><li>サービス一覧</li><li>採用情報</li><li>よくあるご質問</li>
+        <li>会社概要</li><li>お問い合わせ</li><li>プレスリリース</li><li>アクセス</li>
+      </ul>
+      <div class="jp-tower">総合案内</div>
+    </div>
+  </div>`,
+  css: `.spec--japanese-web .jp-portal {
+  width: 100%; max-width: 320px; background: #fff; padding: 8px;
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Instrument Sans", sans-serif; color: #222;
+}
+.spec--japanese-web .jp-banner { padding: 6px 8px; background: #c8102e; color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+.spec--japanese-web .jp-cols { display: grid; grid-template-columns: 1fr 84px; gap: 6px; margin-top: 6px; }
+.spec--japanese-web .jp-links { list-style: none; margin: 0; padding: 0; border-top: 1px solid #999; }
+.spec--japanese-web .jp-links li { padding: 4px 6px; font-size: 11.5px; line-height: 1.35; border-bottom: 1px solid #ccc; background: #fbfbfb; }
+.spec--japanese-web .jp-links li:nth-child(odd) { background: #eef3f9; }
+.spec--japanese-web .jp-tower {
+  writing-mode: vertical-rl; text-orientation: upright; justify-self: center; align-self: start;
+  padding: 8px 6px; font-size: 13px; letter-spacing: .2em; color: #fff; background: #1b3a6b;
+}`,
+  prompt: "Design a dense Japanese-web page: 11–13px body type with single-digit padding, every row separated by a hairline inside a bordered panel, a tight grid of boxed link lists rather than open whitespace, a CJK-first font stack (Hiragino/Noto Sans JP) so vertical text and line-breaking behave, one vertical-rl upright text block as a tab, and one saturated banner fill against the white field. Density must come with the framing, not instead of it.",
+  sources: ["https://en.wikipedia.org/wiki/Japanese_web_design"]
+},
+
+{
+  id: "anti-design",
+  name: "Anti-design / webcore",
+  era: "2010s–",
+  origin: "Internet-native visual culture and Gen-Z webcore: deliberately ugly, deliberately off-system, deliberately loud.",
+  blurb: "The grid is broken on purpose. Typefaces and sizes are mixed off-system, stickers and labels overlap the layout, saturated clashing colour refuses a palette, and the composition is meant to read as made by a person against a template — even when it is not.",
+  traits: [
+    "Deliberate misalignment: elements rotated a few degrees, overlapping and unfixed from any grid.",
+    "Type mixing: three or more unrelated faces and sizes in one block, no ramp and no relationship between them.",
+    "Sticker collage — bordered, shadowed labels dropped on top of the composition at odd angles.",
+    "Saturated clashing colour with no palette discipline; two hues that fight are the point.",
+    "Visible clipping and overflow where elements run off the frame.",
+    "A system face paired with a display face as a joke, not a hierarchy."
+  ],
+  avoid: [
+    "Randomising everything to the point of unreadability — anti-design still has a focal point and a reading order, it just refuses the template.",
+    "Cleaning it up on inspection; the moment the overlap snaps to a grid it becomes ordinary design with stickers on it."
+  ],
+  html: `<div class="ax-wrap">
+    <span class="ax-sticker s1">NEW!</span>
+    <span class="ax-sticker s2">&#9733;</span>
+    <h4 class="ax-head">drop<br>season</h4>
+    <p class="ax-note">limited &middot; 48h &middot; online only</p>
+    <span class="ax-badge">18+</span>
+  </div>`,
+  css: `.spec--anti-design .ax-wrap {
+  position: relative; width: 100%; max-width: 300px; height: 180px; overflow: hidden;
+  background: #f5ff3d; padding: 24px 18px; font-family: "Instrument Sans", sans-serif;
+}
+.spec--anti-design .ax-head {
+  margin: 0; font: 800 46px/0.82 "Instrument Sans", sans-serif; text-transform: lowercase;
+  letter-spacing: -0.04em; color: #1200ff; transform: rotate(-4deg); text-shadow: 3px 3px 0 #ff2fb0;
+}
+.spec--anti-design .ax-note { position: absolute; left: 18px; bottom: 34px; margin: 0; font: 500 12px/1 "IBM Plex Mono", monospace; color: #111; }
+.spec--anti-design .ax-sticker { position: absolute; padding: 5px 9px; font: 700 12px/1 "Instrument Sans", sans-serif; border: 2px solid #111; }
+.spec--anti-design .ax-sticker.s1 { top: 12px; right: 20px; background: #ff2fb0; color: #fff; transform: rotate(9deg); box-shadow: 3px 3px 0 #111; }
+.spec--anti-design .ax-sticker.s2 { bottom: 10px; right: 34px; background: #00e0a4; color: #111; transform: rotate(-12deg); border-radius: 50%; padding: 10px; }
+.spec--anti-design .ax-badge { position: absolute; left: 188px; top: 96px; font: 700 11px/1 "Instrument Sans", sans-serif; color: #1200ff; border-bottom: 2px solid #1200ff; }`,
+  prompt: "Design an anti-design / webcore piece: elements rotated and overlapping, off the grid on purpose, three unrelated typefaces and sizes in one block with no ramp, sticker labels dropped at odd angles with hard shadows, saturated clashing colour with no palette discipline, deliberate clipping and overflow, and a system face set against a display face as a joke. Keep one focal point and one reading order — refuse the template, not the ability to read it.",
+  sources: ["https://en.wikipedia.org/wiki/Anti-design"]
 }
 
 );
