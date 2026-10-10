@@ -629,6 +629,48 @@
 .spec--nordic .nd-b { margin: 0; font: 400 13px/1.65 "Instrument Sans", sans-serif; color: #5d5a54; }`,
   prompt: "Design a Nordic-functional interface: warm neutral surfaces (#f4f2ef, #e8e4de) with #2c2a27 ink instead of black, one muted accent used sparingly, low-saturation soft imagery, thin sans at 400 with 1.6–1.7 leading, functional labels and dividers, no ornament and no illustration, motion limited to 150ms colour and opacity.",
   sources: []
+},
+
+{
+  id: "isometric",
+  name: "Isometric / axonometric",
+  era: "2014–",
+  origin: "Technical drawing's parallel projection, brought into product illustration and dashboards.",
+  blurb: "Parallel projection at 30°, so nothing converges: an isometric grid, stacked slabs and props that keep their proportions front and back — a measured map of a space rather than a picture of one.",
+  traits: [
+    "Projection with no vanishing point: <code>transform: rotateX(54.736deg) rotateZ(45deg)</code> for true isometric, or a 2:1 pixel grid at 26.565°.",
+    "Every edge stays parallel to one of three axes, so an object measures the same at its front and its back.",
+    "Three-face shading from one fixed light: top lightest, one side mid, the opposite side darkest.",
+    "A diamond or hex grid as the ground, with elements sitting on its intersections rather than between them.",
+    "Depth built by stacking flat slabs a fixed 24–32px apart, never by a converging shadow.",
+    "Hard edges and 0–4px radii; no depth-of-field and no perspective blur."
+  ],
+  avoid: [
+    "Isometric and a real perspective camera in the same view — the two projections fight and the grid stops reading.",
+    "Rotating the scene past about 35°: it stops looking isometric and starts looking broken.",
+    "Isometric for dense data — the projection costs legibility and returns nothing."
+  ],
+  html: `<div class="iso-scene">
+    <div class="iso-stage">
+      <span class="iso-plate p1"></span>
+      <span class="iso-plate p2"></span>
+      <span class="iso-plate p3"></span>
+    </div>
+  </div>`,
+  css: `.spec--isometric .iso-scene {
+  width: 100%; max-width: 330px; min-height: 200px; border-radius: 10px; overflow: hidden;
+  background: #eef1f6; display: grid; place-items: center;
+}
+.spec--isometric .iso-stage {
+  position: relative; width: 132px; height: 132px;
+  transform: rotateX(54.736deg) rotateZ(-45deg); transform-style: preserve-3d;
+}
+.spec--isometric .iso-plate { position: absolute; inset: 0; border-radius: 6px; transform-style: preserve-3d; }
+.spec--isometric .p1 { background: #2f5fb8; transform: translateZ(0); box-shadow: 0 0 0 1px #23488f; }
+.spec--isometric .p2 { background: #6f97d8; transform: translateZ(30px); box-shadow: 0 0 0 1px #587fc0; }
+.spec--isometric .p3 { background: #b3c9ec; transform: translateZ(60px); box-shadow: 0 0 0 1px #97b0da; }`,
+  prompt: "Design an isometric interface: parallel projection at 30° (transform: rotateX(54.736deg) rotateZ(45deg)), no vanishing point, every edge parallel to one of three axes, three-face shading from a single fixed light, a diamond or hex ground grid with elements on its intersections, depth from stacked slabs at a fixed spacing, hard edges and small radii, and no perspective or depth-of-field.",
+  sources: ["https://en.wikipedia.org/wiki/Isometric_projection", "https://en.wikipedia.org/wiki/Axonometric_projection"]
 }
 
 );

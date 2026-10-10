@@ -426,6 +426,72 @@
 .spec--token-system .tk-ramp i { font-style: normal; }`,
   prompt: "Structure the UI as a three-tier token system: primitive, semantic and component tokens; a 4px-only space scale; named radii for control/input/card/pill; no literal hex or px inside component rules; one light and one dark block that swap primitives only; and render a token sheet on the page so the system is inspectable.",
   sources: ["https://m3.material.io/foundations/design-tokens/overview", "https://www.w3.org/TR/design-tokens/"]
+},
+
+{
+  id: "fluent-design",
+  name: "Fluent Design",
+  era: "2017–",
+  origin: "Microsoft's cross-platform language: light, depth, motion, material and scale laid back over a flat system.",
+  blurb: "A flat system given depth back. Panels are acrylic — a tinted pane that blurs what is behind it — a control carries a soft highlight where the pointer is, and layers lift on a real z-axis instead of a painted shadow.",
+  traits: [
+    "Acrylic: <code>backdrop-filter: blur(30px) saturate(125%)</code> over a tint at 60–80% alpha, with a faint noise layer so a large pane does not band.",
+    "Reveal highlight: a soft radial highlight inside the control, centred on the pointer — <code>radial-gradient(120px circle at var(--mx) var(--my), rgba(255,255,255,.22), transparent 62%)</code>.",
+    "Elevation on a real z-axis: four levels, each a shadow plus a 1px top highlight, mapped to 4 / 8 / 16 / 28px of blur.",
+    "Connected animation: an element that moves between two states animates its own geometry across the gap instead of cross-fading.",
+    "Radii 4px on controls, 8px on cards, 12px on flyouts; one accent hue, neutral grey for everything else.",
+    "Light and dark are one system — the same levels on a different base tint, acrylic at 80% in light and 60% in dark."
+  ],
+  avoid: [
+    "Acrylic over a plain background: with nothing behind it the blur is invisible and the pane reads as flat grey.",
+    "Reveal on text or on a surface larger than a control; it is legible only where the pointer is inside the element.",
+    "More than two elevation levels on one screen — the depth scale stops meaning anything."
+  ],
+  html: `<div class="fl-scene">
+    <span class="fl-blob a"></span><span class="fl-blob b"></span>
+    <div class="fl-card">
+      <p class="fl-t">Contoso</p>
+      <p class="fl-sub">4 builds · 2 running</p>
+    </div>
+    <div class="fl-fly">
+      <button class="fl-btn" type="button">Share</button>
+    </div>
+  </div>`,
+  css: `.spec--fluent-design .fl-scene {
+  position: relative; width: 100%; max-width: 330px; min-height: 196px; border-radius: 10px;
+  overflow: hidden; background: #1c2230; padding: 24px; display: grid; align-content: center; gap: 16px;
+}
+.spec--fluent-design .fl-blob { position: absolute; border-radius: 50%; filter: blur(30px); }
+.spec--fluent-design .fl-blob.a { width: 180px; height: 180px; background: #2f6fd0; top: -56px; left: -44px; opacity: .8; }
+.spec--fluent-design .fl-blob.b { width: 150px; height: 150px; background: #8a3fb0; bottom: -54px; right: -32px; opacity: .7; }
+.spec--fluent-design .fl-card {
+  position: relative; padding: 14px 16px; border-radius: 8px;
+  background: rgba(40,46,60,.6);
+  backdrop-filter: blur(30px) saturate(125%); -webkit-backdrop-filter: blur(30px) saturate(125%);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 8px 16px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.spec--fluent-design .fl-t { margin: 0; color: #fff; font: 600 16px/1.2 "Instrument Sans", sans-serif; }
+.spec--fluent-design .fl-sub { margin: 5px 0 0; color: #b9c1d0; font: 400 12.5px/1.4 "Instrument Sans", sans-serif; }
+.spec--fluent-design .fl-fly {
+  position: relative; justify-self: end; padding: 8px; border-radius: 12px;
+  background: rgba(46,53,70,.62);
+  backdrop-filter: blur(30px) saturate(125%); -webkit-backdrop-filter: blur(30px) saturate(125%);
+  border: 1px solid rgba(255,255,255,.09);
+  box-shadow: 0 16px 28px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.spec--fluent-design .fl-btn {
+  position: relative; overflow: hidden; cursor: pointer;
+  border: 1px solid rgba(255,255,255,.18); border-radius: 4px; padding: 9px 18px;
+  background: #2f6fd0; color: #fff; font: 600 13px/1 "Instrument Sans", sans-serif;
+}
+.spec--fluent-design .fl-btn::after {
+  content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity 160ms ease;
+  background: radial-gradient(120px circle at 30% 50%, rgba(255,255,255,.34), transparent 62%);
+}
+.spec--fluent-design .fl-btn:hover::after { opacity: 1; }`,
+  prompt: "Design a Fluent-style interface: acrylic panels (backdrop-filter blur(30px) saturate(125%) over a 60–80% tint), a reveal highlight that tracks the pointer inside each control, four elevation levels expressed as a shadow plus a 1px top highlight, connected animation when an element changes position, 4px radii on controls and 8px on cards, one accent hue against neutral grey, and one system serving both light and dark.",
+  sources: ["https://fluent2.microsoft.design/", "https://en.wikipedia.org/wiki/Fluent_Design_System"]
 }
 
 );

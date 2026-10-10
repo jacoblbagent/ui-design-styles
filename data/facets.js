@@ -99,6 +99,10 @@ window.FACETS = {
     "token-system":        { k: "practice", v: 15, d: 20, t: { flat: 2, hairline: 1, round: 1, mono: 1 } },
     "vaporwave":           { k: "style", v: 100, d: 60, t: { glow: 2, gradient: 2, texture: 2, "loud-color": 2, "dark-ground": 2, display: 1 } },
     "y2k-frutiger":        { k: "style", v: 85, d: 85, t: { gradient: 2, "blur-glass": 1, round: 1, glow: 1, imagery: 1, "loud-color": 1 } },
+    "fluent-design":       { k: "style", v: 40, d: 70, t: { "blur-glass": 2, "soft-shadow": 1, spatial: 1, motion: 1, round: 1, hairline: 1 } },
+    "holographic":         { k: "style", v: 85, d: 80, t: { gradient: 2, glow: 2, "loud-color": 2, display: 1, texture: 1 } },
+    "isometric":           { k: "style", v: 55, d: 70, t: { spatial: 2, gradient: 1, "soft-shadow": 1, round: 1 } },
+    "render-3d":           { k: "style", v: 75, d: 90, t: { imagery: 2, "soft-shadow": 2, gradient: 1, round: 1 } },
     "zero-ui":             { k: "practice", v: 20, d: 10, t: { ambient: 2, flat: 1 } }
   }
 

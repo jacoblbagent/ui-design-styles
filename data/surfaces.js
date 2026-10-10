@@ -314,6 +314,107 @@
 .spec--neo-brutalism .nb-btn:active { box-shadow: 0 0 0 #000; transform: translate(4px, 4px); }`,
   prompt: "Design a neo-brutalist UI: 2–3px solid black borders on everything, hard zero-blur offset shadows of 5–8px, flat clashing fills in acid yellow/cyan/hot pink/lime, radius 0 or one inconsistent large radius, heavy grotesque type at 700–900, elements tilted 1–3 degrees, and press states that translate the element onto its shadow.",
   sources: ["https://www.neobrutalism.dev/", "https://neubrutalism.com/"]
+},
+
+{
+  id: "render-3d",
+  name: "3D render illustration",
+  era: "2020–",
+  origin: "Blender and Cinema 4D renders replacing flat vector illustration in product pages and app art.",
+  blurb: "Studio-lit 3D props used as the imagery: matte clay or glossy plastic objects floating over a plain ground on a soft contact shadow, with the interface kept quiet around them.",
+  traits: [
+    "One key light at 30–45° with a soft fill, so every object on a page shares one shadow direction.",
+    "Matte clay or glossy plastic materials — roughness 0.4–0.7, no texture maps, no visible seams.",
+    "A soft contact shadow under each object: <code>filter: drop-shadow(0 18px 22px rgba(35,40,85,.24))</code>.",
+    "A plain ground — one flat colour or a single gentle vertical grade, no scene geometry.",
+    "Objects at 1.1–1.4× the type size, allowed to overlap the text plane so they read as props rather than icons.",
+    "The UI around the render stays flat: solid fills, hairline borders, no gradients of its own."
+  ],
+  avoid: [
+    "Renders plus heavy UI effects in the same view; the image already carries the depth and shadows on top of it read as mud.",
+    "Renders at icon size — under about 64px the lighting collapses into a blob.",
+    "Objects lit from different directions on one page; the scene stops being one scene."
+  ],
+  html: `<div class="r3-scene">
+    <span class="r3-sphere"></span>
+    <span class="r3-capsule"></span>
+    <span class="r3-ring"></span>
+  </div>`,
+  css: `.spec--render-3d .r3-scene {
+  position: relative; width: 100%; max-width: 330px; min-height: 200px; border-radius: 10px; overflow: hidden;
+  background: linear-gradient(180deg, #f6f3f0, #e4e0dc);
+}
+.spec--render-3d .r3-sphere {
+  position: absolute; left: 44px; top: 42px; width: 104px; height: 104px; border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #ffffff 0 6%, #d7ddff 20%, #7d8ce0 54%, #3d4890 100%);
+  filter: drop-shadow(0 18px 22px rgba(35,40,85,.28));
+}
+.spec--render-3d .r3-capsule {
+  position: absolute; right: 58px; top: 50px; width: 58px; height: 98px; border-radius: 29px;
+  background: linear-gradient(150deg, #ffe6cd 0 12%, #f7a86b 50%, #c96f31 100%);
+  filter: drop-shadow(0 18px 20px rgba(140,75,28,.26));
+}
+.spec--render-3d .r3-ring {
+  position: absolute; left: 112px; bottom: 34px; width: 62px; height: 62px; border-radius: 50%;
+  border: 17px solid #b7e2d6;
+  box-shadow: inset 0 8px 12px rgba(20,70,60,.18), 0 14px 18px rgba(30,80,70,.22);
+}`,
+  prompt: "Design a page illustrated with 3D renders: one key light at 30–45° shared by every object, matte clay or glossy plastic materials at roughness 0.4–0.7 with no texture maps, a soft contact shadow under each object, a plain flat or gently graded ground with no scene geometry, objects at 1.1–1.4× the type size overlapping the text plane, and a flat interface of solid fills and hairline borders around them.",
+  sources: ["https://www.blender.org/", "https://en.wikipedia.org/wiki/Physically_based_rendering"]
+},
+
+
+{
+  id: "holographic",
+  name: "Holographic / iridescent",
+  era: "2022–",
+  origin: "Chrome and oil-slick surfaces out of the Y2K revival and 3D type: colour that shifts with the angle.",
+  blurb: "Surfaces that change hue as they turn. A pearlescent or chrome sheet laid over type, borders and small shapes, where the colour comes from the gradient's angle rather than from the palette.",
+  traits: [
+    "Colour from a multi-stop angled gradient, not from hues: <code>linear-gradient(100deg, #ffd6f6, #c8f6ff 22%, #fff3c4 44%, #d6c8ff 66%, #ffd6f6 88%)</code>.",
+    "A finer second band at low alpha over the first, so the shift reads as thin-film interference rather than a rainbow.",
+    "Chrome variant: a hard-stopped vertical ramp — <code>linear-gradient(180deg, #e8eef5 0 12%, #6b7785 30%, #1d242c 52%, #cfd8e2 74%, #7b8794 100%)</code>.",
+    "Iridescence on type, borders and small shapes only; body copy stays one solid ink.",
+    "Hard edges: 0–4px radii and a thin dark outline, so the gradient reads as a material and not a glow.",
+    "A dark ground, because the shift needs contrast to register at all."
+  ],
+  avoid: [
+    "Iridescent fills on large panels; they read as a cheap rainbow instead of a surface.",
+    "Iridescent body text on a light ground — contrast changes across the line and the text fails.",
+    "Two iridescent elements at different angles in one view; the material stops being one material."
+  ],
+  html: `<div class="ho-scene">
+    <span class="ho-disc"></span>
+    <p class="ho-word">Chrome</p>
+    <div class="ho-card"><span></span><span></span><span></span></div>
+  </div>`,
+  css: `.spec--holographic .ho-scene {
+  position: relative; width: 100%; max-width: 330px; min-height: 200px; border-radius: 10px;
+  background: #0e1013; padding: 22px; display: grid; align-content: center; gap: 14px; justify-items: start;
+}
+.spec--holographic .ho-disc {
+  width: 66px; height: 66px; border-radius: 50%;
+  background: conic-gradient(from 210deg, #ffd6f6, #c8f6ff, #fff3c4, #d6c8ff, #ffd6f6);
+  border: 1px solid #000; box-shadow: 0 10px 20px rgba(0,0,0,.5);
+}
+.spec--holographic .ho-word {
+  margin: 0; font: 800 34px/1 "Instrument Sans", sans-serif; letter-spacing: -0.02em; text-transform: uppercase;
+  background: linear-gradient(100deg, #ffd6f6, #c8f6ff 22%, #fff3c4 44%, #d6c8ff 66%, #ffd6f6 88%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-text-stroke: 1px rgba(0,0,0,.55);
+}
+.spec--holographic .ho-card {
+  width: 100%; padding: 14px 16px; background: #14171c;
+  border: 1px solid transparent;
+  border-image: linear-gradient(100deg, #ffd6f6, #c8f6ff 30%, #fff3c4 55%, #d6c8ff 80%) 1;
+  display: grid; gap: 7px;
+}
+.spec--holographic .ho-card span { display: block; height: 8px; background: #2a2f37; }
+.spec--holographic .ho-card span:nth-child(1) { width: 62%; background: linear-gradient(90deg, #c8f6ff, #d6c8ff); }
+.spec--holographic .ho-card span:nth-child(2) { width: 84%; }
+.spec--holographic .ho-card span:nth-child(3) { width: 44%; }`,
+  prompt: "Design a holographic/iridescent interface: colour carried by multi-stop angled gradients (pearlescent or hard-stopped chrome) rather than by hues, a finer low-alpha band over the first for thin-film interference, iridescence limited to type, borders and small shapes, body copy in one solid ink, hard edges with 0–4px radii and a thin dark outline, and a dark ground.",
+  sources: ["https://en.wikipedia.org/wiki/Iridescence", "https://en.wikipedia.org/wiki/Thin-film_interference"]
 }
 
 );
