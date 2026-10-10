@@ -136,6 +136,48 @@ const OUT = path.join(__dirname, 'shots');
       total: Object.keys(declared).length
     };
   });
+  // --- combos: a style, a pattern and a practice that hold up together ---
+  report.combos = await page.evaluate(() => {
+    const list = window.COMBOS || [];
+    const F = window.FACETS.styles;
+    const cat = {};
+    window.CATALOG.forEach((e) => { cat[e.id] = e; });
+    const kindsOf = (c) => [c.style, c.pattern, c.practice].map((id) => (F[id] || {}).k);
+    const section = document.getElementById('sec-combos');
+    const heads = [...document.querySelectorAll('.section')].map((s) => s.id);
+    return {
+      declared: list.length,
+      rendered: document.querySelectorAll('#sec-combos .combo').length,
+      order: heads,
+      head: (document.querySelector('#sec-combos .section__head') || { textContent: '' }).textContent,
+      everyMemberResolves: list.every((c) => cat[c.style] && cat[c.pattern] && cat[c.practice]),
+      everyComboOneOfEachKind: list.every((c) => kindsOf(c).join() === 'style,pattern,practice'),
+      everyComboHasOneLine: list.every((c) => typeof c.why === 'string' && c.why.trim().length > 24),
+      namesPerCombo: [...document.querySelectorAll('#sec-combos .combo')].map((li) => li.querySelectorAll('.combo__name').length),
+      everyNameIsAButton: [...document.querySelectorAll('#sec-combos .combo__name')].every((n) => n.tagName === 'BUTTON'),
+      everyNameIsACatalogEntry: [...document.querySelectorAll('#sec-combos .combo__name')].every((n) => !!cat[n.getAttribute('data-id')]),
+      kindTags: [...new Set([...document.querySelectorAll('#sec-combos .combo__kind')].map((s) => s.textContent.trim()))],
+      sectionPresent: !!section,
+      proseOnPage: document.querySelectorAll('#sec-combos .combo__why').length
+    };
+  });
+  /* a combo name is a real control: it opens that entry's detail */
+  const comboBtn = page.locator('#sec-combos .combo__name').first();
+  const comboMember = await comboBtn.getAttribute('data-id');
+  await comboBtn.click();
+  await page.waitForTimeout(280);
+  report.combos.opensDetail = {
+    member: comboMember,
+    open: await page.locator('#detail[open]').count(),
+    title: await page.evaluate(() => {
+      const d = document.querySelector('#detail');
+      return d && d.open ? d.querySelector('.modal__title').textContent : null;
+    })
+  };
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(240);
+  report.combos.modalClosedAgain = await page.locator('#detail[open]').count();
+
   report.kindPill = await page.evaluate(() => ({
     segments: [...document.querySelectorAll('.pill__seg')].map((b) => b.textContent.trim()),
     pressedCount: document.querySelectorAll('.pill__seg[aria-pressed="true"]').length,

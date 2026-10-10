@@ -25,6 +25,11 @@
   var GALLERY = (window.GALLERY && window.GALLERY.sites) || [];
   var CAPTURED = (window.GALLERY && window.GALLERY.capturedAt) || "";
 
+  /* Combos are the one cross-kind view: each one is a style, a pattern and a
+     practice that hold up together, plus the line saying why. They read
+     data/combos.js and claim nothing about the rest of the catalog. */
+  var COMBOS = window.COMBOS || [];
+
   var state = { q: "", view: "all", kind: "style", facets: [], theme: "light" };
 
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
@@ -198,6 +203,57 @@
         "<pre><code>" + esc(e.prompt) + "</code></pre>" +
       "</details>" +
       sources;
+  }
+
+  /* ---------- combos: three entries that work together ----------
+     The only cross-kind section, and the only place a line of prose is drawn
+     on the page: the three names say what the combo is made of, so the line
+     has to carry the reason instead. A search narrows the list; a trait filter
+     dims (never deletes) a combo none of whose members carries the trait. */
+  function comboHay(c) {
+    return [c.style, c.pattern, c.practice].map(function (id) {
+      var e = getEntry(id);
+      return e ? e.name + " " + e.id : id;
+    }).join(" ") + " " + (c.why || "");
+  }
+
+  function comboMatches(c) {
+    if (!state.q) return true;
+    var hay = comboHay(c).toLowerCase();
+    return state.q.split(/\s+/).every(function (t) { return hay.indexOf(t) !== -1; });
+  }
+
+  function comboFacetFit(c) {
+    if (!state.facets.length) return true;
+    return [c.style, c.pattern, c.practice].some(function (id) {
+      return state.facets.every(function (f) { return !!levelOf(id, f); });
+    });
+  }
+
+  function comboRow(c) {
+    var parts = [["Style", c.style], ["Pattern", c.pattern], ["Practice", c.practice]].map(function (p) {
+      var e = getEntry(p[1]);
+      if (!e) return "";
+      return '<button class="combo__name" type="button" data-id="' + e.id + '" title="' +
+        esc(e.name) + " — " + esc(e.era) + " · " + esc(p[0]) + '">' +
+        '<span class="combo__kind">' + esc(p[0]) + "</span>" + esc(e.name) + "</button>";
+    });
+    /* a combo whose members do not all resolve is not drawn at all: half a
+       combo would read as a claim the data cannot support */
+    if (parts.filter(Boolean).length !== 3) return "";
+    return '<li class="combo' + (comboFacetFit(c) ? "" : " is-dim") + '">' +
+      '<div class="combo__trio">' + parts.join('<span class="combo__plus" aria-hidden="true">+</span>') + "</div>" +
+      '<p class="combo__why">' + esc(c.why) + "</p>" +
+    "</li>";
+  }
+
+  function combosHTML() {
+    var list = COMBOS.filter(comboMatches);
+    if (!list.length) return "";
+    return '<section class="section" id="sec-combos">' +
+      '<div class="section__head"><h2>Combos</h2><span class="n">' + list.length + "</span></div>" +
+      '<ul class="combos">' + list.map(comboRow).join("") + "</ul>" +
+    "</section>";
   }
 
   /* ---------- the atlas: two axes, every style placed ---------- */
@@ -480,6 +536,7 @@
 
     if (state.view !== "gallery") {
       html += atlasHTML();
+      html += combosHTML();
       html += matrixHTML(visible);
       html += '<section class="section" id="sec-all">' +
         '<div class="section__head"><h2>Every entry</h2><span class="n">' + visible.length + "</span></div>" +
@@ -815,14 +872,14 @@
     if (btn) { runCopy(btn); return; }
 
     /* a point on the atlas, or a card in the grid, opens the full detail */
-    var target = ev.target.closest(".atlas__name, .entry, .atlas__legend button");
+    var target = ev.target.closest(".atlas__name, .entry, .atlas__legend button, .combo__name");
     if (target && !ev.target.closest("a")) openDetail(target.getAttribute("data-id"));
   });
 
   /* keyboard parity for the atlas points and the cards */
   main.addEventListener("keydown", function (ev) {
     if (ev.key !== "Enter" && ev.key !== " ") return;
-    var el = ev.target.closest(".atlas__name, .entry, .atlas__legend button");
+    var el = ev.target.closest(".atlas__name, .entry, .atlas__legend button, .combo__name");
     if (!el || ev.target.closest("a, button:not(.atlas__name), input, select, textarea")) return;
     ev.preventDefault();
     openDetail(el.getAttribute("data-id"));
