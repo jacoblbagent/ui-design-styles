@@ -27,11 +27,11 @@ window.COMBOS = [
       <p class="sw-lede">One face, one scale, a measure of 42 characters. The grid is the layout.</p>
       <span class="sw-cta">Read the specimen</span>
     </div>`,
-    css: `.spec--combo-swiss-landing .sw-hero { width: 100%; max-width: 290px; font-family: "Instrument Sans", sans-serif; color: #14171c; }
-.spec--combo-swiss-landing .sw-rule { height: 6px; margin: 0 0 16px; background: #14171c; }
+    css: `.spec--combo-swiss-landing .sw-hero { width: 100%; max-width: 290px; padding: 20px; background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; font-family: "Instrument Sans", sans-serif; color: var(--ink); }
+.spec--combo-swiss-landing .sw-rule { height: 6px; margin: 0 0 16px; background: var(--ink); }
 .spec--combo-swiss-landing .sw-h { margin: 0; font: 700 34px/.95 "Instrument Sans", sans-serif; letter-spacing: -.03em; }
-.spec--combo-swiss-landing .sw-lede { margin: 12px 0 0; max-width: 32ch; font-size: 13px; line-height: 1.5; color: #3d444e; }
-.spec--combo-swiss-landing .sw-cta { display: inline-block; margin-top: 16px; padding-top: 6px; border-top: 2px solid #14171c; font: 600 13px/1.6 "Instrument Sans", sans-serif; }`
+.spec--combo-swiss-landing .sw-lede { margin: 12px 0 0; max-width: 32ch; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+.spec--combo-swiss-landing .sw-cta { display: inline-block; margin-top: 16px; padding-top: 6px; border-top: 2px solid var(--ink); font: 600 13px/1.6 "Instrument Sans", sans-serif; }`
   },
 
   {
@@ -169,10 +169,10 @@ window.COMBOS = [
       <p class="me-s">Create one and it will appear here.</p>
       <span class="me-cta">New project</span>
     </div>`,
-    css: `.spec--combo-minimal-empty .me-empty { width: 100%; max-width: 280px; padding: 26px 0 0; border-top: 1px solid #14171c; font-family: "Instrument Sans", sans-serif; color: #14171c; }
+    css: `.spec--combo-minimal-empty .me-empty { width: 100%; max-width: 280px; padding: 24px 20px; background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; font-family: "Instrument Sans", sans-serif; color: var(--ink); }
 .spec--combo-minimal-empty .me-h { margin: 0; font: 500 17px/1.3 "Instrument Sans", sans-serif; }
-.spec--combo-minimal-empty .me-s { margin: 6px 0 0; font-size: 13px; line-height: 1.5; color: #5b6572; }
-.spec--combo-minimal-empty .me-cta { display: inline-block; margin-top: 18px; padding: 10px 15px; border: 1px solid #14171c; border-radius: 2px; font: 500 12px/1 "Instrument Sans", sans-serif; }`
+.spec--combo-minimal-empty .me-s { margin: 6px 0 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.spec--combo-minimal-empty .me-cta { display: inline-block; margin-top: 18px; padding: 10px 15px; border: 1px solid var(--ink); border-radius: 2px; font: 500 12px/1 "Instrument Sans", sans-serif; }`
   },
 
   {
@@ -222,13 +222,13 @@ window.COMBOS = [
       <p class="dr-err">Needs a domain — try ada@studio.co</p>
       <span class="dr-btn">Save</span>
     </div>`,
-    css: `.spec--combo-drawn-forms .dr-form { width: 100%; max-width: 274px; font-family: "Instrument Sans", sans-serif; }
-.spec--combo-drawn-forms .dr-l { display: block; margin-bottom: 6px; font: 600 13px/1 "Instrument Sans", sans-serif; color: #14171c; }
-.spec--combo-drawn-forms .dr-i { width: 100%; padding: 11px 12px; font: 400 14px/1 "Instrument Sans", sans-serif; color: #14171c; background: #fffdf8; border: 2px solid #14171c; border-radius: 14px 10px 12px 9px; }
+    css: `.spec--combo-drawn-forms .dr-form { width: 100%; max-width: 274px; padding: 18px; background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-drawn-forms .dr-l { display: block; margin-bottom: 6px; font: 600 13px/1 "Instrument Sans", sans-serif; color: var(--ink); }
+.spec--combo-drawn-forms .dr-i { width: 100%; padding: 11px 12px; font: 400 14px/1 "Instrument Sans", sans-serif; color: var(--ink); background: var(--panel-2); border: 2px solid var(--ink); border-radius: 14px 10px 12px 9px; }
 .spec--combo-drawn-forms .dr-i:focus-visible { outline: 2px solid #1f4fd8; outline-offset: 2px; }
-.spec--combo-drawn-forms .dr-err { margin: 7px 0 0; font-size: 12px; line-height: 1.45; color: #a3231a; }
-.spec--combo-drawn-forms .dr-err::before { content: ""; display: inline-block; width: 12px; height: 12px; margin-right: 6px; border-radius: 50%; background: #a3231a; vertical-align: -1px; }
-.spec--combo-drawn-forms .dr-btn { display: inline-block; margin-top: 16px; padding: 11px 18px; background: #14171c; color: #fffdf8; border-radius: 16px 12px 15px 11px; font: 600 13px/1 "Instrument Sans", sans-serif; }`
+.spec--combo-drawn-forms .dr-err { margin: 7px 0 0; font-size: 12px; line-height: 1.45; color: var(--accent); }
+.spec--combo-drawn-forms .dr-err::before { content: ""; display: inline-block; width: 12px; height: 12px; margin-right: 6px; border-radius: 50%; background: var(--accent); vertical-align: -1px; }
+.spec--combo-drawn-forms .dr-btn { display: inline-block; margin-top: 16px; padding: 11px 18px; background: var(--ink); color: var(--bg); border-radius: 16px 12px 15px 11px; font: 600 13px/1 "Instrument Sans", sans-serif; }`
   },
 
   {
@@ -261,11 +261,11 @@ window.COMBOS = [
       <span class="rh-cta">Buy — $249</span>
       <p class="rh-proof">4.8 from 2,140 owners</p>
     </div>`,
-    css: `.spec--combo-render-hero .rh-hero { width: 100%; max-width: 280px; text-align: center; font-family: "Instrument Sans", sans-serif; }
+    css: `.spec--combo-render-hero .rh-hero { width: 100%; max-width: 280px; padding: 22px 20px; background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; text-align: center; font-family: "Instrument Sans", sans-serif; }
 .spec--combo-render-hero .rh-orb { display: block; width: 96px; height: 96px; margin: 0 auto; border-radius: 50%; background: radial-gradient(circle at 34% 28%, #fff5e8, #d9a05b 46%, #4a2a12 88%); box-shadow: inset -10px -12px 22px rgba(0,0,0,.45), 0 18px 26px rgba(74,42,18,.35); }
-.spec--combo-render-hero .rh-h { margin: 16px 0 0; font: 600 18px/1.25 "Instrument Sans", sans-serif; color: #14171c; }
+.spec--combo-render-hero .rh-h { margin: 16px 0 0; font: 600 18px/1.25 "Instrument Sans", sans-serif; color: var(--ink); }
 .spec--combo-render-hero .rh-cta { display: block; margin: 14px auto 0; max-width: 200px; padding: 13px 0; border-radius: 8px; background: #d0441f; color: #fff; font: 700 15px/1 "Instrument Sans", sans-serif; }
-.spec--combo-render-hero .rh-proof { margin: 10px 0 0; font-size: 12px; color: #5b6572; }`
+.spec--combo-render-hero .rh-proof { margin: 10px 0 0; font-size: 12px; color: var(--muted); }`
   },
 
   {
@@ -399,11 +399,11 @@ window.COMBOS = [
       <input class="bf-i" id="bf-email" value="ada@studio.co" />
       <span class="bf-sub">Save</span>
     </div>`,
-    css: `.spec--combo-brutal-forms .bf-form { width: 100%; max-width: 272px; font-family: "Instrument Sans", sans-serif; }
-.spec--combo-brutal-forms .bf-l { display: block; margin-bottom: 6px; font: 700 12px/1 "Instrument Sans", sans-serif; letter-spacing: .04em; text-transform: uppercase; color: #000; }
-.spec--combo-brutal-forms .bf-i { width: 100%; padding: 11px 12px; font: 400 14px/1 "Instrument Sans", sans-serif; color: #000; background: #fff; border: 2px solid #000; border-radius: 0; }
+    css: `.spec--combo-brutal-forms .bf-form { width: 100%; max-width: 272px; padding: 18px; background: var(--panel); border: 1px solid var(--hair); border-radius: 10px; font-family: "Instrument Sans", sans-serif; }
+.spec--combo-brutal-forms .bf-l { display: block; margin-bottom: 6px; font: 700 12px/1 "Instrument Sans", sans-serif; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+.spec--combo-brutal-forms .bf-i { width: 100%; padding: 11px 12px; font: 400 14px/1 "Instrument Sans", sans-serif; color: var(--ink); background: var(--panel-2); border: 2px solid var(--ink); border-radius: 0; }
 .spec--combo-brutal-forms .bf-i:focus-visible { outline: 3px solid #ffd400; outline-offset: 2px; }
-.spec--combo-brutal-forms .bf-sub { display: inline-block; margin-top: 16px; padding: 12px 20px; background: #000; border: 2px solid #000; box-shadow: 5px 5px 0 #ffd400; color: #fff; font: 700 13px/1 "Instrument Sans", sans-serif; }`
+.spec--combo-brutal-forms .bf-sub { display: inline-block; margin-top: 16px; padding: 12px 20px; background: var(--ink); border: 2px solid var(--ink); box-shadow: 5px 5px 0 #ffd400; color: var(--bg); font: 700 13px/1 "Instrument Sans", sans-serif; }`
   }
 
 ];

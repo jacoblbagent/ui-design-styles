@@ -172,6 +172,18 @@ const OUT = path.join(__dirname, 'shots');
          anywhere it does not belong */
       samplesOverflowing: [...document.querySelectorAll('#sec-combos .spec')]
         .filter((s) => s.scrollWidth > s.clientWidth + 1 || s.scrollHeight > s.clientHeight + 1).length,
+      /* every sample paints its own ground: a themed surface (or its own
+         gradient/plate), never the chrome behind it, so the ink inside is read
+         against the sample and not against the page */
+      samplesWithoutOwnBackground: [...document.querySelectorAll('#sec-combos .spec')].filter((s) => {
+        let n = s.firstElementChild;
+        while (n && n !== s) {
+          const cs = getComputedStyle(n);
+          if (cs.backgroundImage !== 'none' || cs.backgroundColor !== 'rgba(0, 0, 0, 0)') return false;
+          n = n.parentElement;
+        }
+        return true;
+      }).map((s) => s.className.replace('spec spec--combo-', '')),
       comboClassesInEntries: document.querySelectorAll('#sec-all [class*="spec--combo-"]').length
     };
   });
@@ -592,6 +604,21 @@ const OUT = path.join(__dirname, 'shots');
   report.theme = await page.evaluate(() => document.documentElement.getAttribute('data-theme'));
   report.toggleLabel = await page.locator('#theme-label').textContent();
   await page.screenshot({ path: path.join(OUT, 'dark-top.png') });
+  /* the theme flips but a sample must not: each grounded sample keeps its own
+     surface in dark, so no sample is dark ink on a dark page */
+  report.comboSamplesInDark = await page.evaluate(() => {
+    const specs = [...document.querySelectorAll('#sec-combos .spec')];
+    const grounded = specs.filter((s) => {
+      let n = s.firstElementChild;
+      while (n && n !== s) {
+        const cs = getComputedStyle(n);
+        if (cs.backgroundImage !== 'none' || cs.backgroundColor !== 'rgba(0, 0, 0, 0)') return true;
+        n = n.parentElement;
+      }
+      return false;
+    }).length;
+    return { theme: document.documentElement.getAttribute('data-theme'), grounded, total: specs.length };
+  });
   await page.locator('#theme-toggle').click();
 
   // --- the facet chips carry the active state; the matrix columns are the controls ---
