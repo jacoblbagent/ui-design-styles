@@ -48,8 +48,8 @@ const OUT = path.join(__dirname, 'shots');
       axisCaptions: document.querySelectorAll('.atlas__axis').length,
       legendItems: document.querySelectorAll('.matrix__legend span').length,
       readoutHint: document.querySelectorAll('.matrix__ro-hint').length,
-      /* the quadrant captions name the quadrant at the two top corners only:
-         the bottom corners sit directly above the x captions */
+      /* the corner captions name the restraint->loud scale at the top edge as
+         well as the bottom one, one word per corner */
       quadrantCaptions: document.querySelectorAll('.atlas__quad').length,
       quadrantCorners: [...document.querySelectorAll('.atlas__quad')]
         .map((el) => el.className.replace('atlas__quad ', '')),
