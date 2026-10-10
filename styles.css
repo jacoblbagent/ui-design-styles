@@ -62,7 +62,7 @@ html[data-theme="dark"] {
   --muted: #a3a3a3;
   --hair: #2e2e2e;
   --hair-strong: #404040;
-  --accent: #f08a52;
+  --accent: #ea6b2a;
   --accent-soft: #2c1c14;
   --chip-bg: #3f3f46;
   --chip-ink: #e6e3e1;
@@ -70,14 +70,17 @@ html[data-theme="dark"] {
   --code-ink: #e5e5e5;
   --focus: #7fa4ff;
 
-  --g-material: #2dd4bf;
-  --g-form: #a78bfa;
-  --g-type: #60a5fa;
-  --g-colour: #f472b6;
-  --g-behaviour: #4ade80;
-  --k-style: #f08a52;
-  --k-pattern: #fbbf24;
-  --k-practice: #94a3b8;
+  /* dark mode wears the same eight hues one step deeper, so the colour sits in
+     the page rather than glowing on top of it. Every value still clears 4.5:1
+     against --panel, so a column label or a mark stays readable. */
+  --g-material: #14b8a6;
+  --g-form: #9575f0;
+  --g-type: #3b82f6;
+  --g-colour: #ec4899;
+  --g-behaviour: #22c55e;
+  --k-style: #ea6b2a;
+  --k-pattern: #f59e0b;
+  --k-practice: #7c8ba1;
 }
 
 /* the hue a mark, a column or a tag wears is read off its own attribute, so a
