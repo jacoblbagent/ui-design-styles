@@ -1348,6 +1348,433 @@
 .spec--error-resilience .er-retry { flex: none; align-self: center; margin-inline-start: auto; font: 600 12px/1 "Instrument Sans", sans-serif; color: #7a1f1f; text-decoration: underline; }`,
   prompt: "Design for error resilience: treat every screen's error as a designed state with defined type, tone and next step; state what happened, what it means and one primary recovery action in that order; preserve the person's work and never clear a form on failure; use inline errors for fields and a banner for whole failures with a toast only for the transient; separate recoverable from fatal; and log errors while never surfacing a raw code without a plain sentence.",
   sources: []
+},
+
+{
+  id: "attention-first",
+  name: "Attention-first",
+  era: "2016–",
+  origin: "Short-form video feeds: the first frame decides whether the second is ever seen.",
+  blurb: "A policy written for the thumb. The hook is inside the first frame, media runs full-bleed and vertical, sound is on with an obvious way out, and every screen is built to end in one gesture.",
+  traits: [
+    "The hook inside the first frame: the payoff is visible before a word is read.",
+    "Full-bleed vertical media as the ground; the interface is a scrim, one caption and a thumb strip.",
+    "Sound on by default with a visible mute, and captions burned in for the muted case.",
+    "One gesture per screen — swipe, tap, hold. Nothing on the path opens a nested menu.",
+    "Progress and position always visible, so the cost of one more is known before it is paid.",
+    "Autoplay budget: preload the first frame only, and stop playback the moment the tile leaves the viewport."
+  ],
+  avoid: [
+    "A text-first intro on a feed surface; the frame is gone before the sentence ends.",
+    "Autoplay with sound and no mute control — a hostile default, and the reason browsers block it."
+  ],
+  html: `<div class="at-tile">
+    <span class="at-media"></span>
+    <span class="at-mute">Sound on</span>
+    <p class="at-hook">Wait for the last one</p>
+    <span class="at-bar"><i></i></span>
+  </div>`,
+  css: `.spec--attention-first .at-tile {
+  position: relative; width: 168px; aspect-ratio: 9/16; border-radius: 14px; overflow: hidden;
+  background: radial-gradient(circle at 62% 28%, #ff6a3d, #b31d5a 55%, #1b0b2b);
+  font-family: "Instrument Sans", sans-serif;
+}
+.spec--attention-first .at-media { position: absolute; inset: 0; background: linear-gradient(200deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.74)); }
+.spec--attention-first .at-mute {
+  position: absolute; top: 10px; right: 10px; padding: 5px 9px; border-radius: 999px;
+  background: rgba(0,0,0,.55); color: #fff; font: 600 10px/1 "Instrument Sans", sans-serif;
+}
+.spec--attention-first .at-hook {
+  position: absolute; left: 12px; right: 12px; bottom: 22px; margin: 0;
+  font: 700 16px/1.2 "Instrument Sans", sans-serif; color: #fff; text-shadow: 0 1px 12px rgba(0,0,0,.5);
+}
+.spec--attention-first .at-bar { position: absolute; left: 12px; right: 12px; bottom: 10px; height: 3px; border-radius: 2px; background: rgba(255,255,255,.28); }
+.spec--attention-first .at-bar i { display: block; width: 42%; height: 100%; border-radius: 2px; background: #fff; }`,
+  prompt: "Design attention-first for a feed: put the hook inside the first frame so the payoff lands before any text, run the media full-bleed and vertical with the interface reduced to a scrim, one caption and a thumb strip, default the sound on with a visible mute and burn in captions for the muted case, keep one gesture per screen with no nested menus on the path, show progress and position at all times, and preload only the first frame while stopping playback when the tile leaves the viewport.",
+  sources: []
+},
+
+{
+  id: "brand-expression-first",
+  name: "Brand-expression-first",
+  era: "2015–",
+  origin: "Brand-led product teams: the identity is decided first and the design system is fitted to it.",
+  blurb: "A policy that hands the identity the wheel. One palette, one display face, one accent and one motion signature are locked before the first screen is drawn, and the product's own tokens are the defaults the brand may overrule.",
+  traits: [
+    "A locked brand set — palette, display face, accent hue, corner radius — that the system tokens defer to.",
+    "One loud accent per screen, spent on the single action the brand wants remembered.",
+    "A motion signature (an ease curve, a wipe, a type reveal) applied everywhere the brand speaks.",
+    "Art direction authored with the layout: the brand's own imagery rules, not a stock default.",
+    "Display type at brand scale, with the working interface set in the brand's secondary face.",
+    "Consistency measured across surfaces — app, site, email — rather than inside one screen."
+  ],
+  avoid: [
+    "A brand accent at full chroma behind body text: it fails contrast and reads as an ad.",
+    "Every screen shouting at once. The identity is the ground; the accent is the event."
+  ],
+  html: `<div class="bx-card">
+    <span class="bx-mark">ACME</span>
+    <p class="bx-h">MOVE<br />FASTER</p>
+    <p class="bx-s">One palette, one display face, one accent — locked before the first screen.</p>
+    <span class="bx-cta">Start free</span>
+  </div>`,
+  css: `.spec--brand-expression-first .bx-card {
+  width: 100%; max-width: 300px; padding: 20px; border-radius: 4px;
+  background: linear-gradient(150deg, #ff4d2e, #ff8a3d 62%, #ffc043);
+  font-family: "Instrument Sans", sans-serif; color: #1b0d05;
+}
+.spec--brand-expression-first .bx-mark { display: block; font: 800 11px/1 "Instrument Sans", sans-serif; letter-spacing: .22em; }
+.spec--brand-expression-first .bx-h { margin: 18px 0 0; font: 800 38px/.92 "Instrument Sans", sans-serif; letter-spacing: -.02em; }
+.spec--brand-expression-first .bx-s { margin: 10px 0 0; max-width: 24ch; font-size: 12px; line-height: 1.5; color: #4a2110; }
+.spec--brand-expression-first .bx-cta {
+  display: inline-block; margin-top: 18px; padding: 11px 18px; border-radius: 4px;
+  background: #1b0d05; color: #ffe9d6; font: 700 13px/1 "Instrument Sans", sans-serif;
+}`,
+  prompt: "Design brand-expression-first: lock the brand palette, display face, accent hue and corner radius before any screen, let the product's design tokens defer to them, spend one loud accent per screen on the single action the brand wants remembered, define a motion signature (ease curve, wipe or type reveal) used everywhere the brand speaks, author the art direction as part of the layout instead of taking imagery defaults, set display type at brand scale with the working UI in the secondary face, and measure consistency across app, site and email rather than inside one screen. Keep the accent off body text, where it breaks contrast.",
+  sources: []
+},
+
+{
+  id: "cinematic-media-first",
+  name: "Cinematic / media-first",
+  era: "2018–",
+  origin: "Film-led brand sites and product keynotes: the footage carries the page and the interface steps back.",
+  blurb: "The page is shot rather than laid out. Full-bleed footage holds the frame, the interface is cut to a caption and one action, and the pacing — hold the shot, cut on the beat — is itself a design decision.",
+  traits: [
+    "Full-bleed video or a rich still sequence as the ground, at 21:9 or taller, letterboxed where it helps.",
+    "Interface cut to a caption, a timestamp and one action; everything else moves to the end of the frame.",
+    "A poster frame and a reserved aspect ratio, so the page does not shift when the media lands.",
+    "Muted autoplay with an obvious sound toggle, and captions burned in or one press away.",
+    "A held shot long enough to read and cuts aligned to a beat rather than to scroll.",
+    "A static hero as the honest fallback under reduced motion or on a slow connection."
+  ],
+  avoid: [
+    "A 30MB hero film: cinematic means directed, not heavy.",
+    "Caption text over the busiest part of the frame — the ground has to hold the words."
+  ],
+  html: `<div class="cm-frame">
+    <span class="cm-media"></span>
+    <span class="cm-bars"></span>
+    <p class="cm-cap">Shot 04 · 02:14 — the first descent</p>
+    <span class="cm-ctl">Sound on</span>
+  </div>`,
+  css: `.spec--cinematic-media-first .cm-frame {
+  position: relative; width: 100%; max-width: 320px; aspect-ratio: 21/9; border-radius: 6px; overflow: hidden;
+  background: linear-gradient(118deg, #10131a, #2a3346 46%, #6a5a4a);
+  font-family: "Instrument Sans", sans-serif;
+}
+.spec--cinematic-media-first .cm-media { position: absolute; inset: 0; background: radial-gradient(120% 90% at 70% 18%, rgba(255,196,120,.42), rgba(10,12,18,0) 62%); }
+.spec--cinematic-media-first .cm-bars { position: absolute; inset: 0; border-top: 8px solid #0a0c12; border-bottom: 8px solid #0a0c12; }
+.spec--cinematic-media-first .cm-cap {
+  position: absolute; left: 14px; bottom: 16px; margin: 0;
+  font: 600 11px/1.4 "Instrument Sans", sans-serif; letter-spacing: .06em; color: #f2f4f8;
+}
+.spec--cinematic-media-first .cm-ctl {
+  position: absolute; right: 12px; bottom: 14px; padding: 5px 10px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.42); color: #f2f4f8; font: 600 10px/1 "Instrument Sans", sans-serif;
+}`,
+  prompt: "Design a cinematic, media-first page: hold the frame with full-bleed video or a rich still sequence at 21:9 or taller and letterbox it where that helps, cut the interface down to a caption, a timestamp and one action, ship a poster frame with a reserved aspect ratio so nothing shifts when the media lands, default to muted autoplay with an obvious sound toggle and captions, hold each shot long enough to read and cut on a beat rather than on scroll, and fall back to a static hero under reduced motion or on a slow connection. Keep the payload directed rather than heavy, and keep text off the busiest part of the frame.",
+  sources: []
+},
+
+{
+  id: "conversion-optimised",
+  name: "Conversion-optimised",
+  era: "2000s–",
+  origin: "Direct-response and growth practice: the page is a funnel and everything on it is measured against one action.",
+  blurb: "A policy that designs each screen around a single measurable action: one primary control, the value stated in the person's own terms, proof placed beside the ask, and every competing link demoted.",
+  traits: [
+    "One primary action per screen, phrased as an outcome; secondary routes demoted to plain text links.",
+    "The value proposition above the fold, in the person's words, at 30px or larger, with the offer in the same view.",
+    "Proof at the point of decision — a count, a rating or a logo row sitting directly beside the button.",
+    "Urgency that is true: a real deadline or a real count. Invented scarcity is deception, not conversion.",
+    "Friction removed from the critical path: no account wall, no step that is not the action itself.",
+    "Variants measured against the one metric, and the losing version deleted rather than kept for taste."
+  ],
+  avoid: [
+    "A second equally loud call to action: two primaries halve both.",
+    "Confirmshaming and countdowns that reset on reload — those are dark patterns wearing a growth label."
+  ],
+  html: `<div class="cx-panel">
+    <p class="cx-flag">12 seats left at this price</p>
+    <p class="cx-h">Ship your site this week</p>
+    <span class="cx-proof">4.8 from 4,812 builders</span>
+    <span class="cx-cta">Start for $9/mo</span>
+    <p class="cx-alt">No card required · Cancel in one click</p>
+  </div>`,
+  css: `.spec--conversion-optimised .cx-panel {
+  width: 100%; max-width: 300px; padding: 20px; border: 2px solid #14171c; border-radius: 8px;
+  background: #fff; text-align: center; font-family: "Instrument Sans", sans-serif;
+}
+.spec--conversion-optimised .cx-flag {
+  margin: 0 0 12px; font: 700 11px/1 "Instrument Sans", sans-serif;
+  letter-spacing: .08em; text-transform: uppercase; color: #b3231a;
+}
+.spec--conversion-optimised .cx-h { margin: 0; font: 700 24px/1.15 "Instrument Sans", sans-serif; color: #14171c; }
+.spec--conversion-optimised .cx-proof { display: block; margin-top: 8px; font-size: 12px; color: #4b525c; }
+.spec--conversion-optimised .cx-cta {
+  display: grid; place-items: center; margin-top: 16px; min-height: 48px; border-radius: 8px;
+  background: #d53a1f; color: #fff; font: 700 15px/1 "Instrument Sans", sans-serif;
+}
+.spec--conversion-optimised .cx-alt { margin: 10px 0 0; font-size: 11px; color: #6b7280; }`,
+  prompt: "Design a conversion-optimised screen: one primary action phrased as an outcome with every competing route demoted to plain text, the value proposition above the fold in the person's own words at 30px or larger with the offer in the same view, proof — a count, rating or logo row — sitting directly beside the button, urgency that is real rather than invented, no account wall or off-path step on the critical path, and variants measured against the single metric with the loser deleted. Keep the honesty line: confirmshaming and resetting countdowns are dark patterns, not growth.",
+  sources: []
+},
+
+{
+  id: "elevation-hierarchy",
+  name: "Elevation as hierarchy",
+  era: "2014–",
+  origin: "Material Design's elevation scale, adopted as a general policy: depth states rank.",
+  blurb: "Depth is the hierarchy signal. A small fixed set of elevations is defined once, each step belongs to a role, and a shadow that is not on the scale is a bug rather than a flourish.",
+  traits: [
+    "A fixed elevation scale — four or five steps, declared once as tokens (<code>0 / 1 / 2 / 6 / 12dp</code>).",
+    "One elevation per role: page 0, card 1, menu 2, modal 6, toast 12 — stated in the token names.",
+    "Shadow paired with a single light source, so every surface on the page agrees on where the light is.",
+    "Nothing raised for looks: if it carries a shadow it ranks above something specific.",
+    "Interaction moves one step at most — hover lifts, press settles, release returns.",
+    "Depth never the only signal: the role is also stated in the markup and the label, for the person who cannot see the shadow."
+  ],
+  avoid: [
+    "Decorative shadows on a flat plane, which spend the signal and leave the ranking reading as noise.",
+    "A heavy border and elevation on the same element — pick one hierarchy signal."
+  ],
+  html: `<div class="el-stack">
+    <span class="el-layer l0">Page · 0</span>
+    <span class="el-layer l1">Card · 1</span>
+    <span class="el-layer l2">Menu · 2</span>
+    <span class="el-layer l3">Modal · 6</span>
+  </div>`,
+  css: `.spec--elevation-hierarchy .el-stack { position: relative; width: 100%; max-width: 300px; height: 190px; font-family: "Instrument Sans", sans-serif; }
+.spec--elevation-hierarchy .el-layer {
+  position: absolute; display: grid; align-items: start; padding: 7px 12px 0; border-radius: 8px;
+  font: 600 11px/1 "Instrument Sans", sans-serif;
+}
+.spec--elevation-hierarchy .l0 { left: 0; top: 22px; width: 240px; height: 124px; background: #eef0f4; color: #6b7280; }
+.spec--elevation-hierarchy .l1 { left: 14px; top: 44px; width: 200px; height: 84px; background: #fff; color: #14171c; box-shadow: 0 1px 2px rgba(16,24,40,.12), 0 1px 3px rgba(16,24,40,.08); }
+.spec--elevation-hierarchy .l2 { left: 28px; top: 62px; width: 168px; height: 40px; background: #fff; color: #14171c; box-shadow: 0 2px 6px rgba(16,24,40,.16), 0 8px 16px rgba(16,24,40,.10); }
+.spec--elevation-hierarchy .l3 { left: 42px; top: 112px; width: 168px; height: 46px; background: #fff; color: #14171c; box-shadow: 0 12px 28px rgba(16,24,40,.24), 0 4px 8px rgba(16,24,40,.12); }`,
+  prompt: "Design hierarchy through elevation: declare a fixed scale of four or five steps as tokens (0/1/2/6/12dp), bind one elevation to each role — page, card, menu, modal, toast — with the token names saying which, keep a single light source so all shadows agree, never raise anything without a rank to explain it, lift at most one step on interaction, and state the role in the markup and the label as well so depth is not the only signal.",
+  sources: ["https://m3.material.io/styles/elevation/overview"]
+},
+
+{
+  id: "immersive-3d-first",
+  name: "Immersive / 3D-first",
+  era: "2019–",
+  origin: "WebGL configurators and studio award sites: the rendered scene is the product surface.",
+  blurb: "The primary surface is a rendered scene and the interface is an overlay on it. Everything the person has to decide is still an ordinary control, and a downgraded path exists for the hardware that cannot hold the frame rate.",
+  traits: [
+    "One lead scene; the interface is an overlay layer with its own legible ground, never painted into the render.",
+    "A frame budget stated up front (16ms) with device pixel ratio capped and geometry budgeted per device.",
+    "Loading staged: a poster, then the first render, then detail — never a blank canvas.",
+    "Controls stay ordinary: sliders, presets and keyboard equivalents for rotation, rather than drag-only.",
+    "A declared fallback — poster still or static render — under reduced motion, low-power mode or a lost context.",
+    "Camera motion under the same rules as any motion: nothing involuntary, nothing that triggers vestibular discomfort."
+  ],
+  avoid: [
+    "A scene that takes the whole screen before anything is readable.",
+    "Drag-only interaction with no keyboard or preset equivalent, which locks out the people who need it."
+  ],
+  html: `<div class="im-stage">
+    <span class="im-cube"><i></i><i></i><i></i></span>
+    <div class="im-hud">
+      <span class="im-tag">Scene · 16ms budget</span>
+      <span class="im-tag">Presets</span>
+    </div>
+  </div>`,
+  css: `.spec--immersive-3d-first .im-stage {
+  position: relative; width: 100%; max-width: 300px; height: 180px; border-radius: 12px; overflow: hidden;
+  background: radial-gradient(circle at 50% 30%, #1d2a44, #0a0d15 72%); font-family: "Instrument Sans", sans-serif;
+}
+.spec--immersive-3d-first .im-cube {
+  position: absolute; left: 50%; top: 44%; width: 74px; height: 74px; margin: -37px 0 0 -37px;
+  transform-style: preserve-3d; transform: rotateX(-22deg) rotateY(34deg);
+}
+.spec--immersive-3d-first .im-cube i {
+  position: absolute; inset: 0; border: 1px solid rgba(150,205,255,.5);
+  background: linear-gradient(140deg, rgba(90,160,240,.45), rgba(40,80,150,.25));
+}
+.spec--immersive-3d-first .im-cube i:nth-child(1) { transform: translateZ(37px); }
+.spec--immersive-3d-first .im-cube i:nth-child(2) { transform: rotateY(90deg) translateZ(37px); }
+.spec--immersive-3d-first .im-cube i:nth-child(3) { transform: rotateX(90deg) translateZ(37px); background: linear-gradient(140deg, rgba(190,120,240,.4), rgba(70,40,120,.25)); }
+.spec--immersive-3d-first .im-hud { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; gap: 6px; }
+.spec--immersive-3d-first .im-tag {
+  padding: 6px 10px; border-radius: 8px; background: rgba(8,10,16,.74);
+  border: 1px solid rgba(150,205,255,.25); color: #cfe3ff; font: 600 10px/1 "Instrument Sans", sans-serif;
+}`,
+  prompt: "Design a 3D-first surface: one lead scene with the interface as an overlay that carries its own legible ground rather than being painted into the render, a stated 16ms frame budget with capped pixel ratio and per-device geometry budgets, staged loading (poster, first render, then detail) so there is never a blank canvas, ordinary controls — sliders, presets and keyboard equivalents for rotation, not drag-only, a declared fallback still for reduced motion, low-power mode or a lost WebGL context, and camera motion that is never involuntary.",
+  sources: ["https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API"]
+},
+
+{
+  id: "joy-first",
+  name: "Joy-first",
+  era: "2014–",
+  origin: "Consumer products that treat delight as a requirement rather than a garnish.",
+  blurb: "A policy that funds delight the way it funds performance: a written personality, illustration as a real material, celebration for genuine progress, and copy written to be read rather than to be safe.",
+  traits: [
+    "A personality written down: what the product jokes about, what it never jokes about, and the words it uses.",
+    "Illustration or a mascot as a first-class material, drawn for the product rather than bought as a spot.",
+    "A celebration state for real progress — a motion, a sound, a drawn reward — with reduced motion taken to the same end state.",
+    "Empty and error states written in the same voice, since those are the screens people read most closely.",
+    "Copy at a plain reading level, with exclamation marks earned rather than sprayed.",
+    "A recorded delight budget: how much of a screen celebration may occupy, and where it is not allowed."
+  ],
+  avoid: [
+    "Confetti on every action: a reward that fires for nothing stops meaning anything.",
+    "Jokes in a failure path, or a mascot on top of somebody's money."
+  ],
+  html: `<div class="jf-card">
+    <span class="jf-blob"><i></i><i></i></span>
+    <p class="jf-h">7 day streak</p>
+    <p class="jf-s">Your longest yet — one more day keeps it alive.</p>
+    <span class="jf-cta">Keep going</span>
+  </div>`,
+  css: `.spec--joy-first .jf-card {
+  width: 100%; max-width: 280px; padding: 22px 20px; border-radius: 18px; text-align: center;
+  background: radial-gradient(circle at 18% 10%, #fff2c9, #ffe9f2 58%, #ece9ff);
+  border: 2px solid #2b2240; box-shadow: 6px 6px 0 #2b2240; font-family: "Instrument Sans", sans-serif;
+}
+.spec--joy-first .jf-blob {
+  position: relative; display: inline-block; width: 62px; height: 62px;
+  border-radius: 46% 54% 52% 48%; background: linear-gradient(160deg, #7bd88f, #34a06a);
+}
+.spec--joy-first .jf-blob i { position: absolute; top: 22px; width: 8px; height: 8px; border-radius: 50%; background: #14301f; }
+.spec--joy-first .jf-blob i:first-child { left: 17px; }
+.spec--joy-first .jf-blob i:last-child { right: 17px; }
+.spec--joy-first .jf-h { margin: 14px 0 0; font: 800 22px/1.1 "Instrument Sans", sans-serif; color: #2b2240; }
+.spec--joy-first .jf-s { margin: 6px 0 0; font-size: 12px; line-height: 1.5; color: #5a5470; }
+.spec--joy-first .jf-cta {
+  display: grid; place-items: center; margin-top: 14px; min-height: 44px; border-radius: 999px;
+  background: #5b43d6; color: #fff; font: 700 14px/1 "Instrument Sans", sans-serif; box-shadow: 0 4px 0 #3b2a99;
+}`,
+  prompt: "Design joy-first: write the product's personality down — what it jokes about, what it never jokes about, and the words it uses — treat illustration or a mascot as a first-class material drawn for the product, define a celebration state for genuine progress with a reduced-motion path to the same end state, write empty and error states in the same voice, keep copy at a plain reading level with exclamation marks earned, and cap how much of a screen a celebration may occupy. Celebrate real achievement only, and never joke in a failure path.",
+  sources: []
+},
+
+{
+  id: "scroll-narrative",
+  name: "Scroll-driven narrative",
+  era: "2013–",
+  origin: "Newspaper feature pages and agency studios: scroll as the transport through one continuous story.",
+  blurb: "The page is one timeline. Scroll position drives the scene — panels pin, chapters cross-fade, the rail says where you are — and the narrative still reads end to end when the motion never runs.",
+  traits: [
+    "Scroll position is the timeline: sticky scenes, pinned panels and scrubbed transforms read from it directly.",
+    "One idea per chapter, with the chapter's media never competing with the next chapter's.",
+    "A persistent progress rail or chapter index, so the length of the story is visible before it starts.",
+    "Scroll-linked motion done with <code>position: sticky</code> and a scroll-driven timeline, never a hijacked scroll.",
+    "Every chapter readable with motion off: a pinned scene degrades to a plain stacked panel.",
+    "Sections reachable by keyboard and by deep link; the wheel stays the browser's."
+  ],
+  avoid: [
+    "Hijacking the wheel to take away scroll speed — the fastest way to lose the reader.",
+    "A payoff that exists only while animating; the text has to stand on its own."
+  ],
+  html: `<div class="sn-page">
+    <span class="sn-rail"><i></i></span>
+    <div class="sn-scene">
+      <p class="sn-ch">03 / 06</p>
+      <p class="sn-h">The route turns west here</p>
+      <p class="sn-s">Pinned scene: the chapter changes with scroll position, and reads as a plain panel without it.</p>
+    </div>
+  </div>`,
+  css: `.spec--scroll-narrative .sn-page { position: relative; width: 100%; max-width: 300px; height: 190px; padding-left: 22px; font-family: "Instrument Sans", sans-serif; }
+.spec--scroll-narrative .sn-rail { position: absolute; left: 5px; top: 0; bottom: 0; width: 2px; border-radius: 2px; background: #d5d9e0; }
+.spec--scroll-narrative .sn-rail i { position: absolute; top: 44px; left: -3px; width: 8px; height: 8px; border-radius: 50%; background: #1f4fd8; }
+.spec--scroll-narrative .sn-scene {
+  height: 100%; padding: 18px; border-radius: 12px; border: 1px solid #d5d9e0;
+  background: linear-gradient(180deg, #e8eefc, #f7f3ea); display: flex; flex-direction: column; justify-content: flex-end;
+}
+.spec--scroll-narrative .sn-ch { margin: 0; font: 700 11px/1 "Instrument Sans", sans-serif; letter-spacing: .12em; color: #6b7280; }
+.spec--scroll-narrative .sn-h { margin: 10px 0 0; font: 700 20px/1.2 "Instrument Sans", sans-serif; color: #14171c; }
+.spec--scroll-narrative .sn-s { margin: 6px 0 0; font-size: 12px; line-height: 1.5; color: #4b525c; }`,
+  prompt: "Design a scroll-driven narrative: let scroll position be the timeline through sticky scenes, pinned panels and scrubbed transforms read directly from it, keep one idea per chapter, show a persistent progress rail or chapter index so the length is known, implement the scroll link with position: sticky and a scroll-driven timeline rather than hijacking the wheel, degrade each pinned scene to a plain stacked panel when motion is off, and keep every section keyboard-reachable and deep-linkable.",
+  sources: ["https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations"]
+},
+
+{
+  id: "sound-haptics",
+  name: "Sound and haptic feedback",
+  era: "2015–",
+  origin: "Wearables and console interfaces: state carried on the channel that need not be looked at.",
+  blurb: "Every action answers in a second channel. Confirmation, error and progress each have one defined sound and one defined haptic pattern, the pair stays short, mute is respected, and no meaning lives in the extra channel alone.",
+  traits: [
+    "One sound and one haptic pattern per state — success, error, progress — used the same way everywhere.",
+    "Under 150ms and never looped; anything longer is noise, and noise gets muted.",
+    "Haptics respect the system setting and are never the only signal: the screen states it too.",
+    "Sound off by default on the web, opt-in, remembered, and one obvious toggle.",
+    "Sonified progress carries its change in pitch or rhythm while the numbers stay tabular on screen.",
+    "The sound design is specified as values — frequency, duration, amplitude — rather than as taste."
+  ],
+  avoid: [
+    "A chime on every tap, which trains people to mute the whole app.",
+    "Audio-only or haptic-only confirmation, which excludes anyone with the phone face down in a meeting."
+  ],
+  html: `<div class="sh-row">
+    <span class="sh-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <div class="sh-meta">
+      <p class="sh-t">Confirm · 90ms · 660Hz</p>
+      <p class="sh-s">Screen states it too; the haptic never carries it alone.</p>
+    </div>
+  </div>`,
+  css: `.spec--sound-haptics .sh-row {
+  display: flex; align-items: center; gap: 14px; width: 100%; max-width: 320px; padding: 16px;
+  border-radius: 12px; background: #101319; border: 1px solid #242a35; font-family: "Instrument Sans", sans-serif;
+}
+.spec--sound-haptics .sh-wave { display: flex; align-items: center; gap: 3px; height: 44px; }
+.spec--sound-haptics .sh-wave i { width: 3px; border-radius: 2px; background: #6cd3a0; }
+.spec--sound-haptics .sh-wave i:nth-child(1) { height: 10px; }
+.spec--sound-haptics .sh-wave i:nth-child(2) { height: 22px; }
+.spec--sound-haptics .sh-wave i:nth-child(3) { height: 36px; }
+.spec--sound-haptics .sh-wave i:nth-child(4) { height: 44px; }
+.spec--sound-haptics .sh-wave i:nth-child(5) { height: 26px; }
+.spec--sound-haptics .sh-wave i:nth-child(6) { height: 15px; }
+.spec--sound-haptics .sh-wave i:nth-child(7) { height: 7px; }
+.spec--sound-haptics .sh-t { margin: 0; font: 600 12px/1.3 "Instrument Sans", sans-serif; color: #dbe3ef; }
+.spec--sound-haptics .sh-s { margin: 4px 0 0; font-size: 11px; line-height: 1.45; color: #8b95a6; }`,
+  prompt: "Design sound and haptics as a state channel: define exactly one sound and one haptic pattern for success, error and progress and use each the same way everywhere, keep every cue under 150ms and never loop it, respect the system haptic setting and never let the extra channel carry meaning alone, keep sound opt-in on the web with one remembered toggle, sonify progress through pitch or rhythm while the on-screen numbers stay tabular, and specify the cues as values (frequency, duration, amplitude) rather than as taste.",
+  sources: ["https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API"]
+},
+
+{
+  id: "spatial-interaction",
+  name: "Spatial interaction",
+  era: "2022–",
+  origin: "Headset and spatial-computing platforms: input by gaze and hands, output placed in the room.",
+  blurb: "Interaction leaves the flat panel. The person looks and reaches, the interface is placed in space, targets carry a minimum angular size, dwell and pinch both count as input, and no panel sits in the field of view without a way out of it.",
+  traits: [
+    "Targets sized in degrees rather than pixels, with a stated minimum angular size at the intended distance.",
+    "Dwell and pinch are equivalent inputs: anything a reach can do, a look-and-hold can do as well.",
+    "Panels anchored to a place rather than to the head; nothing follows the gaze unless it must.",
+    "Comfort rules written down: no forced head turn, nothing nearer than the near limit, no rapid vergence swings.",
+    "A visible exit from every panel, plus one gesture that returns to the room.",
+    "Content reflows into the space available instead of assuming a fixed screen."
+  ],
+  avoid: [
+    "A desktop layout placed in the air at desktop text sizes.",
+    "Depth used as decoration: in space, a wrong distance is a physical discomfort rather than a style."
+  ],
+  html: `<div class="sp-room">
+    <span class="sp-plane p1">Library</span>
+    <span class="sp-plane p2">Now playing</span>
+    <span class="sp-plane p3">Timer 12:40</span>
+  </div>`,
+  css: `.spec--spatial-interaction .sp-room {
+  position: relative; width: 100%; max-width: 300px; height: 180px; border-radius: 12px; overflow: hidden;
+  background: radial-gradient(circle at 62% 34%, #2c3346, #10131b 72%); font-family: "Instrument Sans", sans-serif;
+}
+.spec--spatial-interaction .sp-plane {
+  position: absolute; padding: 9px 12px; border-radius: 10px; backdrop-filter: blur(6px);
+  background: rgba(240,244,252,.12); border: 1px solid rgba(240,244,252,.36);
+  color: #eef2f9; font: 600 11px/1 "Instrument Sans", sans-serif;
+}
+.spec--spatial-interaction .p1 { left: 16px; top: 26px; }
+.spec--spatial-interaction .p2 { left: 80px; top: 88px; border-color: #8fd0ff; box-shadow: 0 0 0 8px rgba(143,208,255,.14); }
+.spec--spatial-interaction .p3 { right: 18px; top: 44px; opacity: .78; }
+.spec--spatial-interaction .p1, .spec--spatial-interaction .p3 { color: #c6cede; }`,
+  prompt: "Design for spatial interaction: size targets in degrees with a stated minimum at the intended distance, treat dwell and pinch as equivalent inputs so anything a reach can do a look-and-hold can do too, anchor panels to a place instead of the head, write down the comfort rules (no forced head turn, nothing nearer than the near limit, no rapid vergence swings), give every panel a visible exit plus one gesture back to the room, and reflow content into the space available rather than assuming a fixed screen.",
+  sources: ["https://developer.mozilla.org/en-US/docs/Web/API/WebXR_Device_API"]
 }
 
 );

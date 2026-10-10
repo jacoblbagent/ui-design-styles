@@ -130,7 +130,18 @@ window.FACETS = {
     "localization-rtl":    { k: "practice", v: 12, d: 22, t: { flat: 1, hairline: 1 } },
     "performance-first":   { k: "practice", v: 25, d: 12, t: { motion: 1, data: 1, flat: 1 } },
     "research-driven":     { k: "practice", v: 30, d: 18, t: { data: 1, flat: 1 } },
-    "responsive-mobile-first": { k: "practice", v: 20, d: 12, t: { flat: 1, hairline: 1, reveal: 1, density: 1 } }
+    "responsive-mobile-first": { k: "practice", v: 20, d: 12, t: { flat: 1, hairline: 1, reveal: 1, density: 1 } },
+
+    "attention-first":        { k: "practice", v: 84, d: 42, t: { motion: 2, imagery: 2, "dark-ground": 1, round: 1, "loud-color": 1 } },
+    "brand-expression-first": { k: "practice", v: 76, d: 28, t: { "loud-color": 2, display: 2, imagery: 1, gradient: 1 } },
+    "cinematic-media-first":  { k: "practice", v: 58, d: 52, t: { imagery: 2, "dark-ground": 2, display: 1, motion: 1, gradient: 1 } },
+    "conversion-optimised":   { k: "practice", v: 82, d: 14, t: { "loud-color": 2, display: 1, "hard-shadow": 1, motion: 1, data: 1 } },
+    "elevation-hierarchy":    { k: "practice", v: 24, d: 58, t: { "soft-shadow": 2, spatial: 2, hairline: 1, round: 1, flat: 1 } },
+    "immersive-3d-first":     { k: "practice", v: 80, d: 76, t: { spatial: 2, imagery: 2, glow: 1, "dark-ground": 1, motion: 1 } },
+    "joy-first":              { k: "practice", v: 72, d: 36, t: { round: 2, motion: 2, illustration: 2, "loud-color": 1, "hard-shadow": 1 } },
+    "scroll-narrative":       { k: "practice", v: 66, d: 62, t: { motion: 2, spatial: 2, imagery: 2, display: 1, reveal: 1 } },
+    "sound-haptics":          { k: "practice", v: 55, d: 66, t: { motion: 2, ambient: 2, glow: 1, round: 1 } },
+    "spatial-interaction":    { k: "practice", v: 30, d: 80, t: { ambient: 2, spatial: 2, "blur-glass": 1, round: 1, glow: 1 } }
   }
 
 };
