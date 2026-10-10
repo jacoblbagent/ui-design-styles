@@ -1775,6 +1775,558 @@
 .spec--spatial-interaction .p1, .spec--spatial-interaction .p3 { color: #c6cede; }`,
   prompt: "Design for spatial interaction: size targets in degrees with a stated minimum at the intended distance, treat dwell and pinch as equivalent inputs so anything a reach can do a look-and-hold can do too, anchor panels to a place instead of the head, write down the comfort rules (no forced head turn, nothing nearer than the near limit, no rapid vergence swings), give every panel a visible exit plus one gesture back to the room, and reflow content into the space available rather than assuming a fixed screen.",
   sources: ["https://developer.mozilla.org/en-US/docs/Web/API/WebXR_Device_API"]
-}
+},
+
+{
+  id: "table-grid",
+  name: "Data table / grid",
+  era: "1990s–",
+  origin: "The spreadsheet and the database view: many records, one row each, read by column.",
+  blurb: "The workhorse screen: a header row that stays put, one record per row, columns a person can sort, size or hide, and a selection model that survives across pages. Density is the feature; decoration is the enemy.",
+  traits: [
+    "Header row pinned, with each column's sort state shown as an arrow, not a colour.",
+    "Row height 32–36px on a vertical rhythm, with hairline row rules instead of per-row cards.",
+    "Numeric columns typeset <code>tabular-nums</code> and right-aligned; text columns left.",
+    "Selection is a checkbox column, and batch actions appear only once something is selected.",
+    "Column controls (sort, resize, hide) live in the header cell and are reachable by keyboard.",
+    "Empty, loading and error are three states of one frame, not three different screens."
+  ],
+  avoid: [
+    "Zebra striping plus hairline rules plus a border on every cell — three separators for one job.",
+    "A row that expands into a card with a different anatomy; detail belongs in the detail, not the row."
+  ],
+  html: `<div class="tg-wrap">
+    <div class="tg-bar"><span class="tg-title">Invoices</span><span class="tg-sel">2 selected</span></div>
+    <table class="tg-table">
+      <thead><tr><th class="tg-ck"><span class="tg-box on"></span></th><th>Client</th><th class="tg-num">Amount</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr class="on"><td class="tg-ck"><span class="tg-box on"></span></td><td>Northwind</td><td class="tg-num">1,240.00</td><td><em class="paid">Paid</em></td></tr>
+        <tr><td class="tg-ck"><span class="tg-box"></span></td><td>Vertex Labs</td><td class="tg-num">860.00</td><td><em class="due">Open</em></td></tr>
+        <tr><td class="tg-ck"><span class="tg-box"></span></td><td>Kite &amp; Co</td><td class="tg-num">4,010.00</td><td><em class="late">Due</em></td></tr>
+      </tbody>
+    </table>
+  </div>`,
+  css: `.spec--table-grid .tg-wrap { width: 100%; max-width: 340px; background: #fff; border: 1px solid #e3e6ea; border-radius: 6px; overflow: hidden; font-family: "Instrument Sans", sans-serif; }
+.spec--table-grid .tg-bar { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; border-bottom: 1px solid #e3e6ea; }
+.spec--table-grid .tg-title { font: 600 13px/1 "Instrument Sans", sans-serif; color: #14161b; }
+.spec--table-grid .tg-sel { font-size: 11.5px; color: #4f7cff; }
+.spec--table-grid .tg-table { width: 100%; border-collapse: collapse; }
+.spec--table-grid .tg-table th { font: 500 10.5px/1 "Instrument Sans", sans-serif; text-transform: uppercase; letter-spacing: .06em; color: #79808c; text-align: left; padding: 7px 12px; border-bottom: 1px solid #e3e6ea; }
+.spec--table-grid .tg-table td { font-size: 12.5px; color: #23272e; padding: 0 12px; height: 34px; border-bottom: 1px solid #eef0f3; }
+.spec--table-grid .tg-table tbody tr:last-child td { border-bottom: 0; }
+.spec--table-grid .tg-table tbody tr.on td { background: #f2f5ff; }
+.spec--table-grid .tg-num { text-align: right; font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+.spec--table-grid .tg-table th.tg-num { text-align: right; }
+.spec--table-grid .tg-ck { width: 30px; }
+.spec--table-grid .tg-box { display: inline-block; width: 13px; height: 13px; border: 1px solid #c6ccd4; border-radius: 3px; }
+.spec--table-grid .tg-box.on { background: #4f7cff; border-color: #4f7cff; box-shadow: inset 0 0 0 2px #fff; }
+.spec--table-grid .tg-table em { font-style: normal; font-size: 11.5px; }
+.spec--table-grid .paid { color: #2f9e6a; }
+.spec--table-grid .due { color: #3f7fd0; }
+.spec--table-grid .late { color: #d0873a; }`,
+  prompt: "Design a data table: a pinned header with the sort state shown as an arrow, 32–36px rows separated by hairlines rather than per-row cards, right-aligned tabular numerals, a checkbox selection column whose batch actions appear only with a selection, column controls in the header reachable by keyboard, and empty/loading/error as three states of the same frame.",
+  sources: []
+},
+
+{
+  id: "master-detail",
+  name: "Master–detail split view",
+  era: "1980s–",
+  origin: "Mail clients and file browsers: a list on the left, the thing you picked on the right.",
+  blurb: "Two panes that share one scroll of attention: a persistent list and the record it selects. The list keeps its place and its selection while the pane changes, so moving between records is one click and nothing reloads.",
+  traits: [
+    "A fixed split — list and pane — with the divider sized to the list's longest honest row.",
+    "Selection is persistent and visible in the list while the pane shows that record.",
+    "The pane owns its own scroll and header; the list never scrolls to follow it.",
+    "One record per row, its key facts truncated so the list stays scannable.",
+    "An empty pane is a state with a next step, not a blank rectangle.",
+    "Below ~640px the split collapses to list-then-detail with a visible way back."
+  ],
+  avoid: [
+    "Two panes that scroll together as one page — then it is a layout, not a split view.",
+    "Selecting a row that navigates away from the list, so the person loses their place."
+  ],
+  html: `<div class="md-split">
+    <ul class="md-list">
+      <li class="on"><span class="md-av a1"></span><span class="md-txt"><b>Priya Nair</b><i>Re: launch copy</i></span></li>
+      <li><span class="md-av a2"></span><span class="md-txt"><b>Marco Diaz</b><i>Budget sign-off</i></span></li>
+      <li><span class="md-av a3"></span><span class="md-txt"><b>Ada Lund</b><i>Design review</i></span></li>
+    </ul>
+    <div class="md-pane">
+      <div class="md-head">Priya Nair</div>
+      <div class="md-body"><span class="md-line"></span><span class="md-line s"></span><span class="md-line"></span><span class="md-line s"></span></div>
+      <div class="md-foot"><span class="md-btn">Reply</span></div>
+    </div>
+  </div>`,
+  css: `.spec--master-detail .md-split { display: grid; grid-template-columns: 1fr 1.25fr; width: 100%; max-width: 340px; height: 176px; background: #fff; border: 1px solid #e4e7ec; border-radius: 8px; overflow: hidden; font-family: "Instrument Sans", sans-serif; }
+.spec--master-detail .md-list { list-style: none; margin: 0; padding: 0; border-right: 1px solid #e4e7ec; background: #fafbfc; overflow: hidden; }
+.spec--master-detail .md-list li { display: flex; gap: 8px; align-items: center; padding: 9px 10px; border-bottom: 1px solid #eef0f3; }
+.spec--master-detail .md-list li.on { background: #eef2ff; box-shadow: inset 3px 0 0 #4f7cff; }
+.spec--master-detail .md-list li:last-child { border-bottom: 0; }
+.spec--master-detail .md-av { width: 22px; height: 22px; border-radius: 50%; flex: none; }
+.spec--master-detail .a1 { background: linear-gradient(140deg,#8aa7c8,#5c7fa8); }
+.spec--master-detail .a2 { background: linear-gradient(140deg,#c8a58a,#a87f5c); }
+.spec--master-detail .a3 { background: linear-gradient(140deg,#9fbfa6,#6f977a); }
+.spec--master-detail .md-txt { min-width: 0; }
+.spec--master-detail .md-txt b { display: block; font: 600 12px/1.2 "Instrument Sans", sans-serif; color: #191c22; }
+.spec--master-detail .md-txt i { display: block; font-style: normal; font-size: 11px; color: #7b828e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.spec--master-detail .md-pane { display: flex; flex-direction: column; background: #fff; }
+.spec--master-detail .md-head { font: 600 13px/1 "Instrument Sans", sans-serif; color: #191c22; padding: 11px 12px; border-bottom: 1px solid #eef0f3; }
+.spec--master-detail .md-body { flex: 1; padding: 12px; display: grid; gap: 8px; align-content: start; }
+.spec--master-detail .md-line { height: 9px; border-radius: 3px; background: #eef0f3; }
+.spec--master-detail .md-line.s { width: 62%; }
+.spec--master-detail .md-foot { padding: 10px 12px; border-top: 1px solid #eef0f3; }
+.spec--master-detail .md-btn { display: inline-block; padding: 7px 13px; border-radius: 7px; background: #4f7cff; color: #fff; font: 600 12px/1 "Instrument Sans", sans-serif; }`,
+  prompt: "Design a master–detail split view: a persistent list beside the selected record's pane, the divider sized to the list's longest row, selection kept visible in the list while the pane changes, the pane owning its own scroll and header, rows truncated for scanning, an empty pane that states a next step, and a collapse to list-then-detail with a visible way back below ~640px.",
+  sources: []
+},
+
+{
+  id: "search-results",
+  name: "Search and faceted results",
+  era: "2000s–",
+  origin: "Catalogues and marketplaces: a query, a set of filters, and a result list that narrows live.",
+  blurb: "The shape of finding something. A visible query field, the active filters as removable tokens beside a live count, and ranked results below — every change reapplying in place, and an empty result stating which filter to loosen.",
+  traits: [
+    "The query stays visible in the field it was typed in; it is never echoed as a heading instead.",
+    "Active filters are removable tokens sitting beside a live result count.",
+    "Results reapply in place on each change, with the count updating before the list settles.",
+    "Each result shows why it matched — the query terms marked in title and snippet.",
+    "An empty result names the filter to loosen, not just \"No results\".",
+    "Sort and pagination sit in the toolbar, not buried at the foot of the page."
+  ],
+  avoid: [
+    "Filters that only apply on submit, or on a button labelled with no count.",
+    "A count that disagrees with the number of results on the page."
+  ],
+  html: `<div class="sr-panel">
+    <div class="sr-field"><span class="sr-icon"></span><span class="sr-q">trail</span><span class="sr-x">&#215;</span></div>
+    <div class="sr-chips"><span class="sr-chip on">Hiking</span><span class="sr-chip on">Loop</span><span class="sr-chip">&lt; 10 km</span></div>
+    <p class="sr-count">42 results <span>&middot; refined by 2 filters</span></p>
+    <ul class="sr-list">
+      <li><b>Ridge <mark>trail</mark></b><span>12 km &middot; moderate &middot; gains 640 m</span></li>
+      <li><b>Valley <mark>trail</mark> loop</b><span>7 km &middot; easy &middot; riverside</span></li>
+    </ul>
+  </div>`,
+  css: `.spec--search-results .sr-panel { width: 100%; max-width: 336px; background: #fff; border: 1px solid #e3e6ea; border-radius: 10px; padding: 12px; font-family: "Instrument Sans", sans-serif; }
+.spec--search-results .sr-field { display: flex; align-items: center; gap: 8px; padding: 9px 11px; border: 1px solid #d7dbe1; border-radius: 8px; font-size: 13px; color: #191c22; }
+.spec--search-results .sr-icon { width: 11px; height: 11px; border: 1.6px solid #8a919c; border-radius: 50%; position: relative; flex: none; }
+.spec--search-results .sr-icon::after { content: ""; position: absolute; width: 6px; height: 1.6px; background: #8a919c; transform: rotate(45deg); left: 9px; top: 9px; }
+.spec--search-results .sr-q { flex: 1; }
+.spec--search-results .sr-x { color: #9aa1ab; }
+.spec--search-results .sr-chips { display: flex; gap: 6px; margin-top: 9px; flex-wrap: wrap; }
+.spec--search-results .sr-chip { font-size: 11.5px; padding: 4px 9px; border-radius: 999px; border: 1px solid #d7dbe1; color: #4a515c; }
+.spec--search-results .sr-chip.on { background: #eef2ff; border-color: #b9c8ff; color: #2f56c9; }
+.spec--search-results .sr-count { margin: 11px 0 7px; font-size: 11.5px; color: #6b727d; }
+.spec--search-results .sr-count span { color: #9aa1ab; }
+.spec--search-results .sr-list { list-style: none; margin: 0; padding: 0; }
+.spec--search-results .sr-list li { padding: 8px 0; border-top: 1px solid #eef0f3; }
+.spec--search-results .sr-list b { display: block; font: 600 13px/1.3 "Instrument Sans", sans-serif; color: #191c22; }
+.spec--search-results .sr-list mark { background: #fff2b8; color: inherit; border-radius: 2px; }
+.spec--search-results .sr-list span { font-size: 11.5px; color: #7b828e; }`,
+  prompt: "Design a faceted search screen: the query kept visible in its field, active filters as removable tokens beside a live result count, results reapplying in place with the count updating first, matched terms marked in each result's title and snippet, an empty result naming the filter to loosen, and sort plus pagination in the toolbar.",
+  sources: []
+},
+
+{
+  id: "kanban-board",
+  name: "Board / kanban",
+  era: "2000s–",
+  origin: "Toyota's kanban cards by way of Trello: work as columns of cards moved between states.",
+  blurb: "Status as horizontal position. Each column is a state, each card one unit of work, and the whole board is read by sweeping across it. The drag is the interaction, so the affordance has to be visible before the pointer arrives.",
+  traits: [
+    "One column per state, in the order work actually moves through them.",
+    "Cards carry a title plus at most one or two signals — an owner, a tag, a count — never a full record.",
+    "Column headers show the state name and a live count.",
+    "Drag is the primary move, with a visible lift state and a keyboard fallback.",
+    "Columns scroll independently and the board scrolls horizontally rather than shrinking cards.",
+    "Swimlanes are added only when the column count alone stops answering the question."
+  ],
+  avoid: [
+    "Three columns each holding thirty cards — that is a list with decoration.",
+    "A board with no way to move a card without a pointer."
+  ],
+  html: `<div class="kb-board">
+    <div class="kb-col">
+      <p class="kb-h">To do <span>3</span></p>
+      <div class="kb-card"><em class="kb-tag">Fix</em><b>Rewrite empty state</b></div>
+      <div class="kb-card"><b>Audit focus order</b></div>
+    </div>
+    <div class="kb-col">
+      <p class="kb-h">Doing <span>1</span></p>
+      <div class="kb-card ks-drag"><b>Token pass on forms</b><i class="kb-who"></i></div>
+    </div>
+  </div>`,
+  css: `.spec--kanban-board .kb-board { display: flex; gap: 10px; width: 100%; max-width: 340px; padding: 12px; border-radius: 12px; background: #eef1f5; font-family: "Instrument Sans", sans-serif; }
+.spec--kanban-board .kb-col { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.spec--kanban-board .kb-h { margin: 0 0 2px; font: 600 10.5px/1 "Instrument Sans", sans-serif; text-transform: uppercase; letter-spacing: .06em; color: #6b7280; display: flex; justify-content: space-between; }
+.spec--kanban-board .kb-h span { color: #9aa1ab; font-weight: 500; }
+.spec--kanban-board .kb-card { position: relative; background: #fff; border-radius: 9px; padding: 10px; box-shadow: 0 1px 2px rgba(16,20,30,.10); display: flex; flex-direction: column; gap: 6px; }
+.spec--kanban-board .kb-card b { font: 500 12px/1.35 "Instrument Sans", sans-serif; color: #1d2128; }
+.spec--kanban-board .kb-tag { align-self: flex-start; font-style: normal; font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #2f56c9; background: #eef2ff; border-radius: 4px; padding: 2px 6px; }
+.spec--kanban-board .ks-drag { transform: rotate(-1.6deg); box-shadow: 0 12px 22px rgba(16,20,30,.24); }
+.spec--kanban-board .kb-who { width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(140deg,#8aa7c8,#5c7fa8); align-self: flex-end; }`,
+  prompt: "Design a kanban board: one column per state in the order work moves, cards holding a title plus one or two signals and never a full record, column headers with a live count, drag as the primary move with a visible lift state and a keyboard fallback, independently scrolling columns on a horizontally scrolling board, and swimlanes only when the columns alone stop answering the question.",
+  sources: []
+},
+
+{
+  id: "pricing-table",
+  name: "Pricing / plan comparison",
+  era: "2000s–",
+  origin: "SaaS plan pages: tiers side by side, one of them marked as the obvious choice.",
+  blurb: "A comparison screen built to survive a squint. Plans as columns, the deciding differences as rows, the recommended tier marked once, and the price stated in the same place at the same size in every column.",
+  traits: [
+    "One recommended plan, marked by a single flag and a filled button; the others stay ghost.",
+    "The deciding rows come first; every feature row appears in all columns, with an absence marked rather than omitted.",
+    "Price sits at the same height and size in every column, billing period stated beside it.",
+    "Radii, spacing and type are identical column to column; only emphasis changes.",
+    "A monthly/annual toggle states the saving rather than making a person compute it.",
+    "Below ~900px the columns stack, the recommended plan first."
+  ],
+  avoid: [
+    "Three columns with no recommendation — an unmarked choice is a harder choice.",
+    "A feature row missing from one column, so it reads as equal when it is not."
+  ],
+  html: `<div class="pt-grid">
+    <div class="pt-col">
+      <p class="pt-name">Starter</p><p class="pt-price">$0</p>
+      <ul class="pt-feats"><li>1 project</li><li>Community support</li></ul>
+      <span class="pt-btn">Choose</span>
+    </div>
+    <div class="pt-col on">
+      <p class="pt-flag">Most popular</p>
+      <p class="pt-name">Team</p><p class="pt-price">$24<span>/mo</span></p>
+      <ul class="pt-feats"><li>Unlimited projects</li><li>SAML SSO</li></ul>
+      <span class="pt-btn solid">Choose</span>
+    </div>
+  </div>`,
+  css: `.spec--pricing-table .pt-grid { display: flex; gap: 12px; width: 100%; max-width: 340px; font-family: "Instrument Sans", sans-serif; }
+.spec--pricing-table .pt-col { flex: 1; position: relative; background: #fff; border: 1px solid #e3e6ea; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; }
+.spec--pricing-table .pt-col.on { border-color: #4f7cff; box-shadow: 0 0 0 1px #4f7cff; }
+.spec--pricing-table .pt-flag { position: absolute; top: 12px; right: 12px; margin: 0; font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #2f56c9; background: #eef2ff; border-radius: 4px; padding: 2px 7px; }
+.spec--pricing-table .pt-name { margin: 0; font: 600 12px/1 "Instrument Sans", sans-serif; color: #6b7280; }
+.spec--pricing-table .pt-price { margin: 6px 0 0; font: 700 26px/1 "Instrument Sans", sans-serif; color: #14161b; letter-spacing: -0.02em; }
+.spec--pricing-table .pt-price span { font-size: 12px; font-weight: 500; color: #9aa1ab; }
+.spec--pricing-table .pt-feats { list-style: none; margin: 12px 0; padding: 0; display: grid; gap: 6px; flex: 1; }
+.spec--pricing-table .pt-feats li { font-size: 11.5px; color: #4a515c; padding-left: 15px; position: relative; }
+.spec--pricing-table .pt-feats li::before { content: "\\2713"; position: absolute; left: 0; color: #2f9e6a; font-size: 10px; }
+.spec--pricing-table .pt-btn { text-align: center; padding: 8px 0; border-radius: 8px; box-shadow: inset 0 0 0 1px #d7dbe1; font: 600 12px/1 "Instrument Sans", sans-serif; color: #2c3138; }
+.spec--pricing-table .pt-btn.solid { background: #4f7cff; color: #fff; box-shadow: none; }`,
+  prompt: "Design a pricing comparison: plans as columns with exactly one marked recommended by a flag and a filled button while the rest stay ghost, the deciding differences as rows shown in every column with absences marked rather than omitted, price at the same height and size in each column with the billing period beside it, identical radii and spacing across columns, a monthly/annual toggle that states the saving, and a stack that puts the recommended plan first below ~900px.",
+  sources: []
+},
+
+{
+  id: "settings-page",
+  name: "Settings / preferences",
+  era: "1990s–",
+  origin: "The control room of an app: every option in one place, grouped by what it affects.",
+  blurb: "A screen people arrive at with one task and leave as soon as it is done. Options grouped under headers named for the part of the product they touch, each row a label plus its control with the consequence stated, and saving that is explicit or immediate but never ambiguous.",
+  traits: [
+    "Rows grouped under headers named for the part of the product they change.",
+    "Each row is a label plus one control, with the consequence in a supporting line.",
+    "Controls align to a single column down the right edge.",
+    "Immediate-apply options say so; everything else has a save that names what it saves.",
+    "Destructive settings sit in their own group at the foot, behind a confirmation.",
+    "A search across settings once the list outgrows a screen."
+  ],
+  avoid: [
+    "\"Advanced\" as a group: it names nothing and hides everything.",
+    "A save button that is enabled when nothing has changed."
+  ],
+  html: `<div class="sp-page">
+    <p class="sp-head">Settings</p>
+    <div class="sp-row">
+      <div class="sp-label"><b>Auto-save</b><span>Write changes as you type.</span></div>
+      <span class="sp-sw on"><i></i></span>
+    </div>
+    <div class="sp-row">
+      <div class="sp-label"><b>Theme</b><span>Follow the system setting.</span></div>
+      <span class="sp-seg"><i class="on">Auto</i><i>Dark</i></span>
+    </div>
+    <div class="sp-row sp-danger">
+      <div class="sp-label"><b>Delete account</b><span>Removes all data, immediately.</span></div>
+      <span class="sp-del">Delete</span>
+    </div>
+  </div>`,
+  css: `.spec--settings-page .sp-page { width: 100%; max-width: 336px; background: #fff; border: 1px solid #e3e6ea; border-radius: 10px; padding: 6px 14px; font-family: "Instrument Sans", sans-serif; }
+.spec--settings-page .sp-head { margin: 10px 0 4px; font: 600 13px/1 "Instrument Sans", sans-serif; color: #14161b; }
+.spec--settings-page .sp-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 0; border-top: 1px solid #eef0f3; }
+.spec--settings-page .sp-label b { display: block; font: 500 12.5px/1.3 "Instrument Sans", sans-serif; color: #1d2128; }
+.spec--settings-page .sp-label span { display: block; font-size: 11px; color: #7b828e; margin-top: 2px; }
+.spec--settings-page .sp-sw { width: 34px; height: 19px; border-radius: 999px; background: #cbd1d9; position: relative; flex: none; }
+.spec--settings-page .sp-sw.on { background: #4f7cff; }
+.spec--settings-page .sp-sw i { position: absolute; top: 2px; left: 2px; width: 15px; height: 15px; border-radius: 50%; background: #fff; }
+.spec--settings-page .sp-sw.on i { left: 17px; }
+.spec--settings-page .sp-seg { display: flex; border: 1px solid #d7dbe1; border-radius: 7px; overflow: hidden; flex: none; }
+.spec--settings-page .sp-seg i { font-style: normal; font-size: 11px; padding: 5px 9px; color: #6b7280; }
+.spec--settings-page .sp-seg i.on { background: #eef2ff; color: #2f56c9; font-weight: 600; }
+.spec--settings-page .sp-danger .sp-label b { color: #b4304a; }
+.spec--settings-page .sp-del { font-size: 11.5px; font-weight: 600; color: #b4304a; box-shadow: inset 0 0 0 1px #e6bfc7; border-radius: 7px; padding: 6px 11px; }`,
+  prompt: "Design a settings screen: rows grouped under headers named for the part of the product they change, each row a label plus one control with the consequence in a supporting line, controls aligned to one column, immediate-apply options stating so while the rest share a save that names what it saves, destructive options in their own group behind a confirmation, and a search once the list outgrows a screen.",
+  sources: []
+},
+
+{
+  id: "activity-timeline",
+  name: "Activity timeline",
+  era: "2010s–",
+  origin: "Audit logs and changelogs: one rail, one entry per event, newest at the top.",
+  blurb: "A record read down a single line. One rail carries every event, each entry states what happened and when, and the further back you scroll the coarser the grouping gets — today, this week, older.",
+  traits: [
+    "One vertical rail with a marker per event; the newest entry is distinguished, not merely on top.",
+    "Each entry is one line of what happened plus a timestamp, with detail folded under it.",
+    "Grouping coarsens with age: today, this week, then by month.",
+    "A person or actor named on every entry a person caused.",
+    "Empty and end-of-history are stated, so the rail is never left hanging.",
+    "Long lists load in place, keeping scroll position rather than jumping back to the top."
+  ],
+  avoid: [
+    "A rail used as decoration, with entries that carry no time or actor.",
+    "Timestamps relative to the second for events months old."
+  ],
+  html: `<ol class="at-feed">
+    <li class="now"><span class="at-dot"></span><p class="at-t"><b>Deploy finished</b><span>2m</span></p><p class="at-d">web &middot; v3.4.1 to production</p></li>
+    <li><span class="at-dot"></span><p class="at-t"><b>Ada merged #248</b><span>1h</span></p><p class="at-d">Fixed the token leak</p></li>
+    <li><span class="at-dot"></span><p class="at-t"><b>Build started</b><span>1h</span></p></li>
+  </ol>`,
+  css: `.spec--activity-timeline .at-feed { list-style: none; margin: 0; padding: 12px 14px; width: 100%; max-width: 330px; background: #fff; border: 1px solid #e3e6ea; border-radius: 10px; font-family: "Instrument Sans", sans-serif; }
+.spec--activity-timeline .at-feed li { position: relative; padding: 0 0 16px 22px; }
+.spec--activity-timeline .at-feed li:last-child { padding-bottom: 0; }
+.spec--activity-timeline .at-feed li::before { content: ""; position: absolute; left: 4.5px; top: 14px; bottom: 0; width: 1px; background: #e3e6ea; }
+.spec--activity-timeline .at-feed li:last-child::before { display: none; }
+.spec--activity-timeline .at-dot { position: absolute; left: 0; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 1.5px #c6ccd4; }
+.spec--activity-timeline .now .at-dot { background: #4f7cff; box-shadow: 0 0 0 3px #eef2ff; }
+.spec--activity-timeline .at-t { margin: 0; display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.spec--activity-timeline .at-t b { font: 600 12.5px/1.3 "Instrument Sans", sans-serif; color: #1d2128; }
+.spec--activity-timeline .at-t span { font-size: 11px; color: #9aa1ab; font-variant-numeric: tabular-nums; }
+.spec--activity-timeline .at-d { margin: 3px 0 0; font-size: 11.5px; color: #6b7280; }`,
+  prompt: "Design an activity timeline: one vertical rail with a marker per event and the newest distinguished, each entry one line of what happened plus a timestamp with detail folded under it, grouping that coarsens with age (today, this week, by month), an actor named on every person-caused entry, empty and end-of-history states, and in-place loading that keeps scroll position.",
+  sources: []
+},
+
+{
+  id: "media-lightbox",
+  name: "Gallery / lightbox",
+  era: "2000s–",
+  origin: "Photo sets and product galleries: a grid that opens one item over the page.",
+  blurb: "Browse in the many, inspect in the one. A grid of even tiles gives the set its shape; opening a tile raises it over the page on a dark scrim, with the set's position and a way to move either way without closing.",
+  traits: [
+    "Even grid tiles at one aspect ratio across the set, so the grid reads as one object.",
+    "Opening a tile raises it over the page on a scrim; the page beneath is dimmed, not removed.",
+    "Position in the set stated (\"3 of 12\") with previous and next reachable inside the overlay.",
+    "Arrow keys move, Escape closes, and focus returns to the tile that opened it.",
+    "The image scales to fit the viewport at every size, never overflowing or scrolling the page.",
+    "Alt text and a caption travel with the image, not left behind in the grid."
+  ],
+  avoid: [
+    "A lightbox with no way forward or back except closing and reopening.",
+    "Tiles of three aspect ratios that make the grid read as ragged."
+  ],
+  html: `<div class="ml-stage">
+    <div class="ml-img"></div>
+    <span class="ml-x">&#215;</span>
+    <span class="ml-nav prev">&#8249;</span>
+    <span class="ml-nav next">&#8250;</span>
+    <p class="ml-cap">Ridge at dawn &middot; 3 of 12</p>
+  </div>`,
+  css: `.spec--media-lightbox .ml-stage { position: relative; width: 100%; max-width: 330px; height: 180px; border-radius: 10px; overflow: hidden; background: rgba(9,11,16,.9); font-family: "Instrument Sans", sans-serif; }
+.spec--media-lightbox .ml-img { position: absolute; inset: 14px 44px; border-radius: 6px; background: linear-gradient(165deg,#e6c9a1,#a67f57 42%,#4a5a6b 100%); box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+.spec--media-lightbox .ml-x { position: absolute; right: 10px; top: 8px; color: #cfd4de; font-size: 16px; }
+.spec--media-lightbox .ml-nav { position: absolute; top: 50%; transform: translateY(-50%); color: #e8ecf4; font-size: 22px; line-height: 1; padding: 4px 8px; }
+.spec--media-lightbox .ml-nav.prev { left: 4px; }
+.spec--media-lightbox .ml-nav.next { right: 4px; }
+.spec--media-lightbox .ml-cap { position: absolute; left: 0; right: 0; bottom: 9px; margin: 0; text-align: center; font-size: 11px; color: #cdd3de; letter-spacing: .02em; }`,
+  prompt: "Design a gallery lightbox: an even grid of tiles at one aspect ratio, opening a tile raises it over the page on a dark scrim with the page dimmed not removed, the position in the set stated with previous/next reachable inside, arrow keys moving and Escape closing with focus returned to the opening tile, the image scaling to fit the viewport at every size, and caption plus alt text travelling with it.",
+  sources: []
+},
+
+{
+  id: "checkout-funnel",
+  name: "Checkout / cart funnel",
+  era: "2000s–",
+  origin: "E-commerce carts: the shortest path from a filled bag to a paid order.",
+  blurb: "A funnel with the exits sealed. The steps are stated, the order stays in view while it is paid for, and every field asks only for what the order needs — the pattern where one extra step costs a measurable slice of completed sales.",
+  traits: [
+    "Steps stated up front (bag, delivery, payment) with the current one marked and the rest reachable back.",
+    "The cart summary stays in view while the order is paid for, with the total and any change to it.",
+    "Only the fields the order needs; no account required to buy.",
+    "The primary action names the next step and its consequence (\"Pay $186\"), never just \"Continue\".",
+    "Errors stand with the field, and totals never silently change between steps.",
+    "Progress is honest: no step invented to collect data the order does not use."
+  ],
+  avoid: [
+    "Forcing account creation before payment.",
+    "Shipping costs that appear only on the last step."
+  ],
+  html: `<div class="cf-panel">
+    <div class="cf-steps"><span class="done">Bag</span><span class="on">Delivery</span><span>Pay</span></div>
+    <div class="cf-line">
+      <span class="cf-thumb"></span>
+      <div class="cf-info"><b>Junko jacket</b><span>M &middot; Slate</span></div>
+      <span class="cf-p">$180</span>
+    </div>
+    <div class="cf-total"><span>Total</span><b>$186</b></div>
+    <span class="cf-cta">Continue to payment</span>
+  </div>`,
+  css: `.spec--checkout-funnel .cf-panel { width: 100%; max-width: 330px; background: #fff; border: 1px solid #e3e6ea; border-radius: 12px; padding: 14px; font-family: "Instrument Sans", sans-serif; }
+.spec--checkout-funnel .cf-steps { display: flex; gap: 8px; align-items: center; font-size: 11px; color: #9aa1ab; }
+.spec--checkout-funnel .cf-steps span { padding: 3px 9px; border-radius: 999px; }
+.spec--checkout-funnel .cf-steps .done { color: #2f9e6a; }
+.spec--checkout-funnel .cf-steps .on { background: #eef2ff; color: #2f56c9; font-weight: 600; }
+.spec--checkout-funnel .cf-line { display: flex; align-items: center; gap: 11px; padding: 13px 0; border-bottom: 1px solid #eef0f3; }
+.spec--checkout-funnel .cf-thumb { width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(150deg,#9aa7b8,#5f6d80); flex: none; }
+.spec--checkout-funnel .cf-info { flex: 1; min-width: 0; }
+.spec--checkout-funnel .cf-info b { display: block; font: 600 12.5px/1.3 "Instrument Sans", sans-serif; color: #1d2128; }
+.spec--checkout-funnel .cf-info span { font-size: 11px; color: #7b828e; }
+.spec--checkout-funnel .cf-p { font: 600 12.5px/1 "Instrument Sans", sans-serif; color: #1d2128; font-variant-numeric: tabular-nums; }
+.spec--checkout-funnel .cf-total { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; }
+.spec--checkout-funnel .cf-total span { font-size: 12px; color: #6b7280; }
+.spec--checkout-funnel .cf-total b { font: 700 16px/1 "Instrument Sans", sans-serif; color: #14161b; font-variant-numeric: tabular-nums; }
+.spec--checkout-funnel .cf-cta { display: block; text-align: center; padding: 11px 0; border-radius: 9px; background: #4f7cff; color: #fff; font: 600 13px/1 "Instrument Sans", sans-serif; }`,
+  prompt: "Design a checkout funnel: the steps stated up front with the current one marked and the earlier ones reachable, the cart summary kept in view while the order is paid for with its total, only the fields the order needs and no account required to buy, a primary action that names the next step and its consequence, errors standing with their field, totals that never change silently between steps, and no invented data-collection step.",
+  sources: []
+},
+
+{
+  id: "map-explorer",
+  name: "Map explorer",
+  era: "2000s–",
+  origin: "Location apps: a full-height map with a panel over it, points on the map and a record for each.",
+  blurb: "The map is the list. Points on a real map, a panel holding the results, and a card that follows the selection — the two views pinned to one scroll of attention, so picking on either updates the other.",
+  traits: [
+    "A map filling the stage with the results and filters in a panel over it, not below it.",
+    "A point per result, the selected one distinguished by size and a ring, not by colour alone.",
+    "List and map stay in step: selecting either moves the other, and the map fits the results.",
+    "Marker clustering once points overlap, with the count shown on the cluster.",
+    "A detail card anchored to the selection, carrying its primary action (Directions).",
+    "The map is real tiles, not an illustration, and attribution stays on screen."
+  ],
+  avoid: [
+    "A map and a list that each scroll separately, so the two drift apart.",
+    "Pins that all look the same, so the selected one cannot be told from the rest."
+  ],
+  html: `<div class="mx-wrap">
+    <div class="mx-map"></div>
+    <span class="mx-pin p1"></span>
+    <span class="mx-pin p2 on"></span>
+    <span class="mx-pin p3"></span>
+    <div class="mx-tools"><span>&#43;</span><span>&#8722;</span></div>
+    <div class="mx-card"><b>Harbour Cafe</b><span class="mx-sub">Open &middot; 0.4 mi away</span><span class="mx-go">Directions</span></div>
+  </div>`,
+  css: `.spec--map-explorer .mx-wrap { position: relative; width: 100%; max-width: 330px; height: 190px; border-radius: 12px; overflow: hidden; border: 1px solid #dfe3e8; font-family: "Instrument Sans", sans-serif; }
+.spec--map-explorer .mx-map { position: absolute; inset: 0; background:
+  repeating-linear-gradient(64deg, transparent 0 26px, rgba(255,255,255,.65) 26px 29px),
+  repeating-linear-gradient(-28deg, transparent 0 34px, rgba(255,255,255,.5) 34px 37px),
+  linear-gradient(150deg,#e9f0e7,#cfdcd3); }
+.spec--map-explorer .mx-pin { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: #7b828e; box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(16,20,30,.3); }
+.spec--map-explorer .p1 { left: 62px; top: 46px; }
+.spec--map-explorer .p2 { left: 150px; top: 72px; width: 16px; height: 16px; background: #4f7cff; box-shadow: 0 0 0 2px #fff, 0 0 0 7px rgba(79,124,255,.24), 0 2px 8px rgba(16,20,30,.35); }
+.spec--map-explorer .p3 { left: 108px; top: 122px; }
+.spec--map-explorer .mx-tools { position: absolute; right: 10px; top: 10px; display: grid; background: #fff; border-radius: 7px; overflow: hidden; box-shadow: 0 2px 8px rgba(16,20,30,.18); }
+.spec--map-explorer .mx-tools span { width: 24px; height: 24px; display: grid; place-items: center; font-size: 14px; color: #3a414b; box-shadow: inset 0 -1px 0 #eef0f3; }
+.spec--map-explorer .mx-card { position: absolute; left: 10px; bottom: 10px; width: 188px; background: #fff; border-radius: 10px; padding: 10px 11px; box-shadow: 0 8px 20px rgba(16,20,30,.22); }
+.spec--map-explorer .mx-card b { display: block; font: 600 12.5px/1.2 "Instrument Sans", sans-serif; color: #14161b; }
+.spec--map-explorer .mx-sub { display: block; font-size: 11px; color: #7b828e; margin-top: 2px; }
+.spec--map-explorer .mx-go { display: inline-block; margin-top: 7px; font: 600 11.5px/1 "Instrument Sans", sans-serif; color: #2f56c9; }`,
+  prompt: "Design a map explorer: a real-tile map filling the stage with results and filters in a panel over it, a point per result with the selected one distinguished by size and a ring rather than colour alone, list and map kept in step with the map fitting the results, marker clustering with a count once points overlap, a detail card anchored to the selection carrying Directions, and visible attribution.",
+  sources: []
+},
+
+{
+  id: "triage-inbox",
+  name: "Inbox / triage list",
+  era: "1990s–",
+  origin: "Mail clients: a queue of items to be dealt with, one at a time, then cleared.",
+  blurb: "A queue built for emptying. Rows scan as one line each, unread is marked once, and acting on an item clears it without leaving the list — the pattern for anything that arrives faster than anyone reads it in full.",
+  traits: [
+    "One row per item, one line of summary plus its key metadata, sized to scan in a sweep.",
+    "Unread marked once — weight plus a single dot — not with three treatments at once.",
+    "Acting on a row clears or files it without a full page change; the list keeps its scroll.",
+    "Bulk selection with a range gesture, and batch actions appearing only with a selection.",
+    "A counter for what is left, honest about what is merely unread versus unhandled.",
+    "Nothing important hidden behind hover only — row actions reachable by keyboard."
+  ],
+  avoid: [
+    "Rows that expand in place into a full message, turning a queue into a reading app.",
+    "An unread count that includes things already dealt with."
+  ],
+  html: `<div class="ti-app">
+    <aside class="ti-rail"><span class="on">Inbox</span><span>Starred</span><span>Sent</span></aside>
+    <ul class="ti-list">
+      <li class="unread"><span class="ti-dot"></span><span class="ti-info"><b>Stripe</b><i>Payout of $4,210 sent</i></span></li>
+      <li><span class="ti-dot read"></span><span class="ti-info"><b>Nadia Okonkwo</b><i>Re: contract redlines</i></span></li>
+      <li><span class="ti-dot read"></span><span class="ti-info"><b>Build bot</b><i>main is green</i></span></li>
+    </ul>
+  </div>`,
+  css: `.spec--triage-inbox .ti-app { display: grid; grid-template-columns: 58px 1fr; width: 100%; max-width: 330px; height: 168px; background: #fff; border: 1px solid #e3e6ea; border-radius: 10px; overflow: hidden; font-family: "Instrument Sans", sans-serif; }
+.spec--triage-inbox .ti-rail { background: #fafbfc; border-right: 1px solid #eef0f3; padding: 10px 8px; display: flex; flex-direction: column; gap: 4px; font-size: 10.5px; }
+.spec--triage-inbox .ti-rail span { padding: 5px 7px; border-radius: 6px; color: #6b7280; }
+.spec--triage-inbox .ti-rail .on { background: #eef2ff; color: #2f56c9; font-weight: 600; }
+.spec--triage-inbox .ti-list { list-style: none; margin: 0; padding: 0; overflow: hidden; }
+.spec--triage-inbox .ti-list li { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-bottom: 1px solid #eef0f3; }
+.spec--triage-inbox .ti-dot { width: 7px; height: 7px; border-radius: 50%; background: #4f7cff; flex: none; }
+.spec--triage-inbox .ti-dot.read { background: transparent; }
+.spec--triage-inbox .ti-info { min-width: 0; flex: 1; }
+.spec--triage-inbox .ti-info b { display: block; font: 500 12px/1.3 "Instrument Sans", sans-serif; color: #1d2128; }
+.spec--triage-inbox .ti-list .unread .ti-info b { font-weight: 700; }
+.spec--triage-inbox .ti-info i { display: block; font-style: normal; font-size: 11px; color: #7b828e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }`,
+  prompt: "Design a triage inbox: one row per item with a single summary line and its key metadata, unread marked once by weight plus one dot, acting on a row clearing or filing it in place while the list keeps its scroll, bulk selection with a range gesture and batch actions only when something is selected, an honest counter distinguishing unread from unhandled, and row actions reachable without hover.",
+  sources: []
+},
+
+{
+  id: "threaded-comments",
+  name: "Threaded discussion",
+  era: "2000s–",
+  origin: "Forums and comment sections: replies nested under the thing they answer.",
+  blurb: "A conversation with its shape kept. Replies indent under their parent on one rail per level, each message carries its author and time, and the nesting stops before it becomes a staircase.",
+  traits: [
+    "One indent step per level, sized so three levels still fit the column.",
+    "Each message carries author, time and its actions; the actions stay with the message they act on.",
+    "Reply opens inline under its parent, so context is never lost to a jump.",
+    "Depth capped with a \"continue this thread\" link past the cap rather than a fifth indent.",
+    "The thread's newest activity is stated once, and collapsed parents show a count.",
+    "Collapsing a parent hides its children and nothing else, with the state remembered."
+  ],
+  avoid: [
+    "Five levels of indent, which leaves the deepest reply ten words wide.",
+    "Replies flattened into one column, so it is impossible to tell what answers what."
+  ],
+  html: `<ul class="tc-thread">
+    <li>
+      <span class="tc-av a1"></span>
+      <div class="tc-node">
+        <div class="tc-bub">
+          <p class="tc-head"><b>Jon</b><span>2h</span></p>
+          <p>Ship it behind a flag first.</p>
+          <span class="tc-rep">Reply</span>
+        </div>
+        <ul class="tc-sub">
+          <li>
+            <span class="tc-av a2"></span>
+            <div class="tc-node"><div class="tc-bub"><p class="tc-head"><b>Ada</b><span>1h</span></p><p>The flag's off by default, so it is safe.</p></div></div>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>`,
+  css: `.spec--threaded-comments .tc-thread { list-style: none; margin: 0; padding: 12px; width: 100%; max-width: 330px; background: #fff; border: 1px solid #e3e6ea; border-radius: 10px; font-family: "Instrument Sans", sans-serif; }
+.spec--threaded-comments .tc-thread, .spec--threaded-comments .tc-sub { display: grid; gap: 10px; }
+.spec--threaded-comments .tc-thread > li, .spec--threaded-comments .tc-sub > li { display: flex; gap: 8px; position: relative; }
+.spec--threaded-comments .tc-sub { list-style: none; margin: 10px 0 0; padding: 0 0 0 12px; border-left: 2px solid #eef0f3; }
+.spec--threaded-comments .tc-av { width: 22px; height: 22px; border-radius: 50%; flex: none; }
+.spec--threaded-comments .a1 { background: linear-gradient(140deg,#c8a58a,#a87f5c); }
+.spec--threaded-comments .a2 { background: linear-gradient(140deg,#8aa7c8,#5c7fa8); }
+.spec--threaded-comments .tc-node { min-width: 0; }
+.spec--threaded-comments .tc-head { margin: 0 0 3px; display: flex; gap: 8px; align-items: baseline; }
+.spec--threaded-comments .tc-head b { font: 600 12px/1 "Instrument Sans", sans-serif; color: #1d2128; }
+.spec--threaded-comments .tc-head span { font-size: 10.5px; color: #9aa1ab; }
+.spec--threaded-comments .tc-bub > p:not(.tc-head) { margin: 0; font-size: 12px; line-height: 1.45; color: #3a414b; }
+.spec--threaded-comments .tc-rep { display: inline-block; margin-top: 5px; font-size: 11px; font-weight: 600; color: #2f56c9; }`,
+  prompt: "Design a threaded discussion: replies indented under their parent with one indent step per level capped so three levels still fit the column, each message carrying author, time and inline actions, Reply opening under its parent to keep context, a 'continue this thread' link past the depth cap, the newest activity stated once, and collapse that hides only a parent's children and remembers its state.",
+  sources: []
+},
 
 );
