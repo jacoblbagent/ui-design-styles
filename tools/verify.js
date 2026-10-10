@@ -386,7 +386,9 @@ const OUT = path.join(__dirname, 'shots');
   await page.locator('.atlas__name[data-id="neumorphism"]').click();
   await page.waitForTimeout(220);
   report.atlasOpensDetail = await page.locator('#detail .modal__title').textContent();
-  report.detailPlacement = await page.locator('#detail .placement__axes').textContent();
+  /* the placement block is gone: no axis readout and no atlas link in the detail */
+  report.detailPlacement = await page.locator('#detail .placement, #detail .placement__axes').count();
+  report.detailBlockheads = await page.$$eval('#detail .blockhead h4', (hs) => hs.map((h) => h.textContent.trim()));
   report.detailMadeOf = await page.$$eval('#detail .traitlist button', (bs) => bs.map((b) => b.textContent.trim()));
   report.detailRelated = await page.$$eval('#detail .related button', (bs) => bs.map((b) => b.textContent.trim()));
   report.detailFacetList = await page.locator('#detail .traitlist--all li').count();

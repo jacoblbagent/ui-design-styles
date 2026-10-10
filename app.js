@@ -136,15 +136,8 @@
         }).join(", ") + "</p>"
       : "";
 
-    var f = facetOf(e.id);
-    var place = '<div class="placement">' +
-      '<p class="placement__axes"><span><b>Loud</b> ' + f.v + "/100</span><span><b>Dimensional</b> " + f.d + "/100</span></p>" +
-      '<p class="placement__note"><a href="#sec-atlas" data-scroll="sec-atlas">On the atlas</a></p>' +
-      "</div>";
-
     var sig = signatureOf(e.id);
-    var tags = '<div class="blockhead"><h4>Made of</h4></div>' +
-      '<ul class="traitlist">' + (sig.length
+    var tags = '<ul class="traitlist">' + (sig.length
         ? sig.map(function (id) {
             var c = COL_OF[id];
             return '<li><button class="tag tag--sig" type="button" data-facet="' + id + '">' +
@@ -178,7 +171,7 @@
       "</div>" +
       '<p class="modal__blurb">' + e.blurb + "</p>" +
       '<div class="spec spec--' + e.id + '">' + uniqueIds(e.html) + "</div>" +
-      place + tags + related +
+      tags + related +
       '<div class="traits"><div class="blockhead"><h4>Traits</h4>' +
         '<button class="ghost" type="button" data-copy="traits" data-id="' + e.id + '">' + ICON_COPY + "Copy traits</button>" +
       "</div><ul>" + traits + "</ul>" + avoid + "</div>" +
