@@ -1,7 +1,7 @@
 /* Real-world examples: names, links and observations from the live pages.
    Screenshots in images/examples/ are captured by tools/capture.js. */
 window.GALLERY = {
-  "capturedAt": "2026-10-07",
+  "capturedAt": "2026-10-10",
   "sites": [
     {
       "id": "aesop",
@@ -21,6 +21,24 @@ window.GALLERY = {
       ],
       "frameable": false,
       "frameReason": "sends X-Frame-Options: SAMEORIGIN"
+    },
+    {
+      "id": "ant-design",
+      "name": "Ant Design",
+      "url": "https://ant.design/",
+      "domain": "ant.design",
+      "tags": [
+        "enterprise-b2b",
+        "design-system",
+        "skeleton-loading"
+      ],
+      "look": [
+        "A pale gradient hero with one black headline, a filled blue CTA beside a ghost one.",
+        "Placeholder skeleton bars used as the hero illustration — the loading state as the artwork.",
+        "A hairline row of logos as the only proof, sitting directly under the buttons."
+      ],
+      "frameable": true,
+      "frameReason": null
     },
     {
       "id": "anthropic",
@@ -74,6 +92,23 @@ window.GALLERY = {
       "frameReason": "sends X-Frame-Options: SAMEORIGIN"
     },
     {
+      "id": "arc",
+      "name": "Arc",
+      "url": "https://arc.net/",
+      "domain": "arc.net",
+      "tags": [
+        "aurora-mesh",
+        "playful-chunky"
+      ],
+      "look": [
+        "Wide bands of gradient with a scalloped edge, wrapping a pale panel in the middle.",
+        "One black pill on the pale panel is the only filled control on the page.",
+        "The browser window is the product shot, with the assistant's prompt printed inside it."
+      ],
+      "frameable": true,
+      "frameReason": null
+    },
+    {
       "id": "are-na",
       "name": "Are.na",
       "url": "https://www.are.na/",
@@ -106,6 +141,24 @@ window.GALLERY = {
       ],
       "frameable": false,
       "frameReason": "sends X-Frame-Options: DENY"
+    },
+    {
+      "id": "bandcamp",
+      "name": "Bandcamp",
+      "url": "https://bandcamp.com/",
+      "domain": "bandcamp.com",
+      "tags": [
+        "editorial",
+        "card-ui",
+        "dark-oled"
+      ],
+      "look": [
+        "Editorial copy with the key figures set in bold boxes, over a charcoal ground.",
+        "A live strip of covers, each with its price and a relative timestamp underneath.",
+        "A daily editorial section given its own band below the commerce strip."
+      ],
+      "frameable": true,
+      "frameReason": null
     },
     {
       "id": "bang-olufsen",
@@ -275,6 +328,41 @@ window.GALLERY = {
       "frameReason": "sends X-Frame-Options: SAMEORIGIN"
     },
     {
+      "id": "deno",
+      "name": "Deno",
+      "url": "https://deno.com/",
+      "domain": "deno.com",
+      "tags": [
+        "terminal-cli",
+        "dark-oled"
+      ],
+      "look": [
+        "One grotesque headline on a near-black ground with a run of terminal output glowing beside it.",
+        "The feature list is printed as a terminal menu, so the pitch is a screenshot of itself.",
+        "Two pill CTAs of equal weight; a thin bright banner carries the news at the top."
+      ],
+      "frameable": false,
+      "frameReason": "sends X-Frame-Options: DENY"
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "url": "https://discord.com/",
+      "domain": "discord.com",
+      "tags": [
+        "playful-chunky",
+        "render-3d",
+        "dark-oled"
+      ],
+      "look": [
+        "A violet gradient ground with a chunky oblique headline and 3D characters standing on it.",
+        "Device renders arranged in perspective, floating rather than framed in a box.",
+        "One solid blue CTA beside a white outline one, both pill-shaped."
+      ],
+      "frameable": false,
+      "frameReason": "sends X-Frame-Options: DENY"
+    },
+    {
       "id": "duolingo",
       "name": "Duolingo",
       "url": "https://www.duolingo.com/",
@@ -327,6 +415,23 @@ window.GALLERY = {
       "frameReason": "sends X-Frame-Options: sameorigin"
     },
     {
+      "id": "framer",
+      "name": "Framer",
+      "url": "https://www.framer.com/",
+      "domain": "framer.com",
+      "tags": [
+        "dark-oled",
+        "motion-micro"
+      ],
+      "look": [
+        "A black ground with one large headline and the product shown inside a glowing frame.",
+        "Two pill CTAs of unequal weight: one filled white, one quiet, both under the headline.",
+        "The accent on the frame is the only hue on the page; everything else is greyscale."
+      ],
+      "frameable": false,
+      "frameReason": "sends X-Frame-Options: DENY"
+    },
+    {
       "id": "github",
       "name": "GitHub",
       "url": "https://github.com/",
@@ -342,6 +447,23 @@ window.GALLERY = {
       ],
       "frameable": false,
       "frameReason": "sends X-Frame-Options: deny"
+    },
+    {
+      "id": "glassmorphism",
+      "name": "Glassmorphism",
+      "url": "https://glassmorphism.com/",
+      "domain": "glassmorphism.com",
+      "tags": [
+        "glassmorphism",
+        "render-3d"
+      ],
+      "look": [
+        "A translucent panel floating over a photographic ground, blurred behind its own border.",
+        "The controls are named by effect (blur, refraction, depth) and the generated CSS is printed under them.",
+        "One saturated CTA on a near-black field; everything else on the page is glass."
+      ],
+      "frameable": true,
+      "frameReason": null
     },
     {
       "id": "grafana-play",
@@ -429,6 +551,23 @@ window.GALLERY = {
       "frameReason": "sends X-Frame-Options: SAMEORIGIN"
     },
     {
+      "id": "hubspot",
+      "name": "HubSpot",
+      "url": "https://www.hubspot.com/",
+      "domain": "hubspot.com",
+      "tags": [
+        "conversion-optimised",
+        "hero-landing"
+      ],
+      "look": [
+        "A centred serif headline with a filled orange CTA paired with an orange outline one.",
+        "The product category stated in small caps above the headline, not in a nav.",
+        "Photography as a band of equal crops directly beneath the buttons."
+      ],
+      "frameable": false,
+      "frameReason": "sends X-Frame-Options: DENY"
+    },
+    {
       "id": "ikea",
       "name": "IKEA",
       "url": "https://www.ikea.com/",
@@ -461,6 +600,23 @@ window.GALLERY = {
       ],
       "frameable": true,
       "frameReason": null
+    },
+    {
+      "id": "itch-io",
+      "name": "itch.io",
+      "url": "https://itch.io/",
+      "domain": "itch.io",
+      "tags": [
+        "brutalist-web",
+        "card-ui"
+      ],
+      "look": [
+        "A left column of dense text link lists: every tag, genre and price bracket stated plainly.",
+        "Game covers in a bright grid — the one burst of colour on an otherwise plain page.",
+        "Section headings as small bold text with a red count badge, never a decorated header."
+      ],
+      "frameable": false,
+      "frameReason": "sends X-Frame-Options: SAMEORIGIN"
     },
     {
       "id": "kinfolk",
@@ -516,6 +672,40 @@ window.GALLERY = {
       "frameReason": "sends X-Frame-Options: SAMEORIGIN"
     },
     {
+      "id": "m3-material",
+      "name": "Material Design 3",
+      "url": "https://m3.material.io/",
+      "domain": "m3.material.io",
+      "tags": [
+        "material-you",
+        "design-system"
+      ],
+      "look": [
+        "A left rail of section icons beside a light hero with one oversized headline.",
+        "A single filled pill is the primary action; every other link is plain text.",
+        "Phone screens tiled at mixed sizes so the system's own components are the artwork."
+      ],
+      "frameable": true,
+      "frameReason": null
+    },
+    {
+      "id": "microsoft",
+      "name": "Microsoft",
+      "url": "https://www.microsoft.com/",
+      "domain": "microsoft.com",
+      "tags": [
+        "fluent-design",
+        "dark-oled"
+      ],
+      "look": [
+        "A dark full-bleed product hero with the headline set over the render rather than beside it.",
+        "Product segments laid along the top bar instead of hidden behind a menu.",
+        "A ghost CTA paired with a solid one; the accent blue is spent only on the solid button."
+      ],
+      "frameable": true,
+      "frameReason": null
+    },
+    {
       "id": "mschf",
       "name": "MSCHF",
       "url": "https://mschf.com/",
@@ -565,6 +755,39 @@ window.GALLERY = {
       ],
       "frameable": false,
       "frameReason": "sends X-Frame-Options: DENY"
+    },
+    {
+      "id": "neumorphism-io",
+      "name": "Neumorphism.io",
+      "url": "https://neumorphism.io/",
+      "domain": "neumorphism.io",
+      "tags": [
+        "neumorphism"
+      ],
+      "look": [
+        "A single grey ground with elements extruded from it by paired light and dark shadows.",
+        "No borders and no fills anywhere — every edge is a shadow, so the page reads as one material.",
+        "Monochrome throughout: the extruded form is the only argument the page makes."
+      ],
+      "frameable": true,
+      "frameReason": null
+    },
+    {
+      "id": "nintendo",
+      "name": "Nintendo",
+      "url": "https://www.nintendo.com/",
+      "domain": "nintendo.com",
+      "tags": [
+        "playful-chunky",
+        "card-ui"
+      ],
+      "look": [
+        "A white store bar with the red logo, then a full-bleed key-art hero.",
+        "The game's own artwork is the only colour; the chrome around it stays neutral.",
+        "A thumbnail carousel of platform badges under the hero, then a featured row."
+      ],
+      "frameable": true,
+      "frameReason": null
     },
     {
       "id": "notion",
@@ -702,6 +925,40 @@ window.GALLERY = {
       "frameReason": "sends X-Frame-Options: SAMEORIGIN"
     },
     {
+      "id": "spotify",
+      "name": "Spotify",
+      "url": "https://open.spotify.com/",
+      "domain": "open.spotify.com",
+      "tags": [
+        "dark-oled",
+        "card-ui"
+      ],
+      "look": [
+        "A dark library: a left nav rail, then rows of cover cards carrying artist and track meta.",
+        "Cover art supplies every colour; the interface around it is near-black with white type.",
+        "One brand green, reserved for the sign-up bar pinned along the bottom."
+      ],
+      "frameable": false,
+      "frameReason": "sends Content-Security-Policy frame-ancestors an allow-list"
+    },
+    {
+      "id": "stardew-valley",
+      "name": "Stardew Valley",
+      "url": "https://www.stardewvalley.net/",
+      "domain": "stardewvalley.net",
+      "tags": [
+        "pixel-art",
+        "playful-chunky"
+      ],
+      "look": [
+        "A pixel-art logo over a painted landscape; the illustration is the entire hero.",
+        "Navigation as small uppercase letterspaced links along the top edge.",
+        "Saturated colour and a drawn face instead of any photographic asset."
+      ],
+      "frameable": false,
+      "frameReason": "sends X-Frame-Options: DENY"
+    },
+    {
       "id": "stripe",
       "name": "Stripe",
       "url": "https://stripe.com/",
@@ -734,6 +991,23 @@ window.GALLERY = {
       ],
       "frameable": false,
       "frameReason": "sends X-Frame-Options: SAMEORIGIN"
+    },
+    {
+      "id": "tailwind",
+      "name": "Tailwind CSS",
+      "url": "https://tailwindcss.com/",
+      "domain": "tailwindcss.com",
+      "tags": [
+        "minimalism",
+        "token-system"
+      ],
+      "look": [
+        "One near-black headline on white, with the utility classes shown inline in the accent colour.",
+        "A black pill CTA and a search field, then the code editor as the proof.",
+        "Almost no chrome: type and code supply the whole hierarchy."
+      ],
+      "frameable": true,
+      "frameReason": null
     },
     {
       "id": "teenage-engineering",
@@ -786,6 +1060,23 @@ window.GALLERY = {
       ],
       "frameable": false,
       "frameReason": "sends X-Frame-Options: DENY"
+    },
+    {
+      "id": "yahoo-japan",
+      "name": "Yahoo! Japan",
+      "url": "https://www.yahoo.co.jp/",
+      "domain": "yahoo.co.jp",
+      "tags": [
+        "japanese-web",
+        "maximalism"
+      ],
+      "look": [
+        "A tabbed portal: every module is a strip of headlines under its own label, not a card.",
+        "Density as the feature — a dozen competing blocks above the fold, each filled to its edges.",
+        "Mixed type sizes and coloured module headers; the logo is the loudest thing on a busy page."
+      ],
+      "frameable": false,
+      "frameReason": "sends X-Frame-Options: SAMEORIGIN"
     }
   ]
 };

@@ -194,9 +194,77 @@ A = {
    "Two lines of headline, two CTAs, one geometric mark — nothing else above the fold.",
    "Company logos in a hairline row as the only social proof.",
    "Near-white ground with black type doing all the hierarchy work."]),
+ "yahoo-japan": ("Yahoo! Japan", "yahoo.co.jp", ["japanese-web", "maximalism"], [
+   "A tabbed portal: every module is a strip of headlines under its own label, not a card.",
+   "Density as the feature — a dozen competing blocks above the fold, each filled to its edges.",
+   "Mixed type sizes and coloured module headers; the logo is the loudest thing on a busy page."]),
+ "m3-material": ("Material Design 3", "m3.material.io", ["material-you", "design-system"], [
+   "A left rail of section icons beside a light hero with one oversized headline.",
+   "A single filled pill is the primary action; every other link is plain text.",
+   "Phone screens tiled at mixed sizes so the system's own components are the artwork."]),
+ "microsoft": ("Microsoft", "microsoft.com", ["fluent-design", "dark-oled"], [
+   "A dark full-bleed product hero with the headline set over the render rather than beside it.",
+   "Product segments laid along the top bar instead of hidden behind a menu.",
+   "A ghost CTA paired with a solid one; the accent blue is spent only on the solid button."]),
+ "glassmorphism": ("Glassmorphism", "glassmorphism.com", ["glassmorphism", "render-3d"], [
+   "A translucent panel floating over a photographic ground, blurred behind its own border.",
+   "The controls are named by effect (blur, refraction, depth) and the generated CSS is printed under them.",
+   "One saturated CTA on a near-black field; everything else on the page is glass."]),
+ "neumorphism-io": ("Neumorphism.io", "neumorphism.io", ["neumorphism"], [
+   "A single grey ground with elements extruded from it by paired light and dark shadows.",
+   "No borders and no fills anywhere — every edge is a shadow, so the page reads as one material.",
+   "Monochrome throughout: the extruded form is the only argument the page makes."]),
+ "ant-design": ("Ant Design", "ant.design", ["enterprise-b2b", "design-system", "skeleton-loading"], [
+   "A pale gradient hero with one black headline, a filled blue CTA beside a ghost one.",
+   "Placeholder skeleton bars used as the hero illustration — the loading state as the artwork.",
+   "A hairline row of logos as the only proof, sitting directly under the buttons."]),
+ "spotify": ("Spotify", "open.spotify.com", ["dark-oled", "card-ui"], [
+   "A dark library: a left nav rail, then rows of cover cards carrying artist and track meta.",
+   "Cover art supplies every colour; the interface around it is near-black with white type.",
+   "One brand green, reserved for the sign-up bar pinned along the bottom."]),
+ "bandcamp": ("Bandcamp", "bandcamp.com", ["editorial", "card-ui", "dark-oled"], [
+   "Editorial copy with the key figures set in bold boxes, over a charcoal ground.",
+   "A live strip of covers, each with its price and a relative timestamp underneath.",
+   "A daily editorial section given its own band below the commerce strip."]),
+ "itch-io": ("itch.io", "itch.io", ["brutalist-web", "card-ui"], [
+   "A left column of dense text link lists: every tag, genre and price bracket stated plainly.",
+   "Game covers in a bright grid — the one burst of colour on an otherwise plain page.",
+   "Section headings as small bold text with a red count badge, never a decorated header."]),
+ "deno": ("Deno", "deno.com", ["terminal-cli", "dark-oled"], [
+   "One grotesque headline on a near-black ground with a run of terminal output glowing beside it.",
+   "The feature list is printed as a terminal menu, so the pitch is a screenshot of itself.",
+   "Two pill CTAs of equal weight; a thin bright banner carries the news at the top."]),
+ "framer": ("Framer", "framer.com", ["dark-oled", "motion-micro"], [
+   "A black ground with one large headline and the product shown inside a glowing frame.",
+   "Two pill CTAs of unequal weight: one filled white, one quiet, both under the headline.",
+   "The accent on the frame is the only hue on the page; everything else is greyscale."]),
+ "arc": ("Arc", "arc.net", ["aurora-mesh", "playful-chunky"], [
+   "Wide bands of gradient with a scalloped edge, wrapping a pale panel in the middle.",
+   "One black pill on the pale panel is the only filled control on the page.",
+   "The browser window is the product shot, with the assistant's prompt printed inside it."]),
+ "stardew-valley": ("Stardew Valley", "stardewvalley.net", ["pixel-art", "playful-chunky"], [
+   "A pixel-art logo over a painted landscape; the illustration is the entire hero.",
+   "Navigation as small uppercase letterspaced links along the top edge.",
+   "Saturated colour and a drawn face instead of any photographic asset."]),
+ "hubspot": ("HubSpot", "hubspot.com", ["conversion-optimised", "hero-landing"], [
+   "A centred serif headline with a filled orange CTA paired with an orange outline one.",
+   "The product category stated in small caps above the headline, not in a nav.",
+   "Photography as a band of equal crops directly beneath the buttons."]),
+ "nintendo": ("Nintendo", "nintendo.com", ["playful-chunky", "card-ui"], [
+   "A white store bar with the red logo, then a full-bleed key-art hero.",
+   "The game's own artwork is the only colour; the chrome around it stays neutral.",
+   "A thumbnail carousel of platform badges under the hero, then a featured row."]),
+ "tailwind": ("Tailwind CSS", "tailwindcss.com", ["minimalism", "token-system"], [
+   "One near-black headline on white, with the utility classes shown inline in the accent colour.",
+   "A black pill CTA and a search field, then the code editor as the proof.",
+   "Almost no chrome: type and code supply the whole hierarchy."]),
+ "discord": ("Discord", "discord.com", ["playful-chunky", "render-3d", "dark-oled"], [
+   "A violet gradient ground with a chunky oblique headline and 3D characters standing on it.",
+   "Device renders arranged in perspective, floating rather than framed in a box.",
+   "One solid blue CTA beside a white outline one, both pill-shaped."]),
 }
 
-DROP = {"readymag", "windows93", "muji", "rolex", "nytimes", "balenciaga"}
+DROP = {"readymag", "windows93", "muji", "rolex", "nytimes", "balenciaga", "wikipedia"}
 
 
 def frameable(rec):

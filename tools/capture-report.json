@@ -55,7 +55,7 @@
     "finalUrl": "https://news.ycombinator.com/",
     "blocked": false,
     "h1": null,
-    "bodyText": " Hacker Newsnew | past | comments | ask | show | jobs | submit login 1. Claude Haiku 5.5 (anthropic.com) 290 points by sfkgtbor 1 hour ago | hide | 137 comments 2. GPT‑6 and Intelligent UI for everyone (openai.com) 184 points by joshuawright11 1 hour ago | hide | 81 comments 3. Visa, Mastercard, Major Banks Facing New Litigation over 'Anticompetitive' Fees (classaction.org) 326 point",
+    "bodyText": " Hacker Newsnew | past | comments | ask | show | jobs | submit login 1. 2D Vehicles (patkerr.co.uk) 275 points by Michelangelo11 5 hours ago | hide | 64 comments 2. A city-building game in which the city would prefer you didn't (over.pizza) 57 points by JumpCrisscross 2 hours ago | hide | 16 comments 3. Why DuckDB 2.0 is faster (motherduck.com) 99 points by tosh 4 hours ago | hide | ",
     "fonts": [
       "Verdana",
       "Geneva",
@@ -145,10 +145,7 @@
       "Times New Roman"
     ],
     "bg": "rgba(0, 0, 0, 0)",
-    "shot": true,
-    "dismissed": "no button found",
-    "hidden": [],
-    "reshotAt": "2026-10-07"
+    "shot": true
   },
   {
     "id": "neocities",
@@ -162,7 +159,7 @@
     "finalUrl": "https://neocities.org/",
     "blocked": false,
     "h1": "",
-    "bodyText": "Neocities Websites Search Activity Learn Support Us Sign In Create your own free website. Unlimited creativity, zero ads. Neocities is a social network of 1,782,400 web sites that are bringing back the lost individual creativity of the web. We offer free static web hosting and tools that allow you to create your own web site. Join us! Powerful features to help you build We’ve made it easy to bu",
+    "bodyText": "Neocities Websites Search Activity Learn Support Us Sign In Create your own free website. Unlimited creativity, zero ads. Neocities is a social network of 1,786,000 web sites that are bringing back the lost individual creativity of the web. We offer free static web hosting and tools that allow you to create your own web site. Join us! Powerful features to help you build We’ve made it easy to bu",
     "fonts": [
       "Lucida Grande",
       "verdana",
@@ -188,7 +185,7 @@
     "finalUrl": "https://poolsuite.net/",
     "blocked": false,
     "h1": null,
-    "bodyText": "BECOME A MEMBER / LOG IN WED 7 OCT 1997 15:24 POOLSUITE benidorm_85.mpeg 591x455 Poolsuite: ON AIR L'après midi - Arno Grieco (Gimmie More Sound L'Anthologie Musicale) Stopped Channel: Poolsuite ON AIR LIVE Player Newsroom Mixtapes Members Events Instagram Vacation Guestbook Apps",
+    "bodyText": "BECOME A MEMBER / LOG IN SAT 10 OCT 1997 18:35 POOLSUITE St_Maarten.mp4 591x455 Poolsuite: ON AIR Zoom - Wayawaya Stopped Channel: Poolsuite ON AIR LIVE Player Newsroom Mixtapes Members Events Instagram Vacation Guestbook Apps",
     "fonts": [
       "ui-sans-serif",
       "system-ui",
@@ -222,10 +219,7 @@
       "Refinery-25"
     ],
     "bg": "rgb(0, 0, 0)",
-    "shot": true,
-    "dismissed": "clicked /allow all/i",
-    "hidden": [],
-    "reshotAt": "2026-10-07"
+    "shot": true
   },
   {
     "id": "linear",
@@ -291,13 +285,11 @@
     "finalUrl": "https://stripe.com/",
     "blocked": false,
     "h1": "Financial infrastructure to grow your revenue. Accept payments, handle business banking,1 and implement custom revenue m",
-    "bodyText": "Products Solutions Developers Resources Pricing Sign in Sign in Contact sales Global GDP running on Stripe: 1.72835583% 1.72835584% Financial infrastructure to grow your revenue. Accept payments, handle business banking,1 and implement custom revenue models—from your first transaction to your billionth. Financial infrastructure to grow your revenue. Accept payments, handle business banking,1 and i",
+    "bodyText": "Products Solutions Developers Resources Pricing Sign in Sign in Contact sales Global GDP running on Stripe: 1.73010555% 1.73010556% Financial infrastructure to grow your revenue. Accept payments, handle business banking,1 and implement custom revenue models—from your first transaction to your billionth. Financial infrastructure to grow your revenue. Accept payments, handle business banking,1 and i",
     "fonts": [
       "sohne-var",
       "SF Pro Display",
-      "sans-serif",
-      "Helvetica Neue",
-      "Arial"
+      "sans-serif"
     ],
     "bg": "rgba(0, 0, 0, 0)",
     "shot": true
@@ -418,13 +410,13 @@
     "finalUrl": "https://teenage.engineering/",
     "blocked": false,
     "h1": null,
-    "bodyText": "now instagram newsletter latest store deals cart & checkout visit store finder guides & downloads search support designs audio instruments products teenageengineering teenage engineering product instruments audio designs store checkout deals newsletter instagram now guides support search product checkout store latest search latest downloads search guides contact teenage engineering APC–2 sinus tra",
+    "bodyText": "now instagram newsletter latest store deals cart & checkout visit store finder guides & downloads search support designs audio instruments products teenageengineering teenage engineering product instruments audio designs store checkout deals newsletter instagram now guides support search product checkout store latest search latest downloads search guides contact teenage engineering NOW OPEN! WED–S",
     "fonts": [
       "te-20",
       "Unicode",
       "sans-serif"
     ],
-    "bg": "rgb(255, 255, 255)",
+    "bg": "rgb(0, 0, 0)",
     "shot": true
   },
   {
@@ -456,10 +448,7 @@
       "Kinfolk-Serif-Display"
     ],
     "bg": "rgba(0, 0, 0, 0)",
-    "shot": true,
-    "dismissed": "no button found",
-    "hidden": [],
-    "reshotAt": "2026-10-07"
+    "shot": true
   },
   {
     "id": "aesop",
@@ -487,7 +476,8 @@
     "dismissed": "no button found",
     "hidden": [],
     "reshotAt": "2026-10-07",
-    "closed": "clicked /^close$/i"
+    "closed": "clicked /^close$/i",
+    "note": "reused 2026-10-07 capture; re-capture hit a Cloudflare bot wall"
   },
   {
     "id": "bang-olufsen",
@@ -510,13 +500,7 @@
       "sans-serif"
     ],
     "bg": "rgba(0, 0, 0, 0)",
-    "shot": true,
-    "dismissed": "clicked /^accept all/i",
-    "hidden": [
-      "coiOverlay [generic]"
-    ],
-    "reshotAt": "2026-10-07",
-    "closed": "none"
+    "shot": true
   },
   {
     "id": "rolex",
@@ -530,7 +514,7 @@
     "finalUrl": "https://www.rolex.com/",
     "blocked": true,
     "h1": "Access Denied",
-    "bodyText": "Access Denied You don't have permission to access \"http://www.rolex.com/\" on this server. Reference #18.ce200117.1791401123.31fb596a https://errors.edgesuite.net/18.ce200117.1791401123.31fb596a",
+    "bodyText": "Access Denied You don't have permission to access \"http://www.rolex.com/\" on this server. Reference #18.99922e17.1791671788.10c19489 https://errors.edgesuite.net/18.99922e17.1791671788.10c19489",
     "fonts": [
       "Times New Roman"
     ],
@@ -569,16 +553,10 @@
     "finalUrl": "https://www.grillitype.com/",
     "blocked": false,
     "h1": "Grilli Type",
-    "bodyText": "Grilli Type Typefaces Free Trials Commissions Blog Information About Login GT Mechanik Minisite Retail typefaces GT Mechanik GT Canon GT Era GT Standard GT Flaire GT Pantheon GT America Intl GT Pressura GT Planar GT Ultra GT Maru GT Flexa GT Alpina GT Zirkon GT Super GT Walsheim GT America GT Eesti GT Cinetype GT Haptik GT Sectra Try out our fonts – for free. Grilli Type trial fonts allow you to ",
+    "bodyText": "Grilli Type Typefaces Free Trials Commissions Blog Information About Login GT Mechanik Minisite Grilli Kiosk GT In Use Museu Terra A rebranding for a 1988 cultural center in Tarragona, Spain, using GT Alpina. GT Standard Commission Case Studies Decathlon Figma Sans GT Academy Welcome to GT Academy In this series we share our approach to type design and help you understand the basics of crea",
     "fonts": [
       "GT-Corporate-Web",
-      "GT-Corporate-Web-LCGV",
-      "GT-Mechanik-Semi-Regular",
-      "GT-Canon-L-Standard-Medium",
-      "GT-Era-Display-Regular",
-      "GT-Standard-L-Standard-Regular",
-      "GT-Flaire-Basic-Regular",
-      "GT-Pantheon-Display-Medium"
+      "GT-Corporate-Web-LCGV"
     ],
     "bg": "rgb(255, 255, 255)",
     "shot": true
@@ -595,7 +573,7 @@
     "finalUrl": "https://fontsinuse.com/",
     "blocked": false,
     "h1": null,
-    "bodyText": "An independent archive of typography. Made possible by sponsors like Frere-Jones Type Sign in to participate. Collection Blog or combine terms with Advanced Search Topics ▼ Activism (1208) Architecture (1533) Art (5099) Automotive (334) Business/Finance (830) Education/Academia (2360) Entertainment (1640) Event (3473) Fashion/Apparel (1670) Film/TV (2205) Food/Beverage (3288) Governmental/Civic (7",
+    "bodyText": "An independent archive of typography. Made possible by sponsors like R-Typography Sign in to participate. Collection Blog or combine terms with Advanced Search Topics ▼ Activism (1208) Architecture (1534) Art (5105) Automotive (334) Business/Finance (831) Education/Academia (2363) Entertainment (1641) Event (3478) Fashion/Apparel (1672) Film/TV (2206) Food/Beverage (3290) Governmental/Civic (786) ",
     "fonts": [
       "BentonSansRE",
       "Verdana",
@@ -659,7 +637,7 @@
     "finalUrl": "https://www.theverge.com/",
     "blocked": false,
     "h1": null,
-    "bodyText": "SKIP TO MAIN CONTENT SUBSCRIBE SIGN IN Tech Reviews Science Entertainment AI Policy How Microsoft built its MacBook Pro competitor Inside the lab where Microsoft is preparing the Surface Laptop Ultra, the debut platform for Nvidia’s RTX Spark. TOM WARRENAN HOUR AGO10 The vigilante doxxing campaign against Cornell’s Jane Doe happened in plain sight GABY DEL VALLE24 What The Social Reckoning gets ",
+    "bodyText": "SKIP TO MAIN CONTENT SUBSCRIBE SIGN IN Tech Reviews Science Entertainment AI Policy AI agent makers are promising privacy — will they deliver? Meta positioned its Muse agent as a safer alternative to OpenClaw. OpenAI promises Dots is a safer alternative to Muse. HAYDEN FIELD9:00 AM EDT14 My brief romance with an AI bird feeder THOMAS RICKER31 The Telo MT1 is a big truck trapped in a tiny truck’s",
     "fonts": [
       "ui-sans-serif",
       "system-ui",
@@ -671,11 +649,7 @@
       "Arial"
     ],
     "bg": "rgb(255, 255, 255)",
-    "shot": true,
-    "dismissed": "no button found",
-    "hidden": [],
-    "reshotAt": "2026-10-07",
-    "closed": "none"
+    "shot": true
   },
   {
     "id": "its-nice-that",
@@ -698,13 +672,7 @@
       "LabilVariable"
     ],
     "bg": "rgba(0, 0, 0, 0)",
-    "shot": true,
-    "dismissed": "no button found",
-    "hidden": [
-      "CybotEdge CybotCookiebotDialogActive"
-    ],
-    "reshotAt": "2026-10-07",
-    "closed": "none"
+    "shot": true
   },
   {
     "id": "awwwards",
@@ -717,8 +685,8 @@
     "title": "Awwwards - Website Awards - Best Web Design Trends",
     "finalUrl": "https://www.awwwards.com/",
     "blocked": false,
-    "h1": "TWKS",
-    "bodyText": "Explore Directory Academy New Jobs Market Log in Sign Up Be Pro Submit Website Site of the Day Oct 7, 2026 Score 7.35 of 10 TWKS twks Latest NOMINEES Vote for the latest websites on awwwards Preymaker by DashDigital PRO MATTEO COURQUIN by METABOLE STUDIO PRO Check out all submitted websites View Nominees Winners Recent Sites of the Day. Lidar Drone Scanning by Riotters Santioni Spirits by Active T",
+    "h1": "LPAS",
+    "bodyText": "Explore Directory Academy New Jobs Market Log in Sign Up Be Pro Submit Website Site of the Day Oct 10, 2026 Score 7.24 of 10 LPAS Studio Naam PRO Latest NOMINEES Vote for the latest websites on awwwards Preymaker by DashDigital PRO Cyera AI Guardian by Active Theory PRO Check out all submitted websites View Nominees Winners Recent Sites of the Day. Maria Vasilyeva Portfolio by Maria Vasilyeva Odys",
     "fonts": [
       "Inter Tight"
     ],
@@ -737,7 +705,7 @@
     "finalUrl": "https://gumroad.com/",
     "blocked": false,
     "h1": "Go from 0 to $1",
-    "bodyText": "9.7K Discover Blog Pricing Features About Gumclaw Log in Start selling Go from 0 to $1 Anyone can earn their first dollar online. Just start with what you know, see what sticks, and get paid. It's that easy. Start selling Search marketplace Contribute or fork on GitHub Sell anything Video lessons. Monthly subscriptions. Whatever! Gumroad was created to help you experiment with all kinds of ide",
+    "bodyText": "9.8K Discover Blog Pricing Features About Gumclaw Log in Start selling Go from 0 to $1 Anyone can earn their first dollar online. Just start with what you know, see what sticks, and get paid. It's that easy. Start selling Search marketplace Contribute or fork on GitHub Sell anything Video lessons. Monthly subscriptions. Whatever! Gumroad was created to help you experiment with all kinds of ide",
     "fonts": [
       "ABC Favorit",
       "Avenir",
@@ -790,10 +758,7 @@
       "feather"
     ],
     "bg": "rgb(255, 255, 255)",
-    "shot": true,
-    "dismissed": "no button found",
-    "hidden": [],
-    "reshotAt": "2026-10-07"
+    "shot": true
   },
   {
     "id": "headspace",
@@ -827,7 +792,7 @@
     "finalUrl": "https://mailchimp.com/",
     "blocked": false,
     "h1": "Email & SMS marketing minus the learning curve",
-    "bodyText": "___ Skip to main content Join Mailchimp with a free 14-day trial or save 15% off on 10,000+ contacts. Start today. Industries and Solutions Integrations Resources Switch to Mailchimp Pricing Search This page is now available in other languages. EN Get a demo: +1 (800) 315-5939 Log In Start Free Trial Email & SMS marketing minus the learning curve Drive revenue with intuitive marketing analytics",
+    "bodyText": "___ Skip to main content Join Mailchimp with a free 14-day trial or save 15% off on 10,000+ contacts. Start today. Industries and Solutions Integrations Resources Switch to Mailchimp Pricing Search This page is now available in other languages. EN Get a demo: +1 (855) 522-2517 Log In Start Free Trial Email & SMS marketing minus the learning curve Drive revenue with intuitive marketing analytics",
     "fonts": [
       "Graphik Web",
       "Helvetica Neue",
@@ -839,11 +804,7 @@
       "Georgia"
     ],
     "bg": "rgb(255, 255, 255)",
-    "shot": true,
-    "dismissed": "no button found",
-    "hidden": [],
-    "reshotAt": "2026-10-07",
-    "closed": "clicked /^close$/i"
+    "shot": true
   },
   {
     "id": "mschf",
@@ -880,7 +841,7 @@
     "finalUrl": "https://www.balenciaga.com/",
     "blocked": true,
     "h1": "Access Denied",
-    "bodyText": "Access Denied You don't have permission to access \"http://www.balenciaga.com/\" on this server. Reference #18.27551702.1791401200.658c2a6b https://errors.edgesuite.net/18.27551702.1791401200.658c2a6b",
+    "bodyText": "Access Denied You don't have permission to access \"http://www.balenciaga.com/\" on this server. Reference #18.b7c0ce17.1791671880.10a1288f https://errors.edgesuite.net/18.b7c0ce17.1791671880.10a1288f",
     "fonts": [
       "Times New Roman"
     ],
@@ -898,7 +859,7 @@
     "finalUrl": "https://bun.sh/",
     "blocked": false,
     "h1": "Bun is a fast JavaScript runtime & toolkit. All in one.",
-    "bodyText": "Skip to content Bun has joined Anthropic — and Anthropic is betting on Bun → Docs Guides Reference Blog Search docs, APIs, guides… / Install NEW BUN V1.4.2 RELEASED → Bun is a fast JavaScript runtime & toolkit. All in one. Runtime, package manager, test runner and bundler in a single binary. Use bun install or bun test in an existing Node.js project, or run the whole thing on Bun. Install Bun v1",
+    "bodyText": "Skip to content Bun has joined Anthropic — and Anthropic is betting on Bun → Docs Guides Reference Blog Search docs, APIs, guides… / Install NEW BUN V1.4.3 RELEASED → Bun is a fast JavaScript runtime & toolkit. All in one. Runtime, package manager, test runner and bundler in a single binary. Use bun install or bun test in an existing Node.js project, or run the whole thing on Bun. Install Bun v1",
     "fonts": [
       "ui-sans-serif",
       "system-ui",
@@ -924,7 +885,7 @@
     "finalUrl": "https://charm.land/",
     "blocked": false,
     "h1": null,
-    "bodyText": "We make the command line glamorous. HomeLibsAppsEnterpriseBlog 223.0k Remember your first Crush? star28.5kAIGlamourous Your new coding bestie, now available in your favourite terminal. Your tools, your code, and your workflows, wired into your LLM of choice. This is artificial intelligence made glamourous. Available now for macOS, Linux, Windows, and BSD. Get Crush Build with Charm Everythin",
+    "bodyText": "We make the command line glamorous. HomeLibsAppsEnterpriseBlog 223.3k Remember your first Crush? star28.6kAIGlamourous Your new coding bestie, now available in your favourite terminal. Your tools, your code, and your workflows, wired into your LLM of choice. This is artificial intelligence made glamourous. Available now for macOS, Linux, Windows, and BSD. Get Crush Build with Charm Everythin",
     "fonts": [
       "Mori Variable Web",
       "Helvetica",
@@ -975,13 +936,14 @@
     "title": "Grafana Play Home - Examples - Dashboards - Grafana",
     "finalUrl": "https://play.grafana.org/d/to6j8mh/grafana-play-home?from=now-6h&to=now&timezone=utc",
     "blocked": false,
-    "h1": null,
-    "bodyText": "Skip to main content Grafana Starred Dashboards Explore Drilldown AI Alerts & IRM Machine learning Testing & synthetics Observability Connections More apps Administration Dashboards Examples Grafana Play Home Search... ctrl+k Sign in Edit 🏆 Top Community contributors (last 30 days) Last 30 days Loading plugin panel... Loading...",
+    "h1": "Welcome to Grafana Play",
+    "bodyText": "Skip to main content Grafana Starred Dashboards Explore Drilldown AI Alerts & IRM Machine learning Testing & synthetics Observability Connections More apps Administration Dashboards Examples Grafana Play Home Search... ctrl+k Sign in Edit Welcome to Grafana Play Play is a public sandbox for testing and learning Grafana that runs on Grafana Cloud. Find interactive demos, explore how ",
     "fonts": [
       "Inter",
       "Helvetica",
       "Arial",
-      "sans-serif"
+      "sans-serif",
+      "Segoe UI"
     ],
     "bg": "rgb(17, 18, 23)",
     "shot": true
@@ -998,7 +960,7 @@
     "finalUrl": "https://ourworldindata.org/",
     "blocked": false,
     "h1": null,
-    "bodyText": "Our World in Data Browse by topic Data Latest Resources About Subscribe Donate POPULAR PAGES CO₂ Emissions Population Growth Life Expectancy Poverty Impacts of Food War & Peace Global Education Artificial Intelligence Democracy Research and data to make progress against the world’s largest problems. Read about our mission 14,092 charts 126 topic pages 29 data explorers 508 articles All free: o",
+    "bodyText": "Our World in Data Browse by topic Data Latest Resources About Subscribe Donate POPULAR PAGES CO₂ Emissions Population Growth Life Expectancy Poverty Impacts of Food War & Peace Global Education Artificial Intelligence Democracy Research and data to make progress against the world’s largest problems. Read about our mission 14,090 charts 126 topic pages 29 data explorers 508 articles All free: o",
     "fonts": [
       "Lato",
       "Helvetica Neue",
@@ -1010,12 +972,7 @@
       "Georgia"
     ],
     "bg": "rgb(255, 255, 255)",
-    "shot": true,
-    "dismissed": "no button found",
-    "hidden": [
-      "cookie-notice open"
-    ],
-    "reshotAt": "2026-10-07"
+    "shot": true
   },
   {
     "id": "cloudflare-radar",
@@ -1028,13 +985,17 @@
     "title": "Worldwide Overview | Cloudflare Radar",
     "finalUrl": "https://radar.cloudflare.com/",
     "blocked": false,
-    "h1": "Overview Worldwide",
-    "bodyText": "Cloudflare Radar Search Search for locations, autonomous systems, reports, domains and more... Language English Ask AI Beta Theme Overview Traffic Expand Overview Adoption & Usage AI Insights Bots Expand Traffic Directory Security Expand Application Layer Network Layer Email Post-Quantum Encryption Certificate Transparency Key Transparency Connectivity Expand Internet Quality Outage Center Cloud O",
+    "h1": "Cloudflare Radar Explore",
+    "bodyText": "RADAR Overview Traffic Overview Adoption & Usage AI Insights Bots Traffic Directory Security Application Layer Network Layer Email Post-Quantum Encryption Certificate Transparency Key Transparency Connectivity Internet Quality Outage Center Cloud Observatory IP Address Information Routing Overview RPKI Anomalies ASPA Validation MRT Explorer DNS 1.1.1.1 Resolver AS112 Project Top-Level Domains Doma",
     "fonts": [
+      "Inter Variable",
       "system-ui",
-      "sans-serif"
+      "sans-serif",
+      "Helvetica Neue",
+      "Arial",
+      "Helvetica"
     ],
-    "bg": "oklch(0.96 0 0)",
+    "bg": "oklch(0.99 0 0)",
     "shot": true
   },
   {
@@ -1119,7 +1080,7 @@
     "finalUrl": "https://www.are.na/",
     "blocked": false,
     "h1": "Are.na is",
-    "bodyText": "Log in Are.na is Online software for saving and organizing the content that is important to you A toolkit for assembling new worlds from the scraps of the old For the last 15 years and 59 days, Are.na has been a place for students, designers, academics, collectors, researchers, and many other people who defy categorization to share and connect ideas. Sign up Download the app How it works Capture",
+    "bodyText": "Log in Are.na is Online software for saving and organizing the content that is important to you A toolkit for assembling new worlds from the scraps of the old For the last 15 years and 62 days, Are.na has been a place for students, designers, academics, collectors, researchers, and many other people who defy categorization to share and connect ideas. Sign up Download the app How it works Capture",
     "fonts": [
       "Times New Roman",
       "areal",
@@ -1155,10 +1116,7 @@
       "Noto Sans TC"
     ],
     "bg": "rgb(255, 254, 251)",
-    "shot": true,
-    "dismissed": "clicked /^accept$/i",
-    "hidden": [],
-    "reshotAt": "2026-10-07"
+    "shot": true
   },
   {
     "id": "figma",
@@ -1198,7 +1156,7 @@
     "finalUrl": "https://readymag.com/",
     "blocked": false,
     "h1": null,
-    "bodyText": "We use cookies Allow all Manage Reject all Try Readymag Make the web more like you. A human-powered design tool for creating distinctive websites Open Get started What you can publish Portfolios that open new doors Studio websites that attract dream clients Presentations that sell your ideas Landing pages that make launches stand out Graduate projects that get you noticed Passion projec",
+    "bodyText": "We use cookies Allow all Manage Reject all Try Readymag Make the web more like you. A human-powered design tool for creating distinctive websites Birthday Discounts October 8-20 Open Get started What you can publish Portfolios that open new doors Studio websites that attract dream clients Presentations that sell your ideas Landing pages that make launches stand out Graduate projects tha",
     "fonts": [
       "-apple-system",
       "system-ui",
@@ -1210,11 +1168,7 @@
       "sans-serif"
     ],
     "bg": "rgb(255, 255, 255)",
-    "shot": true,
-    "dismissed": "clicked /allow all/i",
-    "hidden": [],
-    "reshotAt": "2026-10-07",
-    "closed": "none"
+    "shot": true
   },
   {
     "id": "cargo",
@@ -1228,12 +1182,466 @@
     "finalUrl": "https://cargo.site/",
     "blocked": false,
     "h1": "Cargo Site Builder",
-    "bodyText": "Cargo Templates Community Information Start Login ↗ Cargo Site Builder Make a site Explore sites 15:27:42 Cargo is a site builder for designers and artists. We are interested in two main things: helping creative people secure jobs/clients through showing work and displaying work, generally. As well, we host a network of peers to show great sites and work. This is Cargo’s passion and purpose. [mo",
+    "bodyText": "Cargo Templates Community Information Start Login ↗ Cargo Site Builder Make a site Explore sites 18:39:02 Cargo is a site builder for designers and artists. We are interested in two main things: helping creative people secure jobs/clients through showing work and displaying work, generally. As well, we host a network of peers to show great sites and work. This is Cargo’s passion and purpose. [mo",
     "fonts": [
       "CargoDiatypeVariable",
       "sans-serif"
     ],
     "bg": "rgb(252, 252, 252)",
+    "shot": true
+  },
+  {
+    "id": "yahoo-japan",
+    "name": "Yahoo! Japan",
+    "url": "https://www.yahoo.co.jp/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": "SAMEORIGIN",
+    "frames": false,
+    "title": "Yahoo! JAPAN",
+    "finalUrl": "https://www.yahoo.co.jp/",
+    "blocked": false,
+    "h1": "Yahoo! JAPAN",
+    "bodyText": "ワンクリックで Yahoo! JAPANを開くには 今すぐ設定する 閉じる 「姑息（こそく）」の意味は「ひきょう」じゃないよ ホームページに設定する きっず版 アプリ版 ヘルプ Yahoo! JAPAN トラベル カード メール プレミアム オークション ショッピング 検索 ウェブ AIモード 画像 動画 知恵袋 地図 リアルタイム 一覧 検索 キーワード入力補助を開く お知らせ 「プレミアムな日曜日」5000円以上買うと＋5％ プロ野球CSの新ルール「2勝・7試合制」って？ ピックアップ ショッピング 本日誰でもおトク 主なサービス ショッピング オークション フリマ ZOZOTOWN LOHACO トラベル 一休.com 一休.comレストラン ふるさと納税 出前館 ニュース 天気・災害 スポーツナビ ファイナンス 番組表 知恵袋 L",
+    "fonts": [
+      "YJTop Ellipsis",
+      "ヒラギノ角ゴ ProN",
+      "Hiragino Kaku Gothic ProN",
+      "メイリオ",
+      "Meiryo",
+      "Osaka",
+      "ＭＳ Ｐゴシック",
+      "MS PGothic"
+    ],
+    "bg": "rgba(0, 0, 0, 0)",
+    "shot": true
+  },
+  {
+    "id": "m3-material",
+    "name": "Material Design 3",
+    "url": "https://m3.material.io/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Material Design 3 - Google's latest open source design system",
+    "finalUrl": "https://m3.material.io/",
+    "blocked": false,
+    "h1": "Material Design",
+    "bodyText": "Skip to main content search material_design Home apps Get started code Develop book Foundations palette Styles add_circle Components pages Blog play_arrow pause dark_mode light_mode Material Design Material Design 3 is Google’s open-source design system for building beautiful, usable products. Get started pause link Copy link Material at Google I/O 2026 link Copy link May 19, 2026 What’s new at Go",
+    "fonts": [
+      "Google Sans Text",
+      "sans-serif",
+      "Google Sans",
+      "Arial"
+    ],
+    "bg": "rgba(0, 0, 0, 0)",
+    "shot": true
+  },
+  {
+    "id": "microsoft",
+    "name": "Microsoft",
+    "url": "https://www.microsoft.com/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Microsoft – AI, Cloud, Productivity, Computing, Gaming & Apps",
+    "finalUrl": "https://www.microsoft.com/en-us",
+    "blocked": false,
+    "h1": "SURFACE LAPTOP ULTRA",
+    "bodyText": "Skip to main content Microsoft 365 Azure Copilot Windows Surface XBOX Deals Small Business Support All Microsoft Search Cart Sign in ME PRE-ORDER NOW SURFACE LAPTOP ULTRA The most powerful Surface laptop ever built, engineered for the frontier of local AI and 3D graphics. Powered by the NVIDIA RTX Spark™ Superchip. Plus, trade in your MacBook Pro and get up to $1,000 cash back. * Pre-order Surface",
+    "fonts": [
+      "Segoe UI Variable Text",
+      "Segoe UI",
+      "segoeui",
+      "Helvetica Neue",
+      "helvetica",
+      "arial",
+      "sans-serif",
+      "SegoeUI"
+    ],
+    "bg": "rgb(255, 255, 255)",
+    "shot": true
+  },
+  {
+    "id": "glassmorphism",
+    "name": "Glassmorphism",
+    "url": "https://glassmorphism.com/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Glassmorphism CSS Generator | SquarePlanet | SquarePlanet",
+    "finalUrl": "https://hype4.academy/tools/glassmorphism-generator",
+    "blocked": false,
+    "h1": "The original generator forGlassmorphism",
+    "bodyText": "🍪 The website uses cookies to ensure the proper operation of all its functions. To use it make sure you agree to the use of cookies as described in the Privacy policy. Agree & Close Designs Challenges Learn Books & Courses Become a PRO 👑 FAQ 96,699 designs by 50901 designers. Join us Log in 👋 Hello there! Log into the academy: In order to log into your academy profile, please provide your",
+    "fonts": [
+      "Euclid",
+      "sans-serif",
+      "Arial",
+      "BlinkMacSystemFont",
+      "Segoe UI",
+      "Oxygen",
+      "Ubuntu",
+      "Cantarell"
+    ],
+    "bg": "rgba(0, 0, 0, 0)",
+    "shot": true
+  },
+  {
+    "id": "neumorphism-io",
+    "name": "Neumorphism.io",
+    "url": "https://neumorphism.io/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Neumorphism CSS shadow generator",
+    "finalUrl": "https://neumorphism.io/#e0e0e0",
+    "blocked": false,
+    "h1": "Neumorphism.io",
+    "bodyText": "Neumorphism.io Generate neumorphic designs 6173 Pick a color or Size Radius Distance Intensity Blur Shape Copy border-radius: 50px; background: #e0e0e0; box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff; What is Neumorphism? Neumorphism, also known as soft UI, is a visual design trend that combines elements of skeuomorphism and flat design. It creates a soft, extruded pla",
+    "fonts": [
+      "Noto Sans JP",
+      "sans-serif"
+    ],
+    "bg": "rgb(224, 224, 224)",
+    "shot": true
+  },
+  {
+    "id": "ant-design",
+    "name": "Ant Design",
+    "url": "https://ant.design/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Ant Design - The world's second most popular React UI framework",
+    "finalUrl": "https://ant.design/",
+    "blocked": false,
+    "h1": "Ant Design",
+    "bodyText": "Ant Design DesignDevelopmentComponentsBlogResources 6.6.5 中 En Ant Design AI friendly design system that combines beauty and intelligence, making work full of inspiration and joy. Getting Started Design Language SPONSORS YouMind TRACTIAN LobeHub CodeRabbit Flexible theme customization Open style algorithms and semantic structures make it easy for you and AI to customize themes Components Dashboa",
+    "fonts": [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      "Segoe UI",
+      "Roboto",
+      "Helvetica Neue",
+      "Arial",
+      "Noto Sans",
+      "sans-serif"
+    ],
+    "bg": "rgb(255, 255, 255)",
+    "shot": true
+  },
+  {
+    "id": "spotify",
+    "name": "Spotify",
+    "url": "https://open.spotify.com/",
+    "status": 200,
+    "frameAncestors": "'self' https://adgen-dev.spotify.com/account/*/ad/*/details https://adgen-dev.spotify.com/preview/* https://local.spotify.net/account/*/ad/*/details https://local.spotify.net/preview/* https://app.smartly.io/*",
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Spotify - Web Player: Music for everyone",
+    "finalUrl": "https://open.spotify.com/",
+    "blocked": false,
+    "h1": "Your Library",
+    "bodyText": "Skip to main content CtrlShiftL Premium Support Download Install App Sign up Log in Your Library Create your first playlist It's easy, we'll help you Create playlist Let's find some podcasts to follow We'll keep you updated on new episodes Browse podcasts Legal Safety & Privacy Center Privacy Policy Cookies About Ads Accessibility Notice at Collection Your Privacy Choices Cookies English Resize ma",
+    "fonts": [
+      "SpotifyMixUI",
+      "CircularSp-Arab",
+      "CircularSp-Hebr",
+      "CircularSp-Cyrl",
+      "CircularSp-Grek",
+      "CircularSp-Deva",
+      "Helvetica Neue",
+      "helvetica"
+    ],
+    "bg": "rgba(0, 0, 0, 0)",
+    "shot": true
+  },
+  {
+    "id": "bandcamp",
+    "name": "Bandcamp",
+    "url": "https://bandcamp.com/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Bandcamp",
+    "finalUrl": "https://bandcamp.com/",
+    "blocked": false,
+    "h1": "Fans have paid artists $1.81 billion using Bandcamp, and yesterday alone bought 107,499 records.",
+    "bodyText": "We care about your privacy Bandcamp uses cookies to make the site work the way you expect and to better understand how our users access the site. Read our Privacy Policy to learn more about how Bandcamp uses cookies. You can update your cookie settings at any time by clicking the “Cookie settings” link at the bottom of any Bandcamp page. Accept all Accept necessary only Skip to content Bandcamp",
+    "fonts": [
+      "Helvetica Neue",
+      "Arial",
+      "sans-serif"
+    ],
+    "bg": "rgb(236, 243, 244)",
+    "shot": true,
+    "dismissed": "clicked /^accept all/i",
+    "closed": "none",
+    "hidden": [],
+    "reshotAt": "2026-10-10"
+  },
+  {
+    "id": "itch-io",
+    "name": "itch.io",
+    "url": "https://itch.io/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": "SAMEORIGIN",
+    "frames": false,
+    "title": "Download the latest indie games - itch.io",
+    "finalUrl": "https://itch.io/",
+    "blocked": false,
+    "h1": "itch.io",
+    "bodyText": "Skip to main content itch.io Browse Games Game Jams Upload Game Developer Logs Community Log in Register POPULAR TAGS Browser games Horror games Multiplayer Visual novels Simulation macOS games Roguelike Linux games Browse all tags BROWSE Games Game assets Tools Albums & soundtracks Physical games Comics Books Randomizer GAMES BY PRICE On Sale Free games With demo Top sellers $5 or less $15 or les",
+    "fonts": [
+      "Lato",
+      "sans-serif",
+      "icomoon"
+    ],
+    "bg": "rgb(244, 244, 244)",
+    "shot": true
+  },
+  {
+    "id": "deno",
+    "name": "Deno",
+    "url": "https://deno.com/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": "DENY",
+    "frames": false,
+    "title": "Deno, the drop-in JavaScript runtime for Node developers",
+    "finalUrl": "https://deno.com/",
+    "blocked": false,
+    "h1": "Better, faster JavaScript",
+    "bodyText": "Skip to main content Deno is joining Cloudflare! Learn more-> Dismiss Products Docs Modules Community Blog ⌘K v2.9 What’s new in Deno→ Better, faster JavaScript Deno is a fast, open-source, fully Node-compatible JS runtime with TypeScript and everything else you need baked right in. Faster than Node; more stable than Bun. Get started GitHub Built-in tools: package manager, test runner, formatt",
+    "fonts": [
+      "Inter",
+      "ui-sans-serif",
+      "system-ui",
+      "-apple-system",
+      "BlinkMacSystemFont",
+      "Segoe UI",
+      "Roboto",
+      "Helvetica Neue"
+    ],
+    "bg": "rgba(0, 0, 0, 0)",
+    "shot": true
+  },
+  {
+    "id": "framer",
+    "name": "Framer",
+    "url": "https://www.framer.com/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": "DENY",
+    "frames": false,
+    "title": "Framer: AI design agent",
+    "finalUrl": "https://www.framer.com/",
+    "blocked": false,
+    "h1": "Framer is the design agent for every step from idea to launch",
+    "bodyText": "Framer Platform Solutions Resources Enterprise Pricing Log in Sign up Copy logo SVG Brand guidelines Framer is the design agent for every step from idea to launch Get started for free Download app New: Skills 0:36 Meet our customers Agents that work alongside you, not instead of you Start with agents Exploration Exploration — Big Intro Exploration — Side Nav Design with an ",
+    "fonts": [
+      "sans-serif",
+      "Inter Variable",
+      "Inter Variable Placeholder",
+      "GT Walsheim Medium",
+      "GT Walsheim Medium Placeholder",
+      "Inter",
+      "Inter Placeholder",
+      "Input Mono Bold"
+    ],
+    "bg": "rgb(0, 0, 0)",
+    "shot": true,
+    "dismissed": "no button found",
+    "closed": "none",
+    "hidden": [],
+    "reshotAt": "2026-10-10"
+  },
+  {
+    "id": "arc",
+    "name": "Arc",
+    "url": "https://arc.net/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Arc from The Browser Company",
+    "finalUrl": "https://arc.net/",
+    "blocked": false,
+    "h1": "Arc is the Chrome replacement I've been waiting for.",
+    "bodyText": "Max Mobile Developers Students Blog Meet Dia, the next evolution of Arc Weekly security updates, SOC 2 certification, and the Arc DNA you know (and love). Try Dia Arc is the Chrome replacement I've been waiting for. FYI: Arc receives Chromium updates only. For active security patches and enterprise-grade protection, download Dia instead. Download Arc for Windows Download Arc for Mac MORE DETAILS",
+    "fonts": [
+      "Marlin",
+      "-apple-system",
+      "BlinkMacSystemFont",
+      "Segoe UI",
+      "Roboto",
+      "Oxygen",
+      "Ubuntu",
+      "Cantarell"
+    ],
+    "bg": "rgb(255, 252, 236)",
+    "shot": true
+  },
+  {
+    "id": "wikipedia",
+    "name": "Wikipedia",
+    "url": "https://www.wikipedia.org/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Wikipedia",
+    "finalUrl": "https://www.wikipedia.org/",
+    "blocked": false,
+    "h1": "Wikipedia The Free Encyclopedia",
+    "bodyText": "Wikipedia The Free Encyclopedia English 7,249,000+ articles 日本語 1,521,000+ 記事 Deutsch 3.156.000+ Artikel Français 2 783 000+ articles Русский 2 121 000+ статей Español 2.141.000+ artículos Italiano 1.989.000+ voci 中文 1,559,000+ 条目 / 條目 Português 1.184.000+ artigos Polski 1 710 000+ haseł Search Wikipedia EN Afrikaans Shqip العربية Asturianu Azərbaycanca Български 閩南語 / Bân-lâm-gú বাংলা Беларуская ",
+    "fonts": [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      "Segoe UI",
+      "Roboto",
+      "Inter",
+      "Helvetica",
+      "Arial",
+      "sans-serif"
+    ],
+    "bg": "rgb(255, 255, 255)",
+    "shot": true,
+    "dismissed": "no button found",
+    "closed": "none",
+    "hidden": [],
+    "reshotAt": "2026-10-10"
+  },
+  {
+    "id": "stardew-valley",
+    "name": "Stardew Valley",
+    "url": "https://www.stardewvalley.net/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": "DENY",
+    "frames": false,
+    "title": "Stardew Valley",
+    "finalUrl": "https://www.stardewvalley.net/",
+    "blocked": false,
+    "h1": null,
+    "bodyText": "HOME BLOG FORUMS WIKI MEDIA MERCH FAQ TABLETOP You're moving to the Valley... You've inherited your grandfather's old farm plot in Stardew Valley. Armed with hand-me-down tools and a few coins, you set out to begin your new life! Previous Next Features Create the farm of your dreams: Turn your overgrown fields into a lively and bountiful farm! Learn to live off the land: Raise animals, go ",
+    "fonts": [
+      "Open Sans",
+      "sans-serif",
+      "Nunito",
+      "HelveticaNeue",
+      "Helvetica Neue",
+      "Arial"
+    ],
+    "bg": "rgba(0, 0, 0, 0)",
+    "shot": true
+  },
+  {
+    "id": "hubspot",
+    "name": "HubSpot",
+    "url": "https://www.hubspot.com/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": "DENY",
+    "frames": false,
+    "title": "HubSpot | Software & Tools for your Business - Homepage",
+    "finalUrl": "https://www.hubspot.com/",
+    "blocked": false,
+    "h1": "Build demand, win deals, and delight customers — all on one platform",
+    "bodyText": "___ Skip to content English Select a language High Contrast Customer Support Contact Sales Log in About About Products Products Solutions Solutions Pricing Resources Resources Get a demo of HubSpot's premium software Get started free with HubSpot's free tools HUBSPOT AGENTIC CUSTOMER PLATFORM Build demand, win deals, and delight customers — all on one platform HubSpot aligns marketing, sales, a",
+    "fonts": [
+      "HubSpot Sans",
+      "sans-serif",
+      "HubSpot Serif",
+      "serif",
+      "Lexend Deca",
+      "LexendDeca",
+      "Helvetica Neue",
+      "helvetica"
+    ],
+    "bg": "rgb(252, 252, 250)",
+    "shot": true,
+    "dismissed": "clicked /^accept all/i",
+    "closed": "none",
+    "hidden": [],
+    "reshotAt": "2026-10-10"
+  },
+  {
+    "id": "nintendo",
+    "name": "Nintendo",
+    "url": "https://www.nintendo.com/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Nintendo - Official Site: Consoles, Games, News, and More",
+    "finalUrl": "https://www.nintendo.com/us/",
+    "blocked": false,
+    "h1": "Nintendo.com home",
+    "bodyText": "Skip to main content Nintendo Explore Shop Support Search Log in / Sign up Nintendo Switch 2 Nintendo Switch Games Nintendo Switch Online News and events Play Nintendo My Nintendo Apps My Mario Meet the characters: Super Mario The Legend of Zelda Splatoon Kirby Pikmin Animal Crossing Metroid Nintendo.com home Promo slide 1 of 4 Available now! Steel yourself for the Heroic Games. Fantasy Violence",
+    "fonts": [
+      "Geologica Variable",
+      "-apple-system",
+      "BlinkMacSystemFont",
+      "sans-serif"
+    ],
+    "bg": "rgba(0, 0, 0, 0)",
+    "shot": true
+  },
+  {
+    "id": "tailwind",
+    "name": "Tailwind CSS",
+    "url": "https://tailwindcss.com/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": null,
+    "frames": true,
+    "title": "Tailwind CSS - Rapidly build modern websites without ever leaving your HTML.",
+    "finalUrl": "https://tailwindcss.com/",
+    "blocked": false,
+    "h1": "Rapidly build modern websites without ever leaving your HTML.",
+    "bodyText": "v4.3 Ctrl K Docs Play Blog Showcase Partners Plus text-8xl text-gray-950 tracking-tighter text-balance Rapidly build modern websites without ever leaving your HTML. text-lg text-gray-950 font-medium A utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup. Get started Quick search Ctrl K <d",
+    "fonts": [
+      "inter",
+      "inter Fallback",
+      "system-ui",
+      "plexMono",
+      "plexMono Fallback",
+      "monospace"
+    ],
+    "bg": "rgba(0, 0, 0, 0)",
+    "shot": true
+  },
+  {
+    "id": "discord",
+    "name": "Discord",
+    "url": "https://discord.com/",
+    "status": 200,
+    "frameAncestors": null,
+    "xFrameOptions": "DENY",
+    "frames": false,
+    "title": "Discord - Group Chat That’s All Fun & Games",
+    "finalUrl": "https://discord.com/",
+    "blocked": false,
+    "h1": "GROUP CHAT THAT’S ALL FUN & GAMES",
+    "bodyText": "Skip to main content Download 1 of 9 Nitro 2 of 9 Discover 3 of 9 Safety 4 of 9 Quests 5 of 9 Support 6 of 9 Blog 7 of 9 Developers 8 of 9 Careers 9 of 9 Log In GROUP CHAT THAT’S ALL FUN & GAMES Discord is great for playing games and chilling with friends, or even building a worldwide community. Customize your own space to talk, play, and hang out. Download for Linux Open Discord in your brow",
+    "fonts": [
+      "Ggsans",
+      "sans-serif",
+      "Abcgintodiscord",
+      "ABC Ginto Normal",
+      "Abcgintodiscordnord",
+      "Arial"
+    ],
+    "bg": "rgb(26, 32, 129)",
     "shot": true
   }
 ]

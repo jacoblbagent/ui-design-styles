@@ -59,7 +59,25 @@ const CANDIDATES = [
   { id: 'ikea', url: 'https://www.ikea.com/', name: 'IKEA' },
   { id: 'figma', url: 'https://www.figma.com/', name: 'Figma' },
   { id: 'readymag', url: 'https://readymag.com/', name: 'Readymag' },
-  { id: 'cargo', url: 'https://cargo.site/', name: 'Cargo' }
+  { id: 'cargo', url: 'https://cargo.site/', name: 'Cargo' },
+  { id: 'yahoo-japan', url: 'https://www.yahoo.co.jp/', name: 'Yahoo! Japan' },
+  { id: 'm3-material', url: 'https://m3.material.io/', name: 'Material Design 3' },
+  { id: 'microsoft', url: 'https://www.microsoft.com/', name: 'Microsoft' },
+  { id: 'glassmorphism', url: 'https://glassmorphism.com/', name: 'Glassmorphism' },
+  { id: 'neumorphism-io', url: 'https://neumorphism.io/', name: 'Neumorphism.io' },
+  { id: 'ant-design', url: 'https://ant.design/', name: 'Ant Design' },
+  { id: 'spotify', url: 'https://open.spotify.com/', name: 'Spotify' },
+  { id: 'bandcamp', url: 'https://bandcamp.com/', name: 'Bandcamp' },
+  { id: 'itch-io', url: 'https://itch.io/', name: 'itch.io' },
+  { id: 'deno', url: 'https://deno.com/', name: 'Deno' },
+  { id: 'framer', url: 'https://www.framer.com/', name: 'Framer' },
+  { id: 'arc', url: 'https://arc.net/', name: 'Arc' },
+  { id: 'wikipedia', url: 'https://www.wikipedia.org/', name: 'Wikipedia' },
+  { id: 'stardew-valley', url: 'https://www.stardewvalley.net/', name: 'Stardew Valley' },
+  { id: 'hubspot', url: 'https://www.hubspot.com/', name: 'HubSpot' },
+  { id: 'nintendo', url: 'https://www.nintendo.com/', name: 'Nintendo' },
+  { id: 'tailwind', url: 'https://tailwindcss.com/', name: 'Tailwind CSS' },
+  { id: 'discord', url: 'https://discord.com/', name: 'Discord' }
 ];
 
 const BLOCK_HINTS = /just a moment|attention required|access denied|are you a robot|verify you are human|enable javascript and cookies|403 forbidden|not acceptable/i;
