@@ -152,8 +152,14 @@ const OUT = path.join(__dirname, 'shots');
       pressed: await page.locator('.pill__seg[data-kind="' + k + '"][aria-pressed="true"]').count(),
       entries: await page.locator('.entry').count(),
       matrixRows: await page.locator('.matrix tbody tr').count(),
-      pointsKept: await page.locator('.atlas__name').count(),
-      pointsDimmed: await page.locator('.atlas__name.is-dim').count(),
+      /* the plane carries the pressed kind and nothing else */
+      atlasNames: await page.locator('.atlas__name').count(),
+      atlasNamesAreKindOnly: await page.evaluate((kind) =>
+        [...document.querySelectorAll('.atlas__name')].every((n) => window.FACETS.styles[n.getAttribute('data-id')].k === kind), k),
+      atlasNamesMatchEntries: await page.evaluate(() =>
+        document.querySelectorAll('.atlas__name').length === document.querySelectorAll('.entry').length),
+      legendNames: await page.locator('.atlas__legend li').count(),
+      atlasDimmed: await page.locator('.atlas__name.is-dim').count(),
       badges: await page.$$eval('.entry .tag--kind', (bs) => [...new Set(bs.map((b) => b.textContent.trim()))]),
       line: await page.locator('#count-line').textContent()
     };
@@ -209,6 +215,9 @@ const OUT = path.join(__dirname, 'shots');
   report.atlasPoints = await page.locator('.atlas__name').count();
   report.atlasNamesOnly = await page.evaluate(() => ({
     names: document.querySelectorAll('.atlas__name').length,
+    /* the plane carries the pressed kind alone: no name of another kind is left
+       on it, dimmed or otherwise */
+    kindsOnPlane: [...new Set([...document.querySelectorAll('.atlas__name')].map((n) => window.FACETS.styles[n.getAttribute('data-id')].k))],
     /* every wrapper the atlas used to have is gone: the name is the mark and
        the name is the control */
     wrapperElements: ['.atlas__pt', '.atlas__label', '.atlas__dot', '.atlas__stem']

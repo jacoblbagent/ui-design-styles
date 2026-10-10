@@ -2,7 +2,8 @@
    filters, copy, the detail modal and the theme toggle.
 
    Classification model (replaces the old four exclusive buckets):
-     - the atlas plots every style on two axes: restrained -> loud, flat -> dimensional
+     - the atlas plots the kind the pill has selected on two axes:
+       restrained -> loud, flat -> dimensional
      - the matrix shows the recurring techniques as columns, so shared traits line up
      - the two together are the only categorisation; there are no categories.
    Both read data/facets.js. */
@@ -55,6 +56,18 @@
     });
     if (!declared || !shared) return 0;
     return shared / declared;
+  }
+
+  /* The atlas plots the pill's kind and nothing else. The kind is the coarse
+     selection, so its entries are the only names placed on the plane; the rest
+     are not dimmed, they are simply not there, and they come back the moment
+     the pill moves. The original catalogue index travels with each one so the
+     jitter that separates two entries sharing a value does not change with the
+     selection. */
+  function atlasItems() {
+    var out = [];
+    CATALOG.forEach(function (e, i) { if (kindOf(e.id) === state.kind) out.push({ e: e, i: i }); });
+    return out;
   }
 
   function relatives(id, n) {
@@ -203,12 +216,13 @@
     return { x: x, y: y, side: "center" };
   }
 
-  function atlasHTML(items) {
-    /* every style is always on the map, so a filter dims the neighbourhood
-       instead of deleting it */
-    var dots = CATALOG.map(function (e, i) {
-      var f = facetOf(e.id);
-      var p = axisPos(i, f.v, f.d);
+  function atlasHTML() {
+    /* the plane carries the selected kind alone: a kind is a thing you are
+       looking at, not a thing you filter around, so the entries of the other
+       two kinds are not plotted at all */
+    var dots = atlasItems().map(function (it) {
+      var e = it.e, f = facetOf(e.id);
+      var p = axisPos(it.i, f.v, f.d);
       return '<button class="atlas__name" type="button" data-id="' + e.id + '" data-side="' + p.side + '"' +
           ' data-x="' + p.x.toFixed(2) + '" data-y="' + p.y.toFixed(2) + '"' +
           ' style="left:' + p.x.toFixed(2) + '%;bottom:' + p.y.toFixed(2) + '%"' +
@@ -234,11 +248,12 @@
     "</section>";
   }
 
-  /* On a phone the plot cannot hold 43 labels side by side, so the labels come
-     off and the same information is listed under the plot instead: the styles
-     in axis order with their two values. Nothing is dropped. */
+  /* On a phone the plot cannot hold the kind's labels side by side, so the
+     labels come off and the same information is listed under the plot instead:
+     the styles in axis order with their two values. Nothing of the kind is
+     dropped. */
   function atlasLegend() {
-    var rows = CATALOG.slice().sort(function (a, b) {
+    var rows = atlasItems().map(function (it) { return it.e; }).sort(function (a, b) {
       var fa = facetOf(a.id), fb = facetOf(b.id);
       return fb.v - fa.v || fb.d - fa.d;
     }).map(function (e) {
@@ -464,7 +479,7 @@
     var html = "";
 
     if (state.view !== "gallery") {
-      html += atlasHTML(visible);
+      html += atlasHTML();
       html += matrixHTML(visible);
       html += '<section class="section" id="sec-all">' +
         '<div class="section__head"><h2>Every entry</h2><span class="n">' + visible.length + "</span></div>" +
@@ -481,10 +496,10 @@
     countLine.textContent = countText(visible.length, sites.length);
     if (state.view !== "gallery") {
       declutterAtlas();
-      /* The atlas always carries every entry and the pill always selects one
-         kind, so what falls outside the selection is dimmed rather than
-         deleted: the neighbourhood of the chosen kind stays visible. A facet
-         filter dims by the same rule. */
+      /* The plane carries the selected kind and nothing else. Within it, a
+         trait filter (or a search) dims the names that fall outside, so the
+         neighbourhood of a filtered entry stays visible; the other two kinds
+         are not on the plane at all. */
       $$(".atlas__name", main).forEach(function (b) {
         if (!isVisible(b.getAttribute("data-id"))) b.classList.add("is-dim");
       });
