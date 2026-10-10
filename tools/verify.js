@@ -429,12 +429,54 @@ const OUT = path.join(__dirname, 'shots');
 
   // --- the reading aids: group boundaries, the crosshair, the readout, no tails ---
   report.matrixGroupBoundaries = await page.evaluate(() => {
-    const form = document.querySelector('.matrix__cell[data-group="Form"]');
-    const material = document.querySelector('.matrix__cell[data-group="Material"]');
+    const cell = (g) => document.querySelector('.matrix__cell[data-group="' + g + '"]');
+    const form = cell('Form');
+    const material = cell('Material');
+    const groups = [...new Set([...document.querySelectorAll('.matrix__col[data-group]')].map((c) => c.getAttribute('data-group')))];
+    const borderColours = {};
+    /* the first group starts the table, so it draws no left rule — only the
+       groups that actually draw one are read here */
+    groups.forEach((g) => {
+      const cs = getComputedStyle(cell(g));
+      if (cs.borderLeftWidth !== '0px') borderColours[g] = cs.borderLeftColor;
+    });
     return {
       formBorder: getComputedStyle(form).borderLeftWidth,
       materialBorder: getComputedStyle(material).borderLeftWidth,
-      groups: [...new Set([...document.querySelectorAll('.matrix__col[data-group]')].map((c) => c.getAttribute('data-group')))]
+      groups,
+      /* the group rules are drawn in the group's own hue, so the table's five
+         bands are told apart by colour rather than by a legend */
+      borderColours,
+      distinctBorderColours: new Set(Object.values(borderColours)).size
+    };
+  });
+  /* the categorical hues: each group's rule, its column labels and its marks
+     wear that group's own token, and each kind carries one too — the colour is
+     the family, so nothing needs a legend to say which is which */
+  report.categoricalHues = await page.evaluate(() => {
+    const token = (n) => {
+      const s = document.createElement('span');
+      s.style.color = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+      document.body.appendChild(s);
+      const c = getComputedStyle(s).color;
+      s.remove();
+      return c;
+    };
+    const groups = ['Material', 'Form', 'Type', 'Colour', 'Behaviour'];
+    const dots = groups.map((g) => {
+      const d = document.querySelector('.matrix__cell[data-group="' + g + '"] .dot--sig');
+      return { group: g, dot: d ? getComputedStyle(d).backgroundColor : null, token: token('--g-' + g.toLowerCase()) };
+    });
+    const labelColours = groups.map((g) => {
+      const l = document.querySelector('.matrix__col[data-group="' + g + '"] .matrix__collabel');
+      return l ? getComputedStyle(l).color : null;
+    });
+    return {
+      dotsWearGroupHue: dots.every((x) => x.dot && x.dot === x.token),
+      dots,
+      labelColours,
+      distinctLabelColours: new Set(labelColours).size,
+      kinds: ['style', 'pattern', 'practice'].map((k) => ({ kind: k, token: token('--k-' + k) }))
     };
   });
   // hover a mark in the middle of the table and read what the crosshair says

@@ -49,6 +49,13 @@
     for (var i = 0; i < COLUMNS.length; i++) if (t[COLUMNS[i].id] === 2) out.push(COLUMNS[i].id);
     return out;
   }
+  /* the hue an entry wears where it is not in a column: the group of its first
+     signature technique, so a name's colour says which family it is made of.
+     A practice holds no signature, so it falls back to its kind's hue. */
+  function sigGroupOf(id) {
+    var s = signatureOf(id);
+    return (s.length && COL_OF[s[0]]) ? COL_OF[s[0]].group : "";
+  }
 
   /* weighted overlap between two entries: shared traits over declared traits.
      A signature (2) counts double, so "both are made of this" outranks a cameo. */
@@ -127,14 +134,15 @@
   /* ---------- entry grid: summary only, detail lives in the modal ---------- */
   function entryHTML(e) {
     var sig = signatureOf(e.id).map(function (id) {
-      return '<span class="tag tag--sig">' + (COL_OF[id] ? COL_OF[id].label : id) + "</span>";
+      var c = COL_OF[id];
+      return '<span class="tag tag--sig"' + (c && c.group ? ' data-group="' + c.group + '"' : "") + '>' + (c ? c.label : id) + "</span>";
     }).join("");
     return '<article class="entry entry--summary" id="' + e.id + '" data-id="' + e.id + '" tabindex="0" role="group" aria-label="' + esc(e.name) + ' — open details">' +
       '<div class="entry__top">' +
         '<h3 class="entry__title">' + esc(e.name) + "</h3>" +
         '<p class="entry__meta">' + esc(e.era) + "</p>" +
       "</div>" +
-      '<p class="entry__tags"><span class="tag tag--kind" title="' + esc(kindNote(e.id)) + '">' + esc(kindLabel(e.id)) + "</span>" + sig + "</p>" +
+      '<p class="entry__tags"><span class="tag tag--kind" data-kind="' + kindOf(e.id) + '" title="' + esc(kindNote(e.id)) + '">' + esc(kindLabel(e.id)) + "</span>" + sig + "</p>" +
       '<div class="spec spec--' + e.id + '">' + e.html + "</div>" +
     "</article>";
   }
@@ -163,7 +171,8 @@
     var tags = '<ul class="traitlist">' + (sig.length
         ? sig.map(function (id) {
             var c = COL_OF[id];
-            return '<li><button class="tag tag--sig" type="button" data-facet="' + id + '">' +
+            return '<li><button class="tag tag--sig" type="button" data-facet="' + id + '"' +
+              (c && c.group ? ' data-group="' + c.group + '"' : "") + '>' +
               (c ? c.label : id) + '</button><span class="traitlist__note">' + (c ? esc(c.note) : "") + "</span></li>";
           }).join("")
         : '<li><span class="traitlist__note">A practice rather than a look: it holds no signature technique of its own.</span></li>') +
@@ -182,7 +191,7 @@
     var all = '<details class="alltraits"><summary>Every declared trait (' + COLUMNS.length + ' facets)</summary>' +
       '<ul class="traitlist traitlist--all">' + COLUMNS.map(function (c) {
         var lv = levelOf(e.id, c.id);
-        return '<li data-level="' + lv + '"><span class="dot dot--' + (lv === 2 ? "sig" : lv === 1 ? "sup" : "off") + '"></span>' +
+        return '<li data-level="' + lv + '" data-group="' + c.group + '"><span class="dot dot--' + (lv === 2 ? "sig" : lv === 1 ? "sup" : "off") + '"></span>' +
           esc(c.label) + '<span class="traitlist__note">' + (lv === 2 ? "signature" : lv === 1 ? "supporting" : "not declared") + "</span></li>";
       }).join("") + "</ul></details>";
 
@@ -239,7 +248,7 @@
     var parts = [["Style", c.style], ["Pattern", c.pattern], ["Practice", c.practice]].map(function (p) {
       var e = getEntry(p[1]);
       if (!e) return "";
-      return '<button class="combo__name" type="button" data-id="' + e.id + '" title="' +
+      return '<button class="combo__name" type="button" data-id="' + e.id + '" data-kind="' + kindOf(e.id) + '" title="' +
         esc(e.name) + " — " + esc(e.era) + " · " + esc(p[0]) + '">' +
         '<span class="combo__kind">' + esc(p[0]) + "</span>" + esc(e.name) + "</button>";
     });
@@ -287,9 +296,11 @@
        looking at, not a thing you filter around, so the entries of the other
        two kinds are not plotted at all */
     var dots = atlasItems().map(function (it) {
-      var e = it.e, f = facetOf(e.id);
+      var e = it.e, f = facetOf(e.id), g = sigGroupOf(e.id);
       var p = axisPos(it.i, f.v, f.d);
-      return '<button class="atlas__name" type="button" data-id="' + e.id + '" data-side="' + p.side + '"' +
+      return '<button class="atlas__name" type="button" data-id="' + e.id + '" data-kind="' + kindOf(e.id) + '"' +
+          (g ? ' data-group="' + g + '"' : "") +
+          ' data-side="' + p.side + '"' +
           ' data-x="' + p.x.toFixed(2) + '" data-y="' + p.y.toFixed(2) + '"' +
           ' style="left:' + p.x.toFixed(2) + '%;bottom:' + p.y.toFixed(2) + '%"' +
           ' title="' + esc(e.name) + " — " + esc(e.era) + " · loud " + f.v + "/100 · dimensional " + f.d + '/100">' +
@@ -323,8 +334,9 @@
       var fa = facetOf(a.id), fb = facetOf(b.id);
       return fb.v - fa.v || fb.d - fa.d;
     }).map(function (e) {
-      var f = facetOf(e.id);
-      return '<li><button type="button" data-id="' + e.id + '">' +
+      var f = facetOf(e.id), g = sigGroupOf(e.id);
+      return '<li><button type="button" data-id="' + e.id + '" data-kind="' + kindOf(e.id) + '"' +
+        (g ? ' data-group="' + g + '"' : "") + '>' +
         '<span class="atlas__lgname">' + esc(e.name) + "</span>" +
         '<span class="atlas__lgval" title="loud / dimensional">' + f.v + " &middot; " + f.d + "</span></button></li>";
     }).join("");
@@ -626,7 +638,9 @@
     var active = state.facets.map(function (id) {
       var c = COL_OF[id];
       var n = CATALOG.filter(function (e) { return levelOf(e.id, id); }).length;
-      return '<button class="chip" type="button" data-facet="' + id + '" aria-pressed="true" title="' + esc(c ? c.note : "") + '">' +
+      return '<button class="chip" type="button" data-facet="' + id + '"' +
+        (c && c.group ? ' data-group="' + c.group + '"' : "") +
+        ' aria-pressed="true" title="' + esc(c ? c.note : "") + '">' +
         esc(c ? c.label : id) + '<span class="chip__n">' + n + "</span>" +
         '<span class="chip__x" aria-hidden="true">&times;</span></button>';
     }).join("");
