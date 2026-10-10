@@ -80,7 +80,7 @@ const OUT = path.join(__dirname, 'shots');
      line when a filter is pressed, so the sticky bar cannot grow under the
      pointer. The chip row scrolls sideways instead of wrapping. */
   report.mastheadOneLine = await page.evaluate(async () => {
-    const parts = () => Array.from(document.querySelectorAll('.masthead__row > *, #chips'));
+    const parts = () => Array.from(document.querySelectorAll('.masthead__row > *, #chips, .pill'));
     /* one line means every part's box overlaps every other's vertically */
     const lines = () => {
       const boxes = parts().map((e) => e.getBoundingClientRect());
@@ -136,13 +136,20 @@ const OUT = path.join(__dirname, 'shots');
       total: Object.keys(declared).length
     };
   });
-  report.kindChips = await page.$$eval('.chip[data-kind]', (bs) => bs.map((b) => b.textContent.trim()));
-  report.kindBadgesOnCards = await page.locator('.entry .tag--kind').count();
+  report.kindPill = await page.evaluate(() => ({
+    segments: [...document.querySelectorAll('.pill__seg')].map((b) => b.textContent.trim()),
+    pressedCount: document.querySelectorAll('.pill__seg[aria-pressed="true"]').length,
+    pressed: (document.querySelector('.pill__seg[aria-pressed="true"]') || { textContent: '' }).textContent,
+    /* there is no All segment, and no kind chip survives in the chip row */
+    allSegmentRetired: document.querySelectorAll('.pill [data-kind="all"]').length,
+    kindChipsLeft: document.querySelectorAll('.chip[data-kind]').length
+  }));
   const kindProbe = {};
   for (const k of ['style', 'pattern', 'practice']) {
-    await page.locator('.chip[data-kind="' + k + '"]').click();
+    await page.locator('.pill__seg[data-kind="' + k + '"]').click();
     await page.waitForTimeout(220);
     kindProbe[k] = {
+      pressed: await page.locator('.pill__seg[data-kind="' + k + '"][aria-pressed="true"]').count(),
       entries: await page.locator('.entry').count(),
       matrixRows: await page.locator('.matrix tbody tr').count(),
       pointsKept: await page.locator('.atlas__name').count(),
@@ -150,23 +157,19 @@ const OUT = path.join(__dirname, 'shots');
       badges: await page.$$eval('.entry .tag--kind', (bs) => [...new Set(bs.map((b) => b.textContent.trim()))]),
       line: await page.locator('#count-line').textContent()
     };
-    /* the chips toggle, so the probe unpresses before the next one */
-    await page.locator('.chip[data-kind="' + k + '"]').click();
-    await page.waitForTimeout(200);
   }
-  report.kindProbeResetsToAll = await page.locator('.chip[data-kind][aria-pressed="true"]').count();
-  report.kindProbeEntriesBack = await page.locator('.entry').count();
-  report.kindFilter = kindProbe;
-  // a kind composes with a trait, and one Clear control clears both
-  await page.locator('.chip[data-kind="practice"]').click();
+  /* the pill is exclusive: the pressed segment is the selection, so pressing it
+     again changes nothing — there is no "all" to fall back to */
+  await page.locator('.pill__seg[data-kind="practice"]').click();
   await page.waitForTimeout(200);
-  await page.locator('.matrix__colbtn[data-facet="flat"]').click();
-  await page.waitForTimeout(220);
-  report.kindPlusTrait = { entries: await page.locator('.entry').count(), line: await page.locator('#count-line').textContent() };
-  await page.locator('.chip[data-clear-facets]').click();
-  await page.waitForTimeout(220);
-  report.clearResetsBoth = { entries: await page.locator('.entry').count(), pressedKind: await page.locator('.chip[data-kind="practice"][aria-pressed="true"]').count() };
+  report.kindPill.pressAgainIsNoOp = {
+    entries: await page.locator('.entry').count(),
+    pressedCount: await page.locator('.pill__seg[aria-pressed="true"]').count(),
+    stillPractice: await page.locator('.pill__seg[data-kind="practice"][aria-pressed="true"]').count()
+  };
+  report.kindFilter = kindProbe;
   // the detail states the kind, and a practice says plainly that it is not a look
+  // (the pill is still on Practices, so this entry is on screen)
   await page.locator('.entry#accessibility-first').click();
   await page.waitForTimeout(260);
   report.practiceDetail = {
@@ -183,6 +186,25 @@ const OUT = path.join(__dirname, 'shots');
   }));
   await page.locator('#detail [data-close]').click();
   await page.waitForTimeout(200);
+  // a kind composes with a trait, and Clear clears the trait, leaving the kind
+  await page.locator('.pill__seg[data-kind="practice"]').click();
+  await page.waitForTimeout(200);
+  await page.locator('.matrix__colbtn[data-facet="flat"]').click();
+  await page.waitForTimeout(220);
+  report.kindPlusTrait = { entries: await page.locator('.entry').count(), line: await page.locator('#count-line').textContent() };
+  await page.locator('[data-clear-filters]').click();
+  await page.waitForTimeout(220);
+  report.clearKeepsKind = {
+    entries: await page.locator('.entry').count(),
+    pressedKind: await page.locator('.pill__seg[data-kind="practice"][aria-pressed="true"]').count()
+  };
+  // back to the default kind for everything that follows
+  await page.locator('.pill__seg[data-kind="style"]').click();
+  await page.waitForTimeout(220);
+  report.defaultKindRestored = await page.evaluate(() => ({
+    pressed: (document.querySelector('.pill__seg[aria-pressed="true"]') || { textContent: '' }).textContent,
+    entries: document.querySelectorAll('.entry').length
+  }));
 
   report.atlasPoints = await page.locator('.atlas__name').count();
   report.atlasNamesOnly = await page.evaluate(() => ({
@@ -264,11 +286,13 @@ const OUT = path.join(__dirname, 'shots');
   report.matrixSupporting = await page.locator('.matrix__cell[data-level="1"]').count();
   report.matrixMatchesData = await page.evaluate(() => {
     const declared = window.FACETS.styles;
-    let sig = 0, sup = 0, want = 0;
-    Object.keys(declared).forEach((id) => Object.values(declared[id].t).forEach((lv) => { if (lv === 2) sig++; if (lv === 1) sup++; }));
-    document.querySelectorAll('.matrix__cell').forEach((c) => { want++; });
-    const styleRows = document.querySelectorAll('.matrix tbody tr').length;
-    return { sig, sup, cells: want, rowsTimesCols: styleRows * window.FACETS.columns.length,
+    /* the matrix now shows one kind at a time, so the marks are checked against
+       the rows actually on screen rather than against every entry */
+    const shown = [...document.querySelectorAll('.matrix tbody tr')].map((tr) => tr.id.replace(/^row-/, ''));
+    let sig = 0, sup = 0;
+    shown.forEach((id) => Object.values(declared[id].t).forEach((lv) => { if (lv === 2) sig++; if (lv === 1) sup++; }));
+    const cells = document.querySelectorAll('.matrix__cell').length;
+    return { sig, sup, cells, rowsTimesCols: shown.length * window.FACETS.columns.length,
       everyRowHasNeighbour: [...document.querySelectorAll('.matrix__near')].every((td) => td.textContent.trim().length > 0) };
   });
 
@@ -338,17 +362,25 @@ const OUT = path.join(__dirname, 'shots');
   report.matrixClear.afterClear = {
     buttons: await page.locator('[data-clear-filters]').count(),
     entries: await page.locator('.entry').count(),
-    pressedChips: await page.locator('.chip[aria-pressed="true"][data-facet], .chip[aria-pressed="true"][data-kind]').count()
+    pressedChips: await page.locator('.chip[aria-pressed="true"][data-facet]').count() + await page.locator('.pill__seg[aria-pressed="true"]').count()
   };
-  // it clears a kind and a trait together, in one click
-  await page.locator('.chip[data-kind="pattern"]').click();
+  // it clears the trait but leaves the kind, because the kind is not a filter
+  await page.locator('.pill__seg[data-kind="pattern"]').click();
   await page.waitForTimeout(200);
   await page.locator('.matrix__colbtn[data-facet="round"]').click();
   await page.waitForTimeout(240);
   report.matrixClear.beforeBothCleared = { entries: await page.locator('.entry').count(), line: await page.locator('#count-line').textContent() };
   await page.locator('[data-clear-filters]').click();
   await page.waitForTimeout(240);
-  report.matrixClear.afterBothCleared = { entries: await page.locator('.entry').count(), line: await page.locator('#count-line').textContent() };
+  report.matrixClear.afterBothCleared = {
+    entries: await page.locator('.entry').count(),
+    line: await page.locator('#count-line').textContent(),
+    kindKept: await page.locator('.pill__seg[data-kind="pattern"][aria-pressed="true"]').count()
+  };
+  /* back to the default kind, so the atlas, matrix and facet probes below run
+     over the styles the page opens on */
+  await page.locator('.pill__seg[data-kind="style"]').click();
+  await page.waitForTimeout(220);
 
   report.atlasLeads = await page.evaluate(() => {
     const names = [...document.querySelectorAll('.atlas__name')];
@@ -417,10 +449,20 @@ const OUT = path.join(__dirname, 'shots');
 
   const shots = ['glassmorphism', 'neo-brutalism', 'material-2', 'token-system', 'data-dashboard', 'memphis'];
   for (const id of shots) {
+    /* an entry is only on screen while its kind is the pressed one, so the pill
+       is set to that kind before the specimen is shot */
+    await page.evaluate((eid) => {
+      const k = window.FACETS.styles[eid].k;
+      document.querySelector('.pill__seg[data-kind="' + k + '"]').click();
+    }, id);
+    await page.waitForTimeout(240);
     const el = page.locator('.entry#' + id);
     await el.scrollIntoViewIfNeeded();
     await el.screenshot({ path: path.join(OUT, 'spec-' + id + '.png') });
   }
+  /* back to the kind the page opens on */
+  await page.evaluate(() => document.querySelector('.pill__seg[data-kind="style"]').click());
+  await page.waitForTimeout(240);
 
   // --- real-world examples ---
   await page.evaluate(async () => {
@@ -438,10 +480,14 @@ const OUT = path.join(__dirname, 'shots');
     return { total: imgs.length, loaded: imgs.filter((i) => i.complete && i.naturalWidth > 50).length,
              broken: imgs.filter((i) => i.complete && i.naturalWidth <= 50).map((i) => i.getAttribute('src')) };
   });
+  /* A gallery tag can point at an entry of another kind, which is not on screen
+     while the pill shows the current one: the tag still resolves, through the
+     detail dialog, so what is checked is that it names a real entry. */
   report.deadTagLinks = await page.evaluate(() =>
     [...document.querySelectorAll('.site__tags a')]
-      .map((a) => a.getAttribute('href'))
-      .filter((h) => !document.querySelector(h)).slice(0, 10));
+      .map((a) => a.getAttribute('href').replace(/^#/, ''))
+      .filter((id) => !window.FACETS.styles[id])
+      .slice(0, 10));
   report.embedButtons = await page.locator('[data-embed]').count();
   report.frameNotes = await page.evaluate(() => {
     const notes = [...document.querySelectorAll('.site__note')].map((n) => n.textContent);
@@ -496,9 +542,14 @@ const OUT = path.join(__dirname, 'shots');
   report.softShadowCleared = await page.locator('.entry').count();
   report.chipCleared = await page.locator('.chip[data-facet]').count();
   report.categoryChipsRetired = await page.locator('.chip[data-view="foundations"], .chip[data-view="surfaces"], .chip[data-view="expressive"], .chip[data-view="patterns"]').count();
-  /* the Everything chip is retired with them: nothing pressed means every kind */
-  report.everythingChipRetired = await page.locator('.chip[data-kind="all"]').count();
-  report.noKindPressed = await page.locator('.chip[data-kind][aria-pressed="true"]').count();
+  /* the old kind chips are retired, and the pill that replaced them has no All
+     segment: exactly one kind is always pressed */
+  report.kindChipsRetired = await page.locator('.chip[data-kind]').count();
+  report.pillAlwaysPressed = await page.evaluate(() => ({
+    segments: document.querySelectorAll('.pill__seg').length,
+    pressed: document.querySelectorAll('.pill__seg[aria-pressed="true"]').length,
+    allSegment: document.querySelectorAll('.pill [data-kind="all"]').length
+  }));
 
   // --- search ---
   await page.fill('#q', 'glass');

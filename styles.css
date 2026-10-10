@@ -158,11 +158,27 @@ kbd {
 .masthead.is-tight .masthead__title { font-size: var(--t-20); }
 .chip__x { margin-left: 1px; font-size: 13px; line-height: 1; opacity: .7; }
 
-/* the kind chips are the coarse filter, so they sit apart from the facet chips
-   that join them; the gallery chip is neither, and carries no extra margin */
-.chip--kind { background: var(--panel-2); }
-.chip--kind[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
-.chips .chip--kind + .chip[data-facet] { margin-left: 14px; }
+/* the kind pill: one control, three segments, exactly one always pressed. It
+   sits between the search and the filter chips, and it is the only place the
+   kind is chosen — the catalog never shows every kind at once, so there is no
+   unpressed state to come back to. */
+.pill {
+  display: inline-flex; flex: none; align-items: center; gap: 2px; padding: 3px;
+  border: 1px solid var(--hair-strong); border-radius: 999px; background: var(--panel-2);
+}
+.pill__seg {
+  display: inline-flex; align-items: center; gap: 6px; flex: none;
+  border: 0; border-radius: 999px; background: transparent; color: var(--ink-2);
+  font: 500 var(--t-12)/1 var(--sans); padding: 5px 10px; cursor: pointer;
+  touch-action: manipulation;
+}
+.pill__seg:hover { opacity: .8; }
+.pill__seg[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+.pill__seg[aria-pressed="true"] .chip__n { background: var(--panel); color: var(--ink); }
+
+/* the gallery chip and the facet chips do different jobs, so the facets that
+   join the row sit apart from it */
+.chips .chip[data-view] + .chip[data-facet] { margin-left: 14px; }
 .chip[aria-pressed="true"] .chip__x { opacity: 1; }
 /* The count is not shown: each section head already carries the number that
    matters ("Every entry 4", "Trait matrix 4 x 22", "Atlas 4"), so a second tally
@@ -376,12 +392,16 @@ body { scrollbar-color: var(--hair-strong) transparent; }
   .wrap { padding: 0 14px; }
   .grid { grid-template-columns: 1fr; gap: 14px; }
   .masthead { padding-top: 12px; }
-  /* name and theme share the first line; search and chips take the second */
+  /* name and theme share the first line; the kind pill takes the second on its
+     own, so its three segments stay readable, and search and chips share the
+     third */
   .masthead__row { flex-wrap: wrap; }
   .masthead__title { font-size: var(--t-20); flex: 1 1 auto; }
   .masthead .ghost { flex: none; order: 1; }
-  .controls { flex: 1 1 100%; order: 2; }
-  .search { max-width: none; flex: 1 1 200px; }
+  .controls { flex: 1 1 100%; order: 2; flex-wrap: wrap; }
+  .pill { flex: 1 1 100%; order: 1; }
+  .pill__seg { flex: 1 1 0; justify-content: center; }
+  .search { max-width: none; flex: 1 1 140px; order: 2; }
   .search input { font-size: 16px; }
   .entry { padding: 14px; }
   .modal { width: calc(100vw - 20px); padding: 16px; max-height: 90vh; }
@@ -666,10 +686,10 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
      instead — still inside the matrix section, still one tap from the columns. */
   /* one row of chips on a phone, scrolling sideways, rather than two or three
      stacked rows holding a third of the screen */
-  .chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+  .chips { flex: 1 1 60px; order: 3; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
   .chips::-webkit-scrollbar { display: none; }
   .chip { flex: none; }
-  .chips .chip--kind + .chip:not(.chip--kind) { margin-left: 12px; }
+  .chips .chip[data-view] + .chip[data-facet] { margin-left: 12px; }
 
   .matrix__body { display: flex; flex-direction: column; }
   .matrix__body > .matrix__bar { order: -1; position: static; margin: 0 0 12px; padding: 8px 10px; gap: 8px; }

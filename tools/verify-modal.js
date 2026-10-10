@@ -44,7 +44,7 @@ const BASE = process.env.BASE_URL || 'http://localhost:8791/';
   out.hashAfterEsc = await p1.evaluate(() => location.hash);
 
   // click anywhere on the card body opens it
-  await p1.locator('.entry#flat-design .entry__blurb').click();
+  await p1.locator('.entry#flat-design .entry__title').click();
   await p1.waitForTimeout(250);
   out.openedByCardClick = await p1.evaluate(() => {
     const d = document.querySelector('#detail[open]');
@@ -73,19 +73,12 @@ const BASE = process.env.BASE_URL || 'http://localhost:8791/';
   await p1.waitForTimeout(250);
   out.hashAfterCloseButton = await p1.evaluate(() => location.hash);
 
-  // a gallery tag link opens an entry, and its own atlas link closes and jumps
+  // the placement block is retired: the dialog carries no atlas jump link any more
   await p1.goto(BASE + '#material-2', { waitUntil: 'networkidle' });
   await p1.waitForTimeout(300);
-  await p1.locator('#detail [data-scroll]').click();
-  await p1.waitForTimeout(400);
-  out.scrollLinkClosed = await p1.evaluate(() => !document.querySelector('#detail[open]'));
-  out.scrollLinkHash = await p1.evaluate(() => location.hash);
-  out.scrollLinkAtAtlas = await p1.evaluate(() => {
-    const s = document.getElementById('sec-atlas').getBoundingClientRect();
-    const mh = document.querySelector('.masthead').offsetHeight;
-    /* the section lands just under the sticky header, not under the top edge */
-    return { top: Math.round(s.top), masthead: mh, landedClearOfHeader: s.top >= -4 && s.top <= mh + 60 };
-  });
+  out.placementLinkRetired = await p1.locator('#detail [data-scroll], #detail .placement, #detail .placement__axes').count();
+  await p1.keyboard.press('Escape');
+  await p1.waitForTimeout(200);
 
   // mobile
   const c2 = await b.newContext({ viewport: { width: 390, height: 780 } });

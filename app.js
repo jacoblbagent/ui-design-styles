@@ -24,7 +24,7 @@
   var GALLERY = (window.GALLERY && window.GALLERY.sites) || [];
   var CAPTURED = (window.GALLERY && window.GALLERY.capturedAt) || "";
 
-  var state = { q: "", view: "all", kind: "all", facets: [], theme: "light" };
+  var state = { q: "", view: "all", kind: "style", facets: [], theme: "light" };
 
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
@@ -364,7 +364,7 @@
         '<p class="matrix__readout" id="matrix-readout" role="status" aria-live="polite">' +
           '<span class="matrix__ro-hint">Hover or focus a mark — its row and column light up, and the pair is named here.</span>' +
         "</p>" +
-        ((state.facets.length || state.kind !== "all")
+        ((state.facets.length)
           ? '<button class="ghost ghost--tiny matrix__clear" type="button" data-clear-filters>Clear all filters</button>'
           : "") +
       "</div>" +
@@ -428,12 +428,15 @@
 
   /* ---------- render ---------- */
   var main = $("#catalog");
+  var pill = $("#pill");
   var chips = $("#chips");
   var countLine = $("#count-line");
 
   function matches(e) {
     if (state.view === "gallery") return false;
-    if (state.kind !== "all" && kindOf(e.id) !== state.kind) return false;
+    /* the pill always holds one kind, so this is not "no kind selected" — it
+       is the selection itself */
+    if (kindOf(e.id) !== state.kind) return false;
     for (var i = 0; i < state.facets.length; i++) {
       if (!levelOf(e.id, state.facets[i])) return false;
     }
@@ -446,11 +449,8 @@
   }
 
   function filterNote(visible) {
-    if (!state.facets.length && state.kind === "all") return "";
-    var bits = [];
-    if (state.kind !== "all" && KIND_OF[state.kind]) bits.push(KIND_OF[state.kind].label);
-    if (state.facets.length) bits.push(state.facets.map(function (id) { return COL_OF[id] ? COL_OF[id].label : id; }).join(" + "));
-    var labels = bits.join(" + ");
+    if (!state.facets.length) return "";
+    var labels = state.facets.map(function (id) { return COL_OF[id] ? COL_OF[id].label : id; }).join(" + ");
     var listed = visible.slice(0, 8).map(function (e) { return esc(e.name); });
     var more = visible.length > listed.length ? " and " + (visible.length - listed.length) + " more" : "";
     return '<p class="filterline"><b>' + esc(labels) + "</b> — " +
@@ -481,18 +481,18 @@
     countLine.textContent = countText(visible.length, sites.length);
     if (state.view !== "gallery") {
       declutterAtlas();
-      /* a facet filter dims the styles that fall outside it, so the
-         neighbourhood of a filtered style stays visible */
-      if (state.facets.length || state.q || state.kind !== "all") {
-        $$(".atlas__name", main).forEach(function (b) {
-          if (!isVisible(b.getAttribute("data-id"))) b.classList.add("is-dim");
-        });
-        /* the narrow layout lists the names instead of plotting them, so the
-           same dimming rule applies to that list */
-        $$(".atlas__legend button", main).forEach(function (b) {
-          if (!isVisible(b.getAttribute("data-id"))) b.classList.add("is-dim");
-        });
-      }
+      /* The atlas always carries every entry and the pill always selects one
+         kind, so what falls outside the selection is dimmed rather than
+         deleted: the neighbourhood of the chosen kind stays visible. A facet
+         filter dims by the same rule. */
+      $$(".atlas__name", main).forEach(function (b) {
+        if (!isVisible(b.getAttribute("data-id"))) b.classList.add("is-dim");
+      });
+      /* the narrow layout lists the names instead of plotting them, so the
+         same dimming rule applies to that list */
+      $$(".atlas__legend button", main).forEach(function (b) {
+        if (!isVisible(b.getAttribute("data-id"))) b.classList.add("is-dim");
+      });
       /* label widths change when the webfont swaps in, which moves the layout */
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { declutterAtlas(); });
     }
@@ -508,30 +508,39 @@
   }
 
   function countText(nStyles, nSites) {
-    var filtering = state.q || state.view !== "all" || state.facets.length || state.kind !== "all";
-    var bits = [];
-    bits.push(filtering ? "showing " + nStyles + " of " + CATALOG.length + " entries" : CATALOG.length + " entries");
-    if (GALLERY.length) bits.push(filtering ? nSites + " of " + GALLERY.length + " real sites" : GALLERY.length + " real sites");
-    if (state.kind !== "all") bits.push(KIND_OF[state.kind] ? KIND_OF[state.kind].label : state.kind);
+    /* the kind pill always narrows the catalog, so the entry count always
+       reads "N of the whole catalog"; the gallery is not filtered by kind, so
+       it reports its own state. */
+    var bits = ["showing " + nStyles + " of " + CATALOG.length + " entries"];
+    if (GALLERY.length) bits.push(state.q ? nSites + " of " + GALLERY.length + " real sites" : GALLERY.length + " real sites");
+    bits.push(KIND_OF[state.kind] ? KIND_OF[state.kind].label : state.kind);
     if (state.facets.length) bits.push(state.facets.map(function (id) { return COL_OF[id] ? COL_OF[id].label : id; }).join(" + "));
     if (state.view === "gallery") bits.push("Real-world examples");
     return bits.join(" · ") + (state.q ? ' · matching "' + state.q + '"' : "");
   }
 
-  /* ---------- chips: the filter state, not the whole vocabulary ----------
-     The vocabulary is the matrix: its columns carry the counts and are the
-     filter controls. Repeating all 22 of them up here doubled the sticky
-     header and said the same thing twice, so the chip row only carries what
-     the matrix cannot: the kinds, the gallery, and whichever facets are on. */
-  function renderChips() {
-    /* the coarse filter: what kind of thing is this, before which of its traits
-       it happens to declare. There is no All chip — the kind chips toggle, so
-       clicking the pressed one is the way back to every kind at once. */
-    var kindChips = KINDS.map(function (k) {
+  /* ---------- the kind pill: what kind of thing is this ----------
+     One pill, three segments, exactly one always pressed. The catalog never
+     shows every kind at once: it opens on Styles, and Patterns and Practices
+     are one click away. The kind chips this replaces could all be off, so
+     "everything" was a state; that state is gone, which is why pressing the
+     segment that is already pressed does nothing. */
+  function renderPill() {
+    if (!pill) return;
+    pill.innerHTML = KINDS.map(function (k) {
       var n = CATALOG.filter(function (e) { return kindOf(e.id) === k.id; }).length;
-      return '<button class="chip chip--kind" type="button" data-kind="' + k.id + '" aria-pressed="' + (state.kind === k.id) + '" title="' + esc(k.note) + '">' +
+      var on = state.kind === k.id;
+      return '<button class="pill__seg" type="button" data-kind="' + k.id + '" aria-pressed="' + on + '" title="' + esc(k.note) + '">' +
         esc(k.label) + '<span class="chip__n">' + n + "</span></button>";
     }).join("");
+  }
+
+  /* ---------- chips: the filter state, not the whole vocabulary ----------
+     The vocabulary is the matrix: its columns carry the counts and are the
+     filter controls. The kind now lives in the pill beside them, so the chip
+     row carries only what neither can: the gallery, and whichever facets are
+     on. */
+  function renderChips() {
     var active = state.facets.map(function (id) {
       var c = COL_OF[id];
       var n = CATALOG.filter(function (e) { return levelOf(e.id, id); }).length;
@@ -539,14 +548,14 @@
         esc(c ? c.label : id) + '<span class="chip__n">' + n + "</span>" +
         '<span class="chip__x" aria-hidden="true">&times;</span></button>';
     }).join("");
-    var clear = (state.facets.length > 1 || (state.kind !== "all" && state.facets.length))
+    var clear = state.facets.length > 1
       ? '<button class="chip chip--clear" type="button" data-clear-facets>Clear all</button>'
       : "";
     var gallery = GALLERY.length
       ? '<button class="chip" type="button" data-view="gallery" aria-pressed="' + (state.view === "gallery") + '">' +
         "Real-world examples" + '<span class="chip__n">' + GALLERY.length + "</span></button>"
       : "";
-    chips.innerHTML = kindChips + gallery + active + clear;
+    chips.innerHTML = gallery + active + clear;
     /* the chip row is one line and scrolls rather than wrapping, so a facet
        pressed from the matrix must not land off the right edge unseen */
     var pressed = chips.querySelector('.chip[aria-pressed="true"]');
@@ -567,22 +576,30 @@
     var btn = ev.target.closest(".chip");
     if (!btn) return;
     if (btn.hasAttribute("data-clear-facets")) {
-      /* one control, and it clears both halves of the filter */
+      /* the kind is not a filter any more, so this clears the facets alone */
       state.facets = [];
-      state.kind = "all";
     } else if (btn.hasAttribute("data-facet")) {
       toggleFacet(btn.getAttribute("data-facet"));
-      state.view = "all";
-    } else if (btn.hasAttribute("data-kind")) {
-      /* pressing the pressed kind is the way back to all of them */
-      var k = btn.getAttribute("data-kind");
-      state.kind = (state.kind === k) ? "all" : k;
       state.view = "all";
     } else {
       var v = btn.getAttribute("data-view");
       state.view = (state.view === v) ? "all" : v;
       if (state.view === "gallery") state.facets = [];
     }
+    renderChips();
+    render();
+  });
+
+  /* The kind pill is exclusive: the pressed segment is the selection, so
+     pressing it again changes nothing — there is no "all" to fall back to. */
+  if (pill) pill.addEventListener("click", function (ev) {
+    var btn = ev.target.closest(".pill__seg");
+    if (!btn) return;
+    var k = btn.getAttribute("data-kind");
+    if (k === state.kind) return;
+    state.kind = k;
+    state.view = "all";
+    renderPill();
     renderChips();
     render();
   });
@@ -653,6 +670,17 @@
   var lastFocus = null;
 
   function showDetail(e) {
+    /* An entry of another kind can be reached from here: a deep link, a gallery
+       tag or a neighbour link. The pill never shows two kinds at once, so it
+       moves to the entry's kind and the page behind the dialog agrees with what
+       is open. */
+    if (kindOf(e.id) !== state.kind) {
+      state.kind = kindOf(e.id);
+      state.view = "all";
+      renderPill();
+      renderChips();
+      render();
+    }
     modal.innerHTML = detailHTML(e);
     if (typeof modal.showModal === "function") { if (!modal.open) modal.showModal(); }
     else modal.setAttribute("open", "");
@@ -736,10 +764,9 @@
   main.addEventListener("click", function (ev) {
     var clearBtn = ev.target.closest("#clear-facets, [data-clear-facets], [data-clear-filters]");
     if (clearBtn) {
-      /* the section line names the kind as well as the traits, so Clear clears
-         everything it just listed */
+      /* the section line names the traits only — the kind lives in the pill
+         and is not a filter to clear */
       state.facets = [];
-      state.kind = "all";
       renderChips();
       render();
       return;
@@ -913,6 +940,7 @@
   });
 
   /* ---------- go ---------- */
+  renderPill();
   renderChips();
   render();
 })();
