@@ -1,39 +1,25 @@
 /* Chrome for the catalog.
-   House floor applies here: hairline-only cards, one neutral ramp, a set of
-   categorical hues (five technique groups, three kinds) as the only colour that
-   means anything, no gradient text, no glass, no uppercase eyebrow labels, no
-   unicode glyphs, tabular numerals, themed browser surfaces, one authored motion
-   moment. */
+   House floor applies here: hairline-only cards, one neutral ramp, no gradient text,
+   no glass, no uppercase eyebrow labels, no unicode glyphs, tabular numerals,
+   themed browser surfaces, one authored motion moment. */
 
 :root {
-  --bg: #fafafa;
+  --bg: #eceef0;
   --panel: #ffffff;
-  --panel-2: #f5f5f5;
-  --stage: #f5f5f5;
-  --ink: #171717;
-  --ink-2: #404040;
-  --muted: #737373;
-  --hair: #e5e5e5;
-  --hair-strong: #d4d4d4;
+  --panel-2: #f5f6f8;
+  --stage: #f7f8f9;
+  --ink: #14171c;
+  --ink-2: #3d444e;
+  --muted: #5b6572;
+  --hair: #dcdfe4;
+  --hair-strong: #c6cad1;
   --accent: #bc4a15;
   --accent-soft: #f6e6dd;
   --chip-bg: #d6d3d1;
   --chip-ink: #33383f;
-  --code-bg: #1e1e1e;
-  --code-ink: #e5e5e5;
+  --code-bg: #14171c;
+  --code-ink: #e6e9ee;
   --focus: #1f4fd8;
-
-  /* categorical hues: one per technique group, one per kind. They carry meaning
-     (which family a mark belongs to), so they are the only colour on the page
-     beyond the neutral ramp and the accent. */
-  --g-material: #0f766e;
-  --g-form: #7c3aed;
-  --g-type: #2563eb;
-  --g-colour: #db2777;
-  --g-behaviour: #15803d;
-  --k-style: #bc4a15;
-  --k-pattern: #a16207;
-  --k-practice: #475569;
 
   --t-12: 12px;
   --t-14: 14px;
@@ -53,46 +39,23 @@
 }
 
 html[data-theme="dark"] {
-  --bg: #121212;
-  --panel: #1e1e1e;
-  --panel-2: #262626;
-  --stage: #1a1a1a;
-  --ink: #f5f5f5;
-  --ink-2: #d4d4d4;
-  --muted: #a3a3a3;
-  --hair: #2e2e2e;
-  --hair-strong: #404040;
-  --accent: #ea6b2a;
+  --bg: #0e1013;
+  --panel: #16191e;
+  --panel-2: #1b1f25;
+  --stage: #11141a;
+  --ink: #e9ecf1;
+  --ink-2: #c3c9d3;
+  --muted: #9aa4b2;
+  --hair: #272c34;
+  --hair-strong: #3a414b;
+  --accent: #f08a52;
   --accent-soft: #2c1c14;
   --chip-bg: #3f3f46;
   --chip-ink: #e6e3e1;
-  --code-bg: #0d0d0d;
-  --code-ink: #e5e5e5;
+  --code-bg: #0b0d10;
+  --code-ink: #dfe3ea;
   --focus: #7fa4ff;
-
-  /* dark mode wears the same eight hues one step deeper, so the colour sits in
-     the page rather than glowing on top of it. Every value still clears 4.5:1
-     against --panel, so a column label or a mark stays readable. */
-  --g-material: #14b8a6;
-  --g-form: #9575f0;
-  --g-type: #3b82f6;
-  --g-colour: #ec4899;
-  --g-behaviour: #22c55e;
-  --k-style: #ea6b2a;
-  --k-pattern: #f59e0b;
-  --k-practice: #7c8ba1;
 }
-
-/* the hue a mark, a column or a tag wears is read off its own attribute, so a
-   rule only has to name the family once */
-[data-group="Material"] { --g: var(--g-material); }
-[data-group="Form"] { --g: var(--g-form); }
-[data-group="Type"] { --g: var(--g-type); }
-[data-group="Colour"] { --g: var(--g-colour); }
-[data-group="Behaviour"] { --g: var(--g-behaviour); }
-[data-kind="style"] { --k: var(--k-style); }
-[data-kind="pattern"] { --k: var(--k-pattern); }
-[data-kind="practice"] { --k: var(--k-practice); }
 
 * { box-sizing: border-box; }
 
@@ -181,14 +144,12 @@ kbd {
   touch-action: manipulation;
 }
 .chip:hover { opacity: .8; }
-/* a pressed facet wears its group's hue, so the chip row and the matrix column
-   it came from are the same colour */
-.chip[aria-pressed="true"] { border-color: var(--g, var(--ink)); background: var(--g, var(--ink)); color: var(--panel); }
+.chip[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--panel); }
 .chip__n {
   font: 600 var(--t-12)/1 var(--sans); font-variant-numeric: tabular-nums;
   background: var(--chip-bg); color: var(--chip-ink); border-radius: var(--r-chip); padding: 3px 6px;
 }
-.chip[aria-pressed="true"] .chip__n { background: var(--panel); color: var(--g, var(--ink)); }
+.chip[aria-pressed="true"] .chip__n { background: var(--panel); color: var(--ink); }
 
 
 /* scrolling past the top collapses the header, so the sticky bar does not hold
@@ -212,10 +173,8 @@ kbd {
   touch-action: manipulation;
 }
 .pill__seg:hover { opacity: .8; }
-/* the pressed kind wears its own hue: orange for styles, ochre for patterns,
-   slate for practices — the same three colours the kind tags use */
-.pill__seg[aria-pressed="true"] { background: var(--k); color: var(--panel); }
-.pill__seg[aria-pressed="true"] .chip__n { background: var(--panel); color: var(--k); }
+.pill__seg[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+.pill__seg[aria-pressed="true"] .chip__n { background: var(--panel); color: var(--ink); }
 
 /* the gallery chip and the facet chips do different jobs, so the facets that
    join the row sit apart from it */
@@ -281,7 +240,7 @@ kbd {
   box-shadow: 0 26px 64px rgba(0, 0, 0, .38);
   scrollbar-color: var(--hair-strong) transparent;
 }
-.modal::backdrop { background: rgba(0, 0, 0, .58); }
+.modal::backdrop { background: rgba(9, 11, 14, .58); }
 .modal > * + * { margin-top: 16px; }
 
 .modal__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
@@ -349,7 +308,7 @@ details.code pre {
   font: 400 var(--t-12)/1.65 var(--mono); max-height: 320px;
 }
 details.code pre::-webkit-scrollbar { height: 10px; }
-details.code pre::-webkit-scrollbar-thumb { background: #525252; border-radius: 5px; }
+details.code pre::-webkit-scrollbar-thumb { background: #4a5261; border-radius: 5px; }
 
 .entry__src { margin: 0; font-size: var(--t-12); color: var(--muted); }
 
@@ -459,10 +418,9 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 
 /* ---------- classification layer: atlas + trait matrix ----------
 
-   The catalog chrome rule still holds here: hairlines only, one accent, the
-   categorical hues as the only meaningful colour, no shadows. The atlas is a
-   coordinate space and the matrix is a table — both are chrome, so neither is
-   allowed to look like a style specimen. */
+   The catalog chrome rule still holds here: hairlines only, one accent, no
+   shadows. The atlas is a coordinate space and the matrix is a table — both
+   are chrome, so neither is allowed to look like a style specimen. */
 
 .atlas {
   margin-top: 18px;
@@ -497,7 +455,7 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 .atlas__name {
   position: absolute; margin: 0; padding: 2px 4px;
   border: 1px solid transparent; border-radius: 3px;
-  background: var(--stage); color: var(--g, var(--k, var(--ink-2)));
+  background: var(--stage); color: var(--ink-2);
   font: 400 11px/1 var(--sans); white-space: nowrap;
   cursor: pointer; touch-action: manipulation;
   transition: opacity 140ms var(--ease);
@@ -513,32 +471,21 @@ body { scrollbar-color: var(--hair-strong) transparent; }
 .atlas__name.is-dim:hover { opacity: 1; }
 
 /* the five technique groups are the coarse landmarks: a mark sits in one of
-   them, and the boundary is where a group starts — drawn in the group's own hue
-   so the table's five bands read at a glance */
+   them, and the boundary is where a group starts */
 .matrix__col[data-group="Form"], .matrix__cell[data-group="Form"],
 .matrix__col[data-group="Type"], .matrix__cell[data-group="Type"],
 .matrix__col[data-group="Colour"], .matrix__cell[data-group="Colour"],
-.matrix__col[data-group="Behaviour"], .matrix__cell[data-group="Behaviour"] { border-left: 2px solid var(--g); }
-/* each group's column heads carry the same hue: a rule under the head and the
-   label itself, so a column says which family it belongs to without a legend */
-.matrix__col[data-group] { border-bottom: 2px solid var(--g); }
-.matrix__col[data-group] .matrix__collabel { color: var(--g); }
+.matrix__col[data-group="Behaviour"], .matrix__cell[data-group="Behaviour"] { border-left: 1px solid var(--hair-strong); }
 
 /* the header row is pinned below the masthead for as long as the table is on
    screen, so a mark is never far from the name of its column. The wrapper keeps
    clipping the horizontal overflow without becoming a scroll container in the
    other axis — `overflow-y: clip` is what lets the sticky header ride the page
-   scrollport instead of a wrapper that moves with the page.
-   The *thead* carries the sticky position and the opaque backdrop, not each
-   cell: a diagonal label overruns its own cell into the next one, and an opaque
-   neighbouring cell would paint over the tail of the word. With the cells
-   transparent the label is free to overrun, and the single thead plate still
-   hides the rows scrolling under it. */
-table.matrix thead {
+   scrollport instead of a wrapper that moves with the page. */
+table.matrix thead th {
   position: sticky; top: var(--masthead-h, 190px); z-index: 5;
-  background: var(--panel);
+  background: var(--panel); border-bottom: 1px solid var(--hair-strong);
 }
-table.matrix thead th { border-bottom: 1px solid var(--hair-strong); }
 
 /* pinned to the bottom of the viewport for as long as the matrix is on screen,
    so the pair is named next to the mark you are actually pointing at — and the
@@ -597,26 +544,19 @@ table.matrix tbody tr:last-child th, table.matrix tbody tr:last-child td { borde
 table.matrix .matrix__corner { position: sticky; left: 0; z-index: 6; background: var(--panel); border-right: 1px solid var(--hair); }
 .matrix__nearhead { width: 1%; }
 
-/* the label runs diagonally (45° up to the right) so the column names read as
-   words rather than as a vertical spine; the cell is tall enough to hold the
-   whole rotated box, so nothing is clipped by the scroll wrapper's top edge */
-.matrix__col { vertical-align: bottom; padding: 0; height: 68px; }
+.matrix__col { vertical-align: bottom; padding: 0; }
 /* a column header scrolled to must clear the sticky masthead, not hide under it */
 table.matrix thead th, .matrix__colbtn { scroll-margin-top: calc(var(--masthead-h, 190px) + 14px); }
 .matrix__colbtn {
-  position: relative; display: block; width: 100%; height: 100%;
-  background: none; border: 0; margin: 0; padding: 0; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 3px; width: 100%;
+  background: none; border: 0; margin: 0; padding: 8px 4px 6px; cursor: pointer;
   touch-action: manipulation;
 }
 .matrix__collabel {
-  position: absolute; left: 7px; bottom: 5px;
-  transform-origin: left bottom; transform: rotate(-45deg); white-space: nowrap;
+  writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;
   font: 500 10.5px/1 var(--sans); letter-spacing: .02em; color: var(--ink-2);
 }
-.matrix__coln {
-  position: absolute; right: 3px; bottom: 3px;
-  font: 400 9.5px/1 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums;
-}
+.matrix__coln { font: 400 9.5px/1 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums; }
 .matrix__colbtn:hover .matrix__collabel { color: var(--accent); }
 .matrix__colbtn[aria-pressed="true"] { background: var(--accent-soft); }
 .matrix__colbtn[aria-pressed="true"] .matrix__collabel { color: var(--accent); }
@@ -654,10 +594,6 @@ table.matrix thead th, .matrix__colbtn { scroll-margin-top: calc(var(--masthead-
 .dot--sig { background: var(--ink); }
 .dot--sup { background: var(--hair-strong); }
 .dot--off { background: transparent; border: 1px solid var(--hair-strong); box-sizing: border-box; }
-/* inside a group a mark takes that group's hue: solid for a signature, a pale
-   wash for a supporting mark, nothing at all for one that is not declared */
-[data-group] .dot--sig { background: var(--g); }
-[data-group] .dot--sup { background: color-mix(in srgb, var(--g) 32%, var(--panel)); }
 
 /* ---------- tags on the entry cards and in the detail ---------- */
 
@@ -668,12 +604,10 @@ table.matrix thead th, .matrix__colbtn { scroll-margin-top: calc(var(--masthead-
   font: 500 10.5px/1 var(--sans); letter-spacing: .05em; text-transform: uppercase; padding: 4px 6px;
 }
 .tag--sig { border-color: var(--hair-strong); color: var(--ink-2); }
-/* a signature tag is a technique, so it wears its group's hue */
-.tag--sig[data-group] { border-color: color-mix(in srgb, var(--g) 42%, var(--hair-strong)); color: var(--g); }
 button.tag { cursor: pointer; touch-action: manipulation; }
 button.tag:hover { color: var(--accent); border-color: var(--accent); }
 /* what kind of thing this is, versus what it is made of */
-.tag--kind { border-color: var(--k, var(--accent)); color: var(--k, var(--accent)); background: transparent; }
+.tag--kind { border-color: var(--accent); color: var(--accent); background: transparent; }
 
 .ghost--tiny { padding: 5px 8px; font-size: 11px; }
 
@@ -726,7 +660,7 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
   display: flex; justify-content: space-between; gap: 10px; width: 100%;
   background: none; border: 0; border-bottom: 1px solid var(--hair); margin: 0;
   padding: 5px 0; cursor: pointer; text-align: left; touch-action: manipulation;
-  font: 400 var(--t-12)/1.35 var(--sans); color: var(--g, var(--k, var(--ink-2)));
+  font: 400 var(--t-12)/1.35 var(--sans); color: var(--ink-2);
 }
 .atlas__legend button:hover { color: var(--accent); }
 .atlas__legend button.is-dim { opacity: .32; }
@@ -752,7 +686,7 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
 }
 .combo__name:hover { color: var(--accent); }
 .combo__name:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-.combo__kind { font: 500 10px/1 var(--sans); color: var(--k, var(--muted)); }
+.combo__kind { font: 500 10px/1 var(--sans); color: var(--muted); }
 .combo__plus { color: var(--hair-strong); font: 400 var(--t-12)/1 var(--sans); }
 .combo__why { margin: 7px 0 0; font-size: var(--t-12); line-height: 1.5; color: var(--muted); max-width: 64ch; }
 
