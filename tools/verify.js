@@ -26,9 +26,10 @@ const OUT = path.join(__dirname, 'shots');
   // --- structure ---
   report.entries = await page.locator('.entry').count();
   report.sections = await page.locator('.section').count();
-  report.specimens = await page.locator('.spec').count();
+  report.specimens = await page.locator('#sec-all .spec').count();
+  report.comboSamples = await page.locator('#sec-combos .spec').count();
   report.specimensWithChild = await page.evaluate(() =>
-    [...document.querySelectorAll('.spec')].filter((s) => s.children.length > 0).length);
+    [...document.querySelectorAll('#sec-all .spec')].filter((s) => s.children.length > 0).length);
   report.copyButtons = await page.locator('[data-copy]').count();
   report.cssRules = await page.evaluate(() =>
     [...document.styleSheets].reduce((n, s) => { try { return n + s.cssRules.length; } catch (e) { return n; } }, 0));
@@ -158,7 +159,20 @@ const OUT = path.join(__dirname, 'shots');
       everyNameIsACatalogEntry: [...document.querySelectorAll('#sec-combos .combo__name')].every((n) => !!cat[n.getAttribute('data-id')]),
       kindTags: [...new Set([...document.querySelectorAll('#sec-combos .combo__kind')].map((s) => s.textContent.trim()))],
       sectionPresent: !!section,
-      proseOnPage: document.querySelectorAll('#sec-combos .combo__why').length
+      proseOnPage: document.querySelectorAll('#sec-combos .combo__why').length,
+      /* every combo carries a live sample, drawn with the same discipline as a
+         specimen: real values, scoped, and never reaching an entry */
+      everyComboHasSample: list.every((c) => typeof c.html === 'string' && c.html.trim().length > 40 &&
+        typeof c.css === 'string' && c.css.trim().length > 40),
+      everySampleScoped: list.every((c) => c.css.split('\n').filter((l) => l.indexOf('{') !== -1)
+        .every((l) => l.indexOf('.spec--combo-' + c.id) !== -1)),
+      samplesRendered: document.querySelectorAll('#sec-combos .spec').length,
+      everySampleHasChild: [...document.querySelectorAll('#sec-combos .spec')].every((s) => s.children.length > 0),
+      /* a sample must not spill out of its own stage, and must not appear
+         anywhere it does not belong */
+      samplesOverflowing: [...document.querySelectorAll('#sec-combos .spec')]
+        .filter((s) => s.scrollWidth > s.clientWidth + 1 || s.scrollHeight > s.clientHeight + 1).length,
+      comboClassesInEntries: document.querySelectorAll('#sec-all [class*="spec--combo-"]').length
     };
   });
   /* a combo name is a real control: it opens that entry's detail */

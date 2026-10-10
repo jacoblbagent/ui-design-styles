@@ -675,6 +675,9 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
 @media (min-width: 1080px) { .combos { grid-template-columns: 1fr 1fr; } }
 .combo { border-top: 1px solid var(--hair); padding: 12px 0 13px; }
 .combo.is-dim { opacity: .34; }
+/* the sample is framed exactly like an entry's specimen — same stage, same
+   radius — so a combo reads as a specimen built from three entries */
+.combo .spec { min-height: 158px; padding: 14px; margin-bottom: 13px; }
 .combo__trio { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 11px; }
 .combo__name {
   display: inline-flex; flex-direction: column; align-items: flex-start; gap: 3px; margin: 0; padding: 2px 0;
@@ -701,6 +704,9 @@ button.tag:hover { color: var(--accent); border-color: var(--accent); }
   .atlas__space { inset: 8px; }
   .atlas__legend ul { grid-template-columns: 1fr; }
   .matrix__scroll { margin-top: 10px; }
+  /* one narrow column wraps the trio onto three lines, where a separator
+     between them reads as a stray mark: the names stack instead */
+  .combo__plus { display: none; }
   /* On a phone a bottom-pinned bar sits over the column headers and eats the
      taps meant for them, so it stops being sticky and moves above the table
      instead — still inside the matrix section, still one tap from the columns. */

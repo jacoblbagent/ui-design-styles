@@ -91,7 +91,11 @@
 
   /* ---------- specimen styles: one shared sheet ---------- */
   var styleEl = document.createElement("style");
-  styleEl.textContent = CATALOG.map(function (e) { return e.css; }).join("\n\n");
+  /* entries and combos share one sheet; a combo's selectors are scoped under
+     `.spec--combo-<id>`, an entry's under `.spec--<id>`, so the two cannot
+     reach each other */
+  styleEl.textContent = CATALOG.map(function (e) { return e.css; })
+    .concat(COMBOS.map(function (c) { return c.css; })).join("\n\n");
   document.head.appendChild(styleEl);
 
   /* ---------- building blocks ---------- */
@@ -242,6 +246,7 @@
        combo would read as a claim the data cannot support */
     if (parts.filter(Boolean).length !== 3) return "";
     return '<li class="combo' + (comboFacetFit(c) ? "" : " is-dim") + '">' +
+      '<div class="spec spec--combo-' + c.id + '">' + (c.html || "") + "</div>" +
       '<div class="combo__trio">' + parts.join('<span class="combo__plus" aria-hidden="true">+</span>') + "</div>" +
       '<p class="combo__why">' + esc(c.why) + "</p>" +
     "</li>";
