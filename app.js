@@ -41,6 +41,12 @@
 
   var state = { q: "", view: "all", kind: "style", facets: [], theme: "light" };
 
+  /* the matrix crosshair's state. It is declared here, with the rest of the
+     state, because a `#<entry-id>` hash opens the detail from `fromHash()` —
+     which runs before the crosshair section below is reached, and a render that
+     clears the crosshair must find an array, not undefined. */
+  var lastHot = null, hotNodes = [];
+
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
   var esc = function (s) {
@@ -931,8 +937,6 @@
   });
 
   /* ---------- matrix crosshair: name the row and the column under the pointer ---------- */
-  var lastHot = null, hotNodes = [];
-
   function clearCrosshair() {
     hotNodes.forEach(function (n) { n.classList.remove("is-hotrow", "is-hotcol"); });
     hotNodes = [];

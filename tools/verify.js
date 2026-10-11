@@ -921,6 +921,29 @@ const OUT = path.join(__dirname, 'shots');
   report.reducedMotionVisible = await r.evaluate(() =>
     [...document.querySelectorAll('.entry')].filter((e) => e.getBoundingClientRect().height > 100).length);
 
+  /* --- a `#<entry-id>` hash opens that entry's detail on load ---
+     Including an entry of another kind, which the pill then follows. This runs
+     before the state the crosshair section is built on exists, so it is the one
+     path where a render can happen mid-initialisation. */
+  const dl = await ctx.newPage();
+  const dlErrors = [];
+  dl.on('pageerror', (e) => dlErrors.push(e.message));
+  await dl.goto(BASE + '#bento-grid', { waitUntil: 'networkidle' });
+  await dl.waitForTimeout(700);
+  report.deepLink = await dl.evaluate(() => {
+    const d = document.getElementById('detail');
+    const spec = d.querySelector('.spec');
+    return {
+      open: !!d.open,
+      title: (d.querySelector('.modal__title') || {}).textContent || null,
+      kindPressed: (document.querySelector('.pill__seg[aria-pressed="true"]') || {}).textContent || null,
+      specimenHasChild: !!(spec && spec.firstElementChild),
+      entries: document.querySelectorAll('.entry').length
+    };
+  });
+  report.deepLink.errors = dlErrors;
+  await dl.close();
+
   report.errors = errors;
   console.log(JSON.stringify(report, null, 2));
 
