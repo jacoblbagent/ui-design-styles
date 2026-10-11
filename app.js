@@ -30,6 +30,15 @@
      data/combos.js and claim nothing about the rest of the catalog. */
   var COMBOS = window.COMBOS || [];
 
+  /* A style may carry a complex counterpart of its specimen: the same style
+     drawn as one whole small application screen (app bar and three panes)
+     instead of the single component the specimen shows. The simple specimen is
+     the state the page opens on; the complex one sits behind a state button in
+     the detail dialog. Patterns and practices carry no counterpart — their
+     specimen is the whole of them. It reads data/complex.js, keyed by entry id. */
+  var COMPLEX = window.COMPLEX || {};
+  function complexOf(id) { return COMPLEX[id] || null; }
+
   var state = { q: "", view: "all", kind: "style", facets: [], theme: "light" };
 
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
@@ -95,6 +104,7 @@
      `.spec--combo-<id>`, an entry's under `.spec--<id>`, so the two cannot
      reach each other */
   styleEl.textContent = CATALOG.map(function (e) { return e.css; })
+    .concat(CATALOG.map(function (e) { var cx = complexOf(e.id); return cx ? cx.css : ""; }))
     .concat(COMBOS.map(function (c) { return c.css; }))
     .concat(COMBOS.map(function (c) { return c.loadingCss || ""; })).join("\n\n");
   document.head.appendChild(styleEl);
@@ -147,6 +157,21 @@
       .replace(/\bfor="([^"]+)"/g, 'for="m-$1"');
   }
 
+  /* A style's specimen has two states: the component as drawn, and the whole
+     application screen it would live in. Both are rendered here — the simple one
+     as the state the dialog opens on, the complex one hidden until a control
+     asks for it — and one state button names the state it would show. An entry
+     of another kind carries the one specimen. */
+  function specimenHTML(e) {
+    var cx = complexOf(e.id);
+    if (!cx) return '<div class="spec spec--' + e.id + '">' + uniqueIds(e.html) + "</div>";
+    return '<div class="spec spec--' + e.id + ' has-states">' +
+      '<div class="spec__view">' + uniqueIds(e.html) + "</div>" +
+      '<div class="spec__complex">' + cx.html + "</div>" +
+      '<button class="spec__state" type="button" aria-pressed="false">Complex</button>' +
+    "</div>";
+  }
+
   function detailHTML(e) {
     var traits = e.traits.map(function (t) { return "<li>" + t + "</li>"; }).join("");
     var avoid = (e.avoid && e.avoid.length)
@@ -193,7 +218,7 @@
         '<button class="iconbtn" type="button" data-close aria-label="Close details">' + ICON_CLOSE + "</button>" +
       "</div>" +
       '<p class="modal__blurb">' + e.blurb + "</p>" +
-      '<div class="spec spec--' + e.id + '">' + uniqueIds(e.html) + "</div>" +
+      specimenHTML(e) +
       tags + related +
       '<div class="traits"><div class="blockhead"><h4>Traits</h4>' +
         '<button class="ghost" type="button" data-copy="traits" data-id="' + e.id + '">' + ICON_COPY + "Copy traits</button>" +
@@ -802,6 +827,16 @@
     /* a click that lands on the dialog itself is a backdrop click */
     modal.addEventListener("click", function (ev) {
       if (ev.target === modal || ev.target.closest("[data-close]")) { modal.close(); return; }
+      /* the specimen's two states are swapped by one control in the dialog; its
+         label names the state it would show, and aria-pressed the one it shows */
+      var stateBtn = ev.target.closest(".spec__state");
+      if (stateBtn) {
+        var spec = stateBtn.closest(".spec");
+        var on = spec.classList.toggle("is-complex");
+        stateBtn.setAttribute("aria-pressed", on ? "true" : "false");
+        stateBtn.textContent = on ? "Simple" : "Complex";
+        return;
+      }
       var scrollTo = ev.target.closest("[data-scroll]");
       if (scrollTo) {
         /* the atlas sits behind the dialog, so close first, then go there */

@@ -254,6 +254,40 @@ const OUT = path.join(__dirname, 'shots');
   await page.waitForTimeout(240);
   report.combos.modalClosedAgain = await page.locator('#detail[open]').count();
 
+  /* --- complex specimens: the whole screen a style would live in ---
+     Every style carries a counterpart of its specimen, drawn as one small
+     application screen instead of a single component: scoped like the specimen,
+     under its own class prefix, painting its own ground. No pattern or practice
+     has one, and no entry's own specimen is touched by it. */
+  report.complexSpecimens = await page.evaluate(() => {
+    const CX = window.COMPLEX || {};
+    const F = window.FACETS.styles;
+    const cat = {};
+    window.CATALOG.forEach((e) => { cat[e.id] = e; });
+    const styles = window.CATALOG.filter((e) => F[e.id].k === 'style').map((e) => e.id);
+    const others = window.CATALOG.filter((e) => F[e.id].k !== 'style').map((e) => e.id);
+    const prefixOf = (html) => (String(html || '').match(/class="([a-z0-9]+)-/) || [])[1] || '';
+    const scoped = (id) => {
+      const cx = CX[id];
+      if (!cx || typeof cx.css !== 'string') return false;
+      return cx.css.split('\n').filter((l) => l.indexOf('{') !== -1)
+        .every((l) => l.indexOf('.spec--' + id) !== -1);
+    };
+    return {
+      declared: Object.keys(CX).length,
+      styles: styles.length,
+      everyStyleHasOne: styles.every((id) => !!CX[id] && typeof CX[id].html === 'string' &&
+        CX[id].html.trim().length > 120 && typeof CX[id].css === 'string' && (CX[id].css || '').trim().length > 200),
+      everyComplexScoped: styles.every(scoped),
+      everyComplexHasNoAtRule: styles.every((id) => !CX[id].css.split('\n').some((l) => l.indexOf('@') !== -1)),
+      everyComplexOwnPrefix: styles.every((id) => prefixOf(cat[id].html) &&
+        prefixOf(CX[id].html) === prefixOf(cat[id].html) + 'x'),
+      everyComplexHasItsParts: styles.every((id) => (CX[id].html.match(/class="/g) || []).length >= 12),
+      complexForOtherKinds: others.filter((id) => !!CX[id]),
+      entrySpecimenUntouched: styles.every((id) => (cat[id].css || '').indexOf('spec__complex') === -1)
+    };
+  });
+
   report.kindPill = await page.evaluate(() => ({
     segments: [...document.querySelectorAll('.pill__seg')].map((b) => b.textContent.trim()),
     pressedCount: document.querySelectorAll('.pill__seg[aria-pressed="true"]').length,
@@ -558,6 +592,96 @@ const OUT = path.join(__dirname, 'shots');
   await page.waitForTimeout(200);
   await page.evaluate(() => window.scrollTo(0, 0));
 
+  // --- the complex specimen is a real second state of the specimen ---
+  /* one control in the dialog swaps the component as drawn for the whole screen
+     and back, and only a style carries one */
+  await page.locator('.pill__seg[data-kind="style"]').click();
+  await page.waitForTimeout(220);
+  await page.locator('.entry#material-2').click();
+  await page.waitForTimeout(340);
+  report.complexToggle = await page.evaluate(() => {
+    const grounded = (root, stage) => {
+      let n = root;
+      while (n && n !== stage) {
+        const cs = getComputedStyle(n);
+        if (cs.backgroundImage !== 'none' || cs.backgroundColor !== 'rgba(0, 0, 0, 0)') return true;
+        n = n.parentElement;
+      }
+      return false;
+    };
+    const spec = document.querySelector('#detail .spec');
+    const b = spec && spec.querySelector('.spec__state');
+    const cx = spec && spec.querySelector('.spec__complex');
+    const view = spec && spec.querySelector('.spec__view');
+    return {
+      hasToggle: !!b,
+      toggleIsAButton: !!b && b.tagName === 'BUTTON',
+      label: b ? b.textContent.trim() : null,
+      pressed: b ? b.getAttribute('aria-pressed') : null,
+      simpleShown: !!view && getComputedStyle(view).display !== 'none',
+      complexHidden: !!cx && getComputedStyle(cx).display === 'none',
+      complexRendered: !!cx && !!cx.firstElementChild,
+      complexOwnGround: !!cx && !!cx.firstElementChild && grounded(cx.firstElementChild, spec),
+      partsInComplex: cx ? cx.querySelectorAll('[class]').length : 0
+    };
+  });
+  await page.locator('#detail .spec__state').click();
+  await page.waitForTimeout(260);
+  report.complexToggle.after = await page.evaluate(() => {
+    const spec = document.querySelector('#detail .spec');
+    const b = spec.querySelector('.spec__state');
+    const cx = spec.querySelector('.spec__complex');
+    const app = cx.firstElementChild;
+    const r = app ? app.getBoundingClientRect() : null;
+    const sr = spec.getBoundingClientRect();
+    const br = b.getBoundingClientRect();
+    return {
+      label: b.textContent.trim(),
+      pressed: b.getAttribute('aria-pressed'),
+      complexShown: getComputedStyle(cx).display !== 'none',
+      simpleHidden: getComputedStyle(spec.querySelector('.spec__view')).display === 'none',
+      overflowing: cx.scrollWidth > cx.clientWidth + 1 || cx.scrollHeight > cx.clientHeight + 1,
+      /* the whole screen must fit inside itself: a half-drawn row is a clipped
+         specimen, not a screen that continues */
+      appOverflowing: app ? (app.scrollWidth > app.clientWidth + 1 || app.scrollHeight > app.clientHeight + 1) : null,
+      stageOverflowing: spec.scrollWidth > spec.clientWidth + 1 || spec.scrollHeight > spec.clientHeight + 1,
+      controlClearOfSpecimen: !!r && br.bottom <= r.top + 1,
+      insideStage: r ? (r.left >= sr.left - 1 && r.right <= sr.right + 1 && r.top >= sr.top - 1 && r.bottom <= sr.bottom + 1) : false,
+      box: r ? { w: Math.round(r.width), h: Math.round(r.height) } : null
+    };
+  });
+  await page.screenshot({ path: path.join(OUT, 'complex-specimen.png') });
+  await page.locator('#detail .spec__state').click();
+  await page.waitForTimeout(220);
+  report.complexToggle.back = await page.evaluate(() => {
+    const spec = document.querySelector('#detail .spec');
+    return {
+      pressed: spec.querySelector('.spec__state').getAttribute('aria-pressed'),
+      label: spec.querySelector('.spec__state').textContent.trim(),
+      simpleShown: getComputedStyle(spec.querySelector('.spec__view')).display !== 'none',
+      complexHidden: getComputedStyle(spec.querySelector('.spec__complex')).display === 'none'
+    };
+  });
+  await page.locator('#detail [data-close]').click();
+  await page.waitForTimeout(200);
+  /* a pattern and a practice carry one specimen: no second state, no control */
+  report.nonStyleSpecimenStates = {};
+  for (const probe of [['pattern', 'table-grid'], ['practice', 'design-system']]) {
+    await page.locator('.pill__seg[data-kind="' + probe[0] + '"]').click();
+    await page.waitForTimeout(200);
+    await page.locator('.entry#' + probe[1]).click();
+    await page.waitForTimeout(300);
+    report.nonStyleSpecimenStates[probe[0]] = await page.evaluate(() => ({
+      toggles: document.querySelectorAll('#detail .spec__state').length,
+      wrappers: document.querySelectorAll('#detail .spec__view, #detail .spec__complex').length,
+      specimenHasChild: !!document.querySelector('#detail .spec').firstElementChild
+    }));
+    await page.locator('#detail [data-close]').click();
+    await page.waitForTimeout(200);
+  }
+  await page.locator('.pill__seg[data-kind="style"]').click();
+  await page.waitForTimeout(200);
+
   // --- hidden specimens (a scroll container that clips to nothing is a bug) ---
   report.clippedSpecimens = await page.evaluate(() =>
     [...document.querySelectorAll('.spec')].filter((s) => {
@@ -679,6 +803,38 @@ const OUT = path.join(__dirname, 'shots');
     });
     return { theme: document.documentElement.getAttribute('data-theme'), viewGrounded, loadGrounded, total: specs.length };
   });
+  /* the complex state keeps its own ground in dark too: a style that leans on
+     the stage would turn to dark ink on a dark page the moment the theme flips */
+  await page.locator('.pill__seg[data-kind="style"]').click();
+  await page.waitForTimeout(200);
+  await page.locator('.entry#glassmorphism').click();
+  await page.waitForTimeout(340);
+  await page.locator('#detail .spec__state').click();
+  await page.waitForTimeout(280);
+  report.complexSpecimenInDark = await page.evaluate(() => {
+    const grounded = (root, stage) => {
+      let n = root;
+      while (n && n !== stage) {
+        const cs = getComputedStyle(n);
+        if (cs.backgroundImage !== 'none' || cs.backgroundColor !== 'rgba(0, 0, 0, 0)') return true;
+        n = n.parentElement;
+      }
+      return false;
+    };
+    const spec = document.querySelector('#detail .spec');
+    const cx = spec.querySelector('.spec__complex');
+    const app = cx.firstElementChild;
+    const r = app.getBoundingClientRect(), sr = spec.getBoundingClientRect();
+    return {
+      theme: document.documentElement.getAttribute('data-theme'),
+      grounded: grounded(app, spec),
+      insideStage: r.left >= sr.left - 1 && r.right <= sr.right + 1 && r.bottom <= sr.bottom + 1,
+      overflowing: cx.scrollWidth > cx.clientWidth + 1 || cx.scrollHeight > cx.clientHeight + 1
+    };
+  });
+  await page.screenshot({ path: path.join(OUT, 'complex-specimen-dark.png') });
+  await page.locator('#detail [data-close]').click();
+  await page.waitForTimeout(200);
   await page.locator('#theme-toggle').click();
 
   // --- the facet chips carry the active state; the matrix columns are the controls ---

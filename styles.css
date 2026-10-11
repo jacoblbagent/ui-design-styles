@@ -267,6 +267,40 @@ body:has(.modal[open]) { overflow: hidden; }
   overflow: hidden; position: relative;
 }
 
+/* ---------- a style's specimen holds two states ----------
+   The component as drawn, and the same style drawn as one whole application
+   screen (app bar and three panes). One control per specimen swaps them; its
+   label names the state it would show and aria-pressed the one it is showing.
+   A pattern or a practice carries the one specimen and no control. The wrapper
+   keeps the centring the stage used to give its child directly. */
+.spec > .spec__view,
+.spec > .spec__complex { width: 100%; display: flex; align-items: center; justify-content: center; }
+.spec > .spec__complex { display: none; }
+.spec.is-complex > .spec__complex { display: flex; }
+.spec.is-complex > .spec__view { display: none; }
+/* the control sits in a strip of the stage's own padding, so it never lands on
+   the specimen in either state, and the strip is there for both */
+.spec.has-states { padding-top: 48px; }
+.spec > .spec__state {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  font: 500 var(--t-12)/1 var(--sans);
+  color: var(--ink-2); background: var(--panel);
+  border: 1px solid var(--hair-strong); border-radius: var(--r-chip);
+  padding: 6px 9px; cursor: pointer; touch-action: manipulation;
+}
+.spec > .spec__state:hover { border-color: var(--ink-2); }
+.spec > .spec__state:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.spec > .spec__state[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+@media (max-width: 640px) {
+  /* Three panes in a 390px stage crush their own numbers together, so on a phone
+     the screen keeps its proportions at a readable width and the stage pans:
+     the same specimen, scrolled rather than collapsed. */
+  .spec.is-complex { overflow-x: auto; }
+  .spec.is-complex > .spec__complex { justify-content: flex-start; }
+  .spec.is-complex > .spec__complex > * { min-width: 720px; }
+}
+
 .traits { display: block; }
 .traits h4, .code h4 { margin: 0; font-size: var(--t-14); font-weight: 600; }
 
